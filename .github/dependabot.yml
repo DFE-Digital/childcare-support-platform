@@ -1,0 +1,18 @@
+version: 2
+
+registries:
+  gemfury:
+    type: python-index
+    url: https://pypi.fury.io/ten-ds/
+    token: ${{secrets.GEMFURY_TOKEN}}
+
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    registries:
+      - gemfury
+    allow:
+      - dependency-type: "all"
+    insecure-external-code-execution: allow
