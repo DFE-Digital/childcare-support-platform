@@ -1,0 +1,25 @@
+# Rust build artifacts
+/target/
+
+# Cargo.lock — commit this for binaries (which sis-query/sis-preprocess are),
+# ignore it for libraries. Since this is a binary project, do NOT ignore it —
+# leaving this note here as a reminder rather than a rule.
+
+# Backup files some editors/tools generate
+**/*.rs.bk
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+.env
+.env.local
+*.pem
+*.key
