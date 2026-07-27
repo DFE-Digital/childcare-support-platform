@@ -1,18 +1,17 @@
 version: 2
-
-registries:
-  gemfury:
-    type: python-index
-    url: https://pypi.fury.io/ten-ds/
-    token: ${{secrets.GEMFURY_TOKEN}}
-
 updates:
-  - package-ecosystem: "pip"
+  - package-ecosystem: "cargo"
     directory: "/"
     schedule:
       interval: "weekly"
-    registries:
-      - gemfury
-    allow:
-      - dependency-type: "all"
-    insecure-external-code-execution: allow
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
