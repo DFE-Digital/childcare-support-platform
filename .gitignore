@@ -1,25 +1,111 @@
-# Rust build artifacts
-/target/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Cargo.lock — commit this for binaries (which sis-query/sis-preprocess are),
-# ignore it for libraries. Since this is a binary project, do NOT ignore it —
-# leaving this note here as a reminder rather than a rule.
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-# Backup files some editors/tools generate
-**/*.rs.bk
+# testing
+/coverage
 
-# Editors
-.vscode/
-.idea/
-*.swp
+# build output
+/dist/
 
-# macOS
+# production
+/build
+
+# misc
 .DS_Store
+*.pem
 
-# Windows
-Thumbs.db
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
 
 .env
-.env.local
-*.pem
-*.key
+client
+/.vscode/
+.venv
+
+# Byte-compiled / optimized / DLL files
+__pycache__/*
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+
+# Terraform
+**/.terraform/*
+# Terragrunt cache
+**/.terragrunt-cache/
+# Terraform state files (bootstrap uses local state - keep out of git)
+terraform/bootstrap/terraform.tfstate
+terraform/bootstrap/terraform.tfstate.backup
+# Ignore these directories anywhere in the repository
+**/node_modules/
+**/dist/
+**/.venv/
+# Terraform lock files
+*/.terraform.lock.hcl
+.terraform.lock.hcl
+*.terraform.lock.hcl
+# Custom terraform chart path
+.charts
+
+.vscode
+act.secret
+testing.sh
+
+*.DS_Store
+*.ipynb_checkpoints*
+
+# Python packaging
+*.egg-info/
+
+# docs - ignore large generated reports, keep markdown docs
+docs/field_discovery_report.txt
+
+# WIP data quality analyses (not for main)
+packages/data-quality/bristol-fis-comparison/
+
+# Data quality audit output files
+packages/data-quality/data-quality-audit/*.csv
+
+# Python version manager
+.python-version
+
+# Prisma generated Zod schemas
+packages/schemas/src/generated/
+
+# Exported data pipeline output
+/exported_data/
+
+# Docker build staging (S3 data for prod image)
+/.docker-data/
+
+# Generated Dagster asset output
+packages/data-pipeline/data/
+
+/source_data/
+
+# Rust
+**/target/
+*.sis
+
+# Generated app data (served from exported_data via Docker mounts)
+packages/app/public/data/providers/
+packages/app/public/data/inward/
+packages/app/public/data/outward.json
+packages/app/public/data/sis_schema.json
