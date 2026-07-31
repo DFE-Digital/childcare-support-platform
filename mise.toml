@@ -1,0 +1,6 @@
+[tools]
+aws-cli = { version = "2", symlink_bins = "true" }
+node = "24"
+python = "3.11"
+rust = "1.96"
+uv = "latest"
