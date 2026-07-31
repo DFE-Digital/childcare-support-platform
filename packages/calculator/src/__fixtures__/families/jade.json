@@ -1,0 +1,148 @@
+{
+  "description": "Family 5: Jade — young single parent, age 18-20, first-year apprentice. Not on Universal Credit. One child (Alfie, age 11 months) in private nursery. Tests: apprentice minimum earnings threshold (£120.80/week), working parent entitlement for under-2s (available from 9 months), Tax-Free Childcare on low apprentice wages, single parent work test.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "SR4 9LT",
+      "ladCodes": ["E08000024"]
+    },
+    "household": {
+      "hasPartner": false
+    },
+    "user": {
+      "isApprentice": true,
+      "firstYearApprentice": true,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "18-20",
+      "workingStatus": "earning_above_apprentice_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": null,
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Alfie",
+        "birthMonth": 3,
+        "birthYear": 2025,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 4
+              }
+            },
+            "providerId": "p967556587725197975"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p967556587725197975"]
+  },
+  "costEstimate": {
+    "description": "Worked example for Jade. Jade is an 18-20 year old first-year apprentice earning above the apprentice minimum earnings threshold of £120.80 per week. As a single parent, only Jade needs to meet the work test. Alfie is 11 months old and over the 9-month threshold for the working parent entitlement. The Sunderland government under-2 funding rate (£10.30/hr) far exceeds the provider's effective rate (£6.40/hr), eliminating any shortfall.",
+    "alfie": {
+      "child": "Alfie (age 11 months, born March 2025)",
+      "narrative": "Alfie attends Little Stars Day Nursery (provider_27) for 4 morning sessions per week. The nursery operates 50 weeks per year. Each morning session is 5 hours at £32.00 per session for under-2s, giving an effective hourly rate of £6.40/hr. At 11 months old, Alfie is over the 9-month threshold and eligible for 15 funded hours per week. The government under-2 funding rate (£10.30/hr) far exceeds the provider's effective rate (£6.40/hr), meaning zero shortfall to the parent.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_27 (Little Stars Day Nursery, under-2 rate: £32.00/morning session)",
+          "configuration": "4 mornings per week, 50 operating weeks",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_27 under-2 rate: £32.00 per morning session, 5 hours per session",
+              "morningCost": "4 days × £32.00 × 50 weeks = £6,400.00",
+              "total": 6400
+            },
+            "step2_deriveEffectiveHourlyRate": {
+              "sessionFee": 32,
+              "sessionHours": 5,
+              "effectiveHourlyRate": "£32.00 / 5 hrs = £6.40/hr"
+            },
+            "step3_fundedHoursReduction": {
+              "scheme": "Working parent entitlement (under 2, available from 9 months)",
+              "eligibilityNote": "Jade is a first-year apprentice earning above £120.80/week (the apprentice minimum earnings threshold). As a single parent, only she needs to meet the work test. Alfie is 11 months — over the 9-month age threshold.",
+              "fundedHoursPerWeek": 15,
+              "fundedWeeks": 38,
+              "totalFundedHours": "15 × 38 = 570 hours",
+              "governmentFundingRate": 10.3,
+              "providerEffectiveRate": 6.4,
+              "shortfallPerHour": "max(£6.40 - £10.30, 0) = £0.00",
+              "shortfallNote": "The Sunderland government under-2 funding rate (£10.30/hr) far exceeds the provider's effective rate (£6.40/hr). The provider retains the excess.",
+              "shortfallCostToParent": "15 hrs × £0.00 × 38 weeks = £0.00",
+              "savingToParent": "15 hrs × £6.40 × 38 weeks = £3,648.00",
+              "costToGovernment": "15 hrs × £10.30 × 38 weeks = £5,871.00"
+            },
+            "step4_unfundedHours": {
+              "note": "Total weekly hours: 4 mornings × 5 hrs = 20 hrs/week. During 38 term weeks, 15 funded, 5 unfunded. During 12 non-term weeks, all 20 unfunded.",
+              "unfundedTermTimeHours": "5 hrs/week × 38 weeks = 190 hours",
+              "unfundedNonTermHours": "20 hrs/week × 12 weeks = 240 hours",
+              "totalUnfundedHours": "190 + 240 = 430 hours",
+              "unfundedCost": "430 × £6.40 = £2,752.00"
+            },
+            "step5_additionalCharges": {
+              "meals": "4 days × £2.50 × 50 weeks = £500.00",
+              "consumables": "£1.00 × 50 weeks = £50.00",
+              "total": 550
+            },
+            "estimatedAnnualCostToParent_beforeTFC": "£6,400.00 - £3,648.00 + £550.00 = £3,302.00"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 6400,
+        "additionalCharges": 550,
+        "total": 6950,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "Working parent entitlement (under 2) for Alfie",
+          "savingToParent": 3648,
+          "note": "Government pays 15 hrs × £10.30 × 38 wks = £5,871.00 to provider. Parent saves 15 hrs × £6.40 × 38 wks = £3,648.00. The £2,223 difference is because the government rate (£10.30/hr) far exceeds the provider's rate (£6.40/hr)."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare for Alfie",
+          "savingToParent": 550.4,
+          "note": "20% × £2,752.00 = £550.40 (under £2,000 cap). Registered childcare costs paid by parent after funded hours: £6,400 - £3,648 = £2,752."
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 4198.4
+      },
+      "estimatedAnnualCostToFamily": 2751.6,
+      "summaryNote": "Jade's childcare costs £6,950 per year (including meals and consumables). Government support totals £4,198 (60% of total cost). After funded hours and Tax-Free Childcare, Jade pays approximately £2,752. The Sunderland under-2 funding rate (£10.30/hr) far exceeds the provider rate (£6.40/hr), eliminating any shortfall. Compared to an equivalent scenario in Oxford (£4,140), Jade pays significantly less — driven by lower nursery fees in Sunderland.",
+      "apprenticeContext": {
+        "description": "First-year apprentices have a lower minimum earnings threshold for childcare scheme eligibility.",
+        "standardThreshold": "£195.00/week (21+, non-apprentice)",
+        "apprenticeThreshold": "£120.80/week (first-year apprentice)",
+        "jadeStatus": "Earning above £120.80/week — qualifies as working"
+      },
+      "ageThresholdNote": {
+        "description": "The working parent entitlement for under-2s is only available from when the child reaches 9 months old. Alfie was born in March 2025 and turned 9 months in December 2025. If Jade had needed childcare before December 2025, no funded hours would have been available."
+      }
+    }
+  }
+}

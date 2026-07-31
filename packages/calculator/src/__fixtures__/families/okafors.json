@@ -1,0 +1,113 @@
+{
+  "description": "Family 11: The Okafors — working couple living outside London. One parent has 'no recourse to public funds' immigration status. Two children: Amara (age 2) and Chidera (age 4). Household income below the NRPF threshold of £30,600 (outside London, 2+ children). Not on Universal Credit (cannot claim with NRPF). Tests: NRPF blocks 30-hour entitlement, NRPF blocks UC childcare, 2-year-old qualifies via NRPF income threshold route, 4-year-old qualifies for 15 hours universal (no immigration requirement), Tax-Free Childcare blocked (requires at least one parent with access to public funds).",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "OX2 0AA",
+      "ladCodes": ["E07000178"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "no_recourse_to_public_funds",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": false,
+      "residencyStatus": "no_recourse_to_public_funds",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 30600,
+    "nrpfSavingsUnderLimit": 16000,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Amara",
+        "birthMonth": 6,
+        "birthYear": 2023,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p87347375352090281"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Chidera",
+        "birthMonth": 3,
+        "birthYear": 2022,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p5833713484063384288"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p87347375352090281", "p5833713484063384288"]
+  },
+  "costEstimate": {
+    "description": "The Okafors demonstrate how immigration status affects childcare scheme eligibility. Both parents are working and earning above the threshold, but their 'no recourse to public funds' status blocks access to several schemes that would otherwise be available. The 30-hour working families scheme requires permission to access public funds. Universal Credit childcare is unavailable because NRPF families cannot claim UC. However, the 15-hour 2-year-old entitlement has an alternative NRPF income threshold route, and the 15-hour universal entitlement has no immigration requirement. Tax-Free Childcare only requires being in the UK.",
+    "amara": {
+      "child": "Amara (age 2, born June 2023)",
+      "narrative": "Amara qualifies for 15 funded hours via the NRPF income threshold route. The family's household income is below £30,600 (the threshold for families outside London with 2+ children) and savings are below £16,000."
+    },
+    "chidera": {
+      "child": "Chidera (age 4, born March 2022)",
+      "narrative": "Chidera qualifies for the 15-hour universal entitlement available to all 3- and 4-year-olds in England. This entitlement has no immigration or income requirements. However, the family cannot access the additional 15 working-parent hours (30-hour entitlement) because that scheme requires permission to access public funds."
+    }
+  }
+}

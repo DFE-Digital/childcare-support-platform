@@ -1,0 +1,14 @@
+[project]
+name = "data-quality"
+version = "0.1.0"
+description = "Package for analysing data quality of providers"
+readme = "README.md"
+requires-python = ">=3.10.6"
+dependencies = [
+    "bs4>=0.0.2",
+    "numpy>=2.2.6",
+    "pandas>=2.3.3",
+    "pyarrow>=23.0.1",
+    "rapidfuzz>=3.14.3",
+    "requests>=2.33.1",
+]

@@ -1,0 +1,4 @@
+services:
+  frontend:
+    networks:
+      - app-network

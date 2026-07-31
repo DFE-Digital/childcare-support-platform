@@ -1,0 +1,6 @@
+dash>=2.18,<3
+dash-bootstrap-components>=1.6,<2
+dash-tabulator>=0.4,<1
+pandas>=2.2,<3
+pyarrow>=17,<19
+gunicorn>=22,<23

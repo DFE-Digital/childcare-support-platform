@@ -1,0 +1,118 @@
+{
+  "description": "Single working parent on UC with low income. Tests: funded hours stacking — child qualifies for both 15 Hours 2YO (via UC income route) and working parent entitlement (from 30 Hours WF), giving 30 funded hours total. Reuses Sunderland postcode and Pennywell provider from Priya fixture.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "SR4 9LT",
+      "ladCodes": ["E08000024"]
+    },
+    "household": {
+      "hasPartner": false
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": null,
+    "qualifyingBenefits": ["universal_credit"],
+    "ucIncomeBelowThreshold": true,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Kai",
+        "birthMonth": 10,
+        "birthYear": 2023,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              },
+              "afternoon": {
+                "daysPerWeek": 3
+              }
+            },
+            "providerId": "p6927698004950313832"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p6927698004950313832"]
+  },
+  "costEstimate": {
+    "description": "Single working parent on UC with household income under £15,400. Qualifies for 30 Hours WF (working, earning above threshold, NI, British, England) AND 15 Hours 2YO (UC income route). These stack: 15 + 15 = 30 funded hours/week for the age-2 child. Kai uses 28 hours/week (5 mornings + 3 afternoons × 3.5h each), all of which are covered by the stacked pool.",
+    "kai": {
+      "child": "Kai (age 2, born October 2023)",
+      "narrative": "Kai attends Pennywell Early Years Centre for 5 morning + 3 afternoon sessions per week, 38 term weeks. Each session is 3.5 hours, so 5×3.5 + 3×3.5 = 28 hours/week. With stacked entitlement (15 Hours 2YO + Working Parent), the funded pool is 30 hours/week. All 28 hours are funded. The Sunderland government rate (£7.40/hr) exceeds the provider rate (£6.29/hr), so there is zero shortfall. Without stacking, only 15 of the 28 hours would be funded, nearly doubling the parent's cost.",
+      "selections": [
+        {
+          "careType": "school_based_nursery",
+          "source": "Pennywell Early Years Centre (age 2 rate: £22.00/session morning, £22.00/session afternoon)",
+          "configuration": "5 mornings + 3 afternoons per week, 38 term weeks",
+          "calculation": {
+            "grossCost": "(5 + 3) × £22.00 × 38 = £6,688.00",
+            "effectiveHourlyRate": "£22.00 / 3.5 hrs = £6.29/hr",
+            "weeklyHours": "5 × 3.5 + 3 × 3.5 = 28.0 hrs",
+            "fundedHours": {
+              "scheme": "15 hours early learning for 2-year-olds; 30 hours working families",
+              "totalPoolHours": 30,
+              "hoursUsed": 28,
+              "fundedWeeks": 38,
+              "governmentRate": 7.4,
+              "providerRate": 6.29,
+              "shortfallPerHour": "max(£6.29 - £7.40, 0) = £0.00",
+              "savingToParent": "28 × £6.29 × 38 = £6,692.56 (note: saving capped at gross cost)",
+              "withoutStacking": "If only 15 hours funded: 15 × £6.29 × 38 = £3,585.30"
+            },
+            "additionalCharges": {
+              "meals": "5 × £2.00 × 38 = £380.00"
+            }
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 6688,
+        "additionalCharges": 380,
+        "total": 7068
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "15 hours early learning for 2-year-olds; 30 hours working families",
+          "savingToParent": "28 × £6.29 × 38 = £6,692.56 (capped at gross fee £6,688.00)",
+          "note": "Stacked: 30h pool, 28h used. Zero shortfall — government rate exceeds provider rate."
+        },
+        "taxFreeChildcare": null,
+        "ucChildcare": {
+          "scheme": "Universal Credit childcare (85% reimbursement)",
+          "note": "UC reimburses 85% of unfunded childcare costs. With stacking, nearly all hours are funded so the UC childcare element is minimal."
+        }
+      },
+      "summaryNote": "Stacking is critical: without it, Kai would have 13 unfunded hours/week (28-15=13) at £6.29/hr × 38 weeks = £3,108.26 in extra costs."
+    }
+  }
+}

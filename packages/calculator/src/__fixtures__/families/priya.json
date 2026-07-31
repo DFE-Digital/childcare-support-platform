@@ -1,0 +1,193 @@
+{
+  "description": "Single parent on Universal Credit, earning below threshold. Tests: single parent flow, UC childcare reimbursement, 15-hour 2-year-old entitlement via UC low income, TFC/UC mutual exclusion, free breakfast club.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "SR4 9LT",
+      "ladCodes": ["E08000024"]
+    },
+    "household": {
+      "hasPartner": false
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_below_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": null,
+    "qualifyingBenefits": ["universal_credit"],
+    "ucIncomeBelowThreshold": true,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Amir",
+        "birthMonth": 10,
+        "birthYear": 2023,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p6927698004950313832"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Zara",
+        "birthMonth": 5,
+        "birthYear": 2018,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "free_breakfast_club",
+            "daysPerWeek": 5,
+            "providerId": "p673888428820612136"
+          },
+          {
+            "id": 2,
+            "careType": "after_school_club",
+            "daysPerWeek": 3,
+            "providerId": "p673888428820612136"
+          },
+          {
+            "id": 3,
+            "careType": "childminder",
+            "hoursPerWeek": 7,
+            "weeksPerYear": 44,
+            "providerId": "p3577741280378257208"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": [
+      "p6927698004950313832",
+      "p673888428820612136",
+      "p3577741280378257208"
+    ]
+  },
+  "costEstimate": {
+    "description": "Priya is on UC and earning below threshold. She cannot use Tax-Free Childcare (mutually exclusive with UC). Instead she receives UC childcare reimbursement at 85% of costs. Amir qualifies for 15 funded hours as a 2-year-old (UC household income under £15,400). In Sunderland, the government funding rate exceeds the provider rate, eliminating the shortfall.",
+    "amir": {
+      "child": "Amir (age 2, born February 2024)",
+      "narrative": "Amir (born February 2024) attends Pennywell Early Years Centre (provider_22) for 5 morning sessions per week, 38 term weeks. At age 2, the government funds 15 hours per week via the early learning entitlement. Each morning session is 3.5 hours, so 5 sessions = 17.5 hours/week. The Sunderland government rate (£7.40/hr) exceeds the provider rate (£6.29/hr), meaning zero shortfall.",
+      "selections": [
+        {
+          "careType": "school_based_nursery",
+          "source": "provider_22 (Pennywell Early Years Centre, age 2 rate: £22.00/session)",
+          "configuration": "5 mornings per week, 38 term weeks",
+          "calculation": {
+            "grossCost": "5 × £22.00 × 38 = £4,180.00",
+            "effectiveHourlyRate": "£22.00 / 3.5 hrs = £6.29/hr",
+            "fundedHours": {
+              "scheme": "15 hours early learning for 2-year-olds (UC route)",
+              "hoursPerWeek": 15,
+              "fundedWeeks": 38,
+              "governmentRate": 7.4,
+              "providerRate": 6.29,
+              "shortfallPerHour": "max(£6.29 - £7.40, 0) = £0.00",
+              "shortfallCostToParent": "£0.00",
+              "unfundedHours": "2.5 hrs/week × £6.29 × 38 = £597.55",
+              "savingToParent": "£4,180.00 - £597.55 = £3,582.45",
+              "costToGovernment": "15 × £7.40 × 38 = £4,218.00"
+            },
+            "additionalCharges": {
+              "meals": "5 × £2.00 × 38 = £380.00"
+            },
+            "costToParent": "£597.55 + £380.00 = £977.55"
+          }
+        }
+      ]
+    },
+    "zara": {
+      "child": "Zara (age 7, born May 2018)",
+      "narrative": "Zara attends St Anne's Primary School (provider_23) which offers a free breakfast club and after-school club. The childminder (provider_24) covers 2 afternoons without after-school club during term, plus holiday cover.",
+      "termTimeCare": {
+        "weeks": 38,
+        "selections": [
+          {
+            "careType": "free_breakfast_club",
+            "source": "provider_23 (St Anne's Primary)",
+            "configuration": "5 days per week, 38 term weeks",
+            "annualCost": "5 × £0 × 38 = £0.00"
+          },
+          {
+            "careType": "after_school_club",
+            "source": "provider_23 (£8.00/session)",
+            "configuration": "3 days per week, 38 term weeks",
+            "annualCost": "3 × £8.00 × 38 = £912.00"
+          }
+        ]
+      },
+      "yearRoundCare": {
+        "selections": [
+          {
+            "careType": "childminder",
+            "source": "provider_24 (Lisa Henderson, age 2+ rate: £5.00/hr)",
+            "configuration": "7 hours per week, 44 weeks per year (308 hours total)",
+            "baseCost": "7 × £5.00 × 44 = £1,540.00",
+            "meals": "10 days × £2.50 = £25.00",
+            "totalWithAdditional": 1565
+          }
+        ]
+      },
+      "zaraTotal": {
+        "grossChildcareCost": "£0 + £912 + £1,540 = £2,452.00",
+        "additionalCharges": 25,
+        "total": 2477
+      }
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 6632,
+        "additionalCharges": 405,
+        "total": 7037
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "15 hours early learning for 2-year-olds (Amir only)",
+          "savingToParent": 3582.45,
+          "note": "No shortfall in Sunderland — government rate (£7.40/hr) exceeds provider rate (£6.29/hr)."
+        },
+        "taxFreeChildcare": null,
+        "ucChildcare": {
+          "scheme": "Universal Credit childcare (85% reimbursement)",
+          "savingToParent": 2592.12,
+          "note": "UC childcare reimburses 85% of registered childcare costs. Eligible costs: Amir unfunded hours £597.55 + Zara ASC £912 + Zara CM £1,540 = £3,049.55. 85% × £3,049.55 = £2,592.12. Per month: £216.01 (well under £1,768.94 cap for 2+ children)."
+        },
+        "totalSavingToParent": 6174.57
+      },
+      "estimatedAnnualCostToFamily": 862.43,
+      "summaryNote": "Government support covers 88% of Priya's childcare costs. The combination of funded hours for Amir (with zero shortfall in Sunderland) and UC childcare reimbursement at 85% brings her annual cost down from £7,037 to approximately £862. The free breakfast club at St Anne's Primary saves a further £912+ compared to a paid breakfast club. Compared to Oxford (£1,281), Priya's costs are lower due to cheaper provider rates and zero shortfall on funded hours."
+    }
+  }
+}
