@@ -1,0 +1,238 @@
+{
+  "description": "Example family: two working parents in Oxford with an under-2 (Thomas) and a school-age child (Emily). Demonstrates the full range of childcare types, the term-time vs working-year gap, age-banded nursery pricing, and the funded hours shortfall calculation.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "OX2 0AA",
+      "ladCodes": ["E07000178"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Thomas",
+        "birthMonth": 3,
+        "birthYear": 2024,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              },
+              "afternoon": {
+                "daysPerWeek": 3
+              }
+            },
+            "providerId": "p1358070129789077173"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Emily",
+        "birthMonth": 9,
+        "birthYear": 2019,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "breakfast_club",
+            "daysPerWeek": 5,
+            "providerId": null
+          },
+          {
+            "id": 2,
+            "careType": "after_school_club",
+            "daysPerWeek": 3,
+            "providerId": null
+          },
+          {
+            "id": 3,
+            "careType": "childminder",
+            "hoursPerWeek": 7,
+            "weeksPerYear": 44,
+            "providerId": "p365829249294440042"
+          },
+          {
+            "id": 4,
+            "careType": "holiday_club",
+            "daysPerYear": 20,
+            "providerId": null
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": [
+      "p1358070129789077173",
+      "p365829249294440042",
+      "p6863504927510290278"
+    ]
+  },
+  "costEstimate": {
+    "description": "Worked example for this family. Key assumption: a full-time working parent needs approximately 44 weeks of childcare per year (52 weeks minus ~4 weeks annual leave, bank holidays, and Christmas closure). Government funded hours cover only 38 term-time weeks, leaving a gap of 6 working weeks during school holidays that parents must fill with alternative arrangements.",
+    "thomas": {
+      "child": "Thomas (age 23 months, born March 2024)",
+      "narrative": "Thomas attends a private nursery (provider_1, Little Pioneers) which operates 51 weeks per year. Private nurseries typically require parents to hold and pay for their slot across the full operating period, regardless of attendance. The parent needs 44 weeks of care but pays for 51. Government funded hours cover only 38 of those weeks — leaving 13 weeks at full unsubsidised cost.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_1 (Little Pioneers)",
+          "configuration": "5 mornings + 3 afternoons per week, 51 operating weeks",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_1 under-2 rates: £55.00 per session",
+              "morningCost": "5 days × £55.00 × 51 weeks = £14,025.00",
+              "afternoonCost": "3 days × £55.00 × 51 weeks = £8,415.00",
+              "total": 22440
+            },
+            "step2_deriveEffectiveHourlyRate": {
+              "sessionFee": 55,
+              "sessionHours": 5,
+              "effectiveHourlyRate": "£55.00 / 5 hrs = £11.00/hr"
+            },
+            "step3_fundedHoursReduction": {
+              "scheme": "Working parent entitlement (under 2)",
+              "fundedHoursPerWeek": 15,
+              "fundedWeeks": 38,
+              "governmentFundingRate": 12.44,
+              "providerEffectiveRate": 11,
+              "shortfallPerHour": "max(£11.00 - £12.44, 0) = £0.00",
+              "shortfallNote": "Government rate (£12.44) narrowly exceeds provider rate (£11.00), so there is no shortfall for under-2s at this provider. At the 3-4 year old rate (£42/session = £8.40/hr vs £5.52/hr funding), the shortfall would be £2.88/hr — a significant cost.",
+              "savingToParent": "15 hrs × £11.00 × 38 weeks = £6,270.00",
+              "costToGovernment": "15 hrs × £12.44 × 38 weeks = £7,090.80"
+            },
+            "step4_additionalCharges": {
+              "meals": "5 days × £3.50 × 51 weeks = £892.50",
+              "consumables": "£2.25 × 51 weeks = £114.75",
+              "total": 1007.25
+            },
+            "estimatedAnnualCostToParent": "£22,440.00 - £6,270.00 + £1,007.25 = £17,177.25"
+          }
+        }
+      ]
+    },
+    "emily": {
+      "child": "Emily (age 6, born September 2019)",
+      "narrative": "Emily is school-age. Her term-time care (breakfast club, after-school club) only operates during the 38 school weeks. Her parents work approximately 44 weeks per year, leaving a 6-week gap during school holidays. This gap is covered by a combination of childminder and holiday club. The childminder (provider_5, Sarah Mitchell) is used year-round: for after-school wrap-around on 2 days per week during term, and for full-day cover during 2 holiday weeks. The holiday club covers the other 4 holiday weeks.",
+      "termTimeCare": {
+        "weeks": 38,
+        "selections": [
+          {
+            "careType": "breakfast_club",
+            "source": "area average (no provider selected)",
+            "configuration": "5 days per week, 38 term weeks",
+            "annualCost": "5 × £6.50 × 38 = £1,235.00"
+          },
+          {
+            "careType": "after_school_club",
+            "source": "area average (no provider selected)",
+            "configuration": "3 days per week, 38 term weeks",
+            "annualCost": "3 × £14.00 × 38 = £1,596.00"
+          }
+        ]
+      },
+      "yearRoundCare": {
+        "selections": [
+          {
+            "careType": "childminder",
+            "source": "provider_5 (Sarah Mitchell, £6.50/hr)",
+            "configuration": "7 hours per week, 44 weeks per year (308 hours total)",
+            "breakdown": "Term time: ~5 hrs/week for 2 afternoon pickups on days without after-school club. Holidays: ~16 hrs/week for 2 weeks of full-day cover. Averages to 7 hrs/week over 44 weeks.",
+            "baseCost": "7 × £6.50 × 44 = £2,002.00",
+            "meals": "Childminder meals charged during holiday weeks only (child at school during term lunchtimes): 10 days × £3.00 = £30.00",
+            "totalWithAdditional": 2032
+          },
+          {
+            "careType": "holiday_club",
+            "source": "area average (no provider selected)",
+            "configuration": "20 days per year (4 weeks of holiday cover)",
+            "annualCost": "20 × £40.00 = £800.00"
+          }
+        ]
+      },
+      "emilyTotal": {
+        "grossChildcareCost": "£1,235 + £1,596 + £2,002 + £800 = £5,633.00",
+        "additionalCharges": 30,
+        "totalIncludingAdditional": 5663,
+        "note": "Emily is school-age so no funded hours apply. Tax-Free Childcare or UC Childcare could reduce the net cost. The 6-week holiday gap (4 weeks holiday club + 2 weeks childminder) is a significant cost that is easy to overlook when budgeting only for term-time care."
+      }
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 28072.4,
+        "additionalCharges": 1037.25,
+        "total": 29110.25,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "Working parent entitlement (under 2) for Thomas",
+          "savingToParent": 6270,
+          "note": "Government pays 15 hrs × £12.44 × 38 wks = £7,090.80 to provider. Parent saves 15 hrs × £11.00 × 38 wks = £6,270.00. Covers Thomas only — Emily is school-age and not eligible for funded hours. The £820.80 difference between government spend and parent saving is retained by the provider."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare for Thomas and Emily",
+          "savingToParent": 4000,
+          "note": "£2,000 per child × 2 children (capped) Both parents working, earning above threshold, under £100k, not on UC. Government tops up £2 for every £8 deposited."
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 10270
+      },
+      "estimatedAnnualCostToFamily": 18840.25,
+      "summaryNote": "This family's childcare costs £29,110 per year. The government spends £11,091 (38% of total cost). The parent saves £10,270 — the gap (£821) is because the under-2 funding rate narrowly exceeds the provider's effective hourly rate, so the provider retains a small excess. After all government support the family pays approximately £18,840. Under-2 nursery fees are the dominant cost: Thomas alone accounts for £22,440 in gross fees. For Emily, the 6-week holiday gap adds £1,550 on top of £2,831 in term-time costs — a 55% increase that parents budgeting only for term-time may not anticipate."
+    }
+  }
+}

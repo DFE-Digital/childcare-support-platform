@@ -1,0 +1,245 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+generator zod {
+  provider                         = "zod-prisma-types"
+  output                           = "../packages/schemas/src/generated"
+  useMultipleFiles                 = true
+  writeBarrelFiles                 = true
+  createInputTypes                 = false
+  createModelTypes                 = true
+  addInputTypeValidation           = false
+  createOptionalDefaultValuesTypes = true
+  createRelationValuesTypes        = true
+  coerceDate                       = true
+  writeNullishInModelTypes         = false
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["published"]
+}
+
+model Provider {
+  id                       BigInt    @id
+  name                     String?
+  addressLine1             String?   @map("address_line1")
+  addressLine2             String?   @map("address_line2")
+  city                     String?
+  /// @zod.custom.use(z.string().regex(/^[A-Z]{1,2}[0-9][A-Z0-9]?[ ]?[0-9][A-Z]{2}$/i))
+  postcode                 String?
+  latitude                 Float?
+  longitude                Float?
+  bboxGeoType              String?   @map("bbox_geo_type")
+  bboxGeoCode              String?   @map("bbox_geo_code")
+  /// @zod.custom.use(z.string().regex(/^0[0-9]{9,10}$/))
+  phone                    String?
+  /// @zod.custom.use(z.string().email())
+  email                    String?
+  /// @zod.custom.use(z.string().url())
+  website                  String?
+  /// @zod.custom.use(z.string().url())
+  fisUrl                   String?   @map("fis_url")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyRating       String?   @map("ofsted_legacy_rating")
+  ofstedInspectionDate     DateTime? @map("ofsted_inspection_date") @db.Date
+  /// @zod.custom.use(z.enum(["legacy","legacy_transition","report_card"]))
+  ofstedFramework          String?   @map("ofsted_framework")
+  ofstedSafeguardingMet    Boolean?  @map("ofsted_safeguarding_met")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedAchievement                  String? @map("ofsted_achievement")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedCurriculumAndTeaching        String? @map("ofsted_curriculum_and_teaching")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedBehaviourAttitudesRoutines   String? @map("ofsted_behaviour_attitudes_routines")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedChildrensWelfareWellbeing    String? @map("ofsted_childrens_welfare_wellbeing")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedAttendanceAndBehaviour       String? @map("ofsted_attendance_and_behaviour")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedPersonalDevelopmentWellbeing String? @map("ofsted_personal_development_wellbeing")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedInclusion                    String? @map("ofsted_inclusion")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedLeadershipAndGovernance      String? @map("ofsted_leadership_and_governance")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedEarlyYears                   String? @map("ofsted_early_years")
+  /// @zod.custom.use(z.enum(["Exceptional","Strong standard","Expected standard","Needs attention","Urgent improvement"]))
+  ofstedSixthForm                    String? @map("ofsted_sixth_form")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyQualityOfEducation       String? @map("ofsted_legacy_quality_of_education")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyBehaviourAndAttitudes    String? @map("ofsted_legacy_behaviour_and_attitudes")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyPersonalDevelopment      String? @map("ofsted_legacy_personal_development")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyLeadershipAndManagement  String? @map("ofsted_legacy_leadership_and_management")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacyEarlyYears               String? @map("ofsted_legacy_early_years")
+  /// @zod.custom.use(z.enum(["Outstanding","Good","Requires Improvement","Inadequate"]))
+  ofstedLegacySixthForm                String? @map("ofsted_legacy_sixth_form")
+  ofstedCcrMet             Boolean?  @map("ofsted_ccr_met")
+  ofstedVcrMet             Boolean?  @map("ofsted_vcr_met")
+  ofstedOoscMet            Boolean?  @map("ofsted_oosc_met")
+  cmaAgency                String?   @map("cma_agency")
+  cmaQaGrading             String?   @map("cma_qa_grading")
+  cmaInspectionDate        DateTime? @map("cma_inspection_date") @db.Date
+  registeredPlaces         Int?      @map("registered_places")
+  staffGraduatePercentage  Decimal?  @map("staff_graduate_percentage") @db.Decimal(5, 2)
+  staffTurnoverPercentage  Decimal?  @map("staff_turnover_percentage") @db.Decimal(5, 2)
+  hasGarden                Boolean?  @map("has_garden")
+  hasKitchen               Boolean?  @map("has_kitchen")
+  institutionType          String?   @map("institution_type")
+  lad25cd                  String?   @map("lad25cd")
+  isInsufficient           Boolean   @default(false) @map("is_insufficient")
+  metadata                 Json      @default("{}") @db.JsonB
+
+  careTypes CareType[]
+
+  @@map("providers")
+  @@schema("published")
+  @@index([postcode], map: "idx_providers_postcode")
+  @@index([lad25cd], map: "idx_providers_lad25cd")
+}
+
+model CareType {
+  id                     BigInt    @id @default(autoincrement())
+  providerId             BigInt    @map("provider_id")
+  /// @zod.custom.use(z.enum(["private_nursery","school_based_nursery","childminder","breakfast_club","free_breakfast_club","after_school_club","holiday_club"]))
+  careType               String    @map("care_type")
+  openingHours  OpeningHour[]
+  operatingWeeksPerYear  Int?      @map("operating_weeks_per_year")
+  sessionHoursMorning    Decimal?  @map("session_hours_morning") @db.Decimal(5, 2)
+  sessionHoursAfternoon  Decimal?  @map("session_hours_afternoon") @db.Decimal(5, 2)
+  sessionHoursFullDay    Decimal?  @map("session_hours_full_day") @db.Decimal(5, 2)
+  eligibleMinMonths      Int?      @map("eligible_min_months")
+  eligibleMinYears       Int?      @map("eligible_min_years")
+  eligibleMaxYears       Int?      @map("eligible_max_years")
+  ofstedRegisterCombination String? @map("ofsted_register_combination")
+  eligibleAttendeesOnly  Boolean   @default(false) @map("eligible_attendees_only")
+  eligibleInstitutions   String[]  @map("eligible_institutions")
+  eligibleOther          String[]  @map("eligible_other")
+  fundedHoursAccepted    Boolean?  @map("funded_hours_accepted")
+  minCommitmentAmount    Int?      @map("min_commitment_amount")
+  /// @zod.custom.use(z.enum(["full_days","sessions","hours"]))
+  minCommitmentUnit      String?   @map("min_commitment_unit")
+  /// @zod.custom.use(z.enum(["half_term","term","year"]))
+  minCommitmentDuration  String?   @map("min_commitment_duration")
+  noMinimumCommitment    Boolean   @default(false) @map("no_minimum_commitment")
+  website                String?
+  fisUrl                 String?   @map("fis_url")
+  metadata               Json      @default("{}") @db.JsonB
+
+  provider          Provider           @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  feeRates          FeeRate[]
+  additionalCharges AdditionalCharge[]
+  waitingListEntries WaitingListEntry[]
+  careTypeNotes     CareTypeNote[]
+
+  @@map("care_types")
+  @@schema("published")
+  @@index([providerId], map: "idx_care_types_provider_id")
+  @@index([careType], map: "idx_care_types_care_type")
+}
+
+model OpeningHour {
+  id         BigInt   @id @default(autoincrement())
+  careTypeId BigInt   @map("care_type_id")
+  monday     Boolean  @default(false)
+  tuesday    Boolean  @default(false)
+  wednesday  Boolean  @default(false)
+  thursday   Boolean  @default(false)
+  friday     Boolean  @default(false)
+  saturday   Boolean  @default(false)
+  sunday     Boolean  @default(false)
+  open       DateTime @db.Time()
+  close      DateTime @db.Time()
+
+  careType CareType @relation(fields: [careTypeId], references: [id], onDelete: Cascade)
+
+  @@map("opening_hours")
+  @@schema("published")
+  @@index([careTypeId], map: "idx_opening_hours_care_type_id")
+}
+
+model FeeRate {
+  id               BigInt   @id @default(autoincrement())
+  careTypeId       BigInt   @map("care_type_id")
+  /// @zod.custom.use(z.enum(["all","under2","age2","age3to4","age2plus","age5plus"]))
+  ageBand          String   @map("age_band")
+  morningSession   Decimal? @map("morning_session") @db.Decimal(8, 2)
+  afternoonSession Decimal? @map("afternoon_session") @db.Decimal(8, 2)
+  fullDay          Decimal? @map("full_day") @db.Decimal(8, 2)
+  perSession       Decimal? @map("per_session") @db.Decimal(8, 2)
+  perHour          Decimal? @map("per_hour") @db.Decimal(8, 2)
+  perDay           Decimal? @map("per_day") @db.Decimal(8, 2)
+  metadata         Json     @default("{}") @db.JsonB
+
+  careType CareType @relation(fields: [careTypeId], references: [id], onDelete: Cascade)
+
+  @@map("fee_rates")
+  @@schema("published")
+  @@index([careTypeId], map: "idx_fee_rates_care_type_id")
+}
+
+model AdditionalCharge {
+  id          BigInt  @id @default(autoincrement())
+  careTypeId  BigInt  @map("care_type_id")
+  item        String
+  cost        Decimal @db.Decimal(8, 2)
+  /// @zod.custom.use(z.enum(["per day","per week","per session"]))
+  unit        String
+  description String
+
+  careType CareType @relation(fields: [careTypeId], references: [id], onDelete: Cascade)
+
+  @@map("additional_charges")
+  @@schema("published")
+  @@index([careTypeId], map: "idx_additional_charges_care_type_id")
+}
+
+model WaitingListEntry {
+  id         BigInt @id @default(autoincrement())
+  careTypeId BigInt @map("care_type_id")
+  /// @zod.custom.use(z.enum(["all","under2","age2","age3to4","age2plus","age5plus"]))
+  ageBand    String @map("age_band")
+  weeks      Int?
+  months     Int?
+
+  careType CareType @relation(fields: [careTypeId], references: [id], onDelete: Cascade)
+
+  @@map("waiting_list_entries")
+  @@schema("published")
+  @@index([careTypeId], map: "idx_waiting_list_entries_care_type_id")
+}
+
+model CareTypeNote {
+  id          BigInt @id @default(autoincrement())
+  careTypeId  BigInt @map("care_type_id")
+  /// @zod.custom.use(z.enum(["tick","warn"]))
+  noteType    String @map("note_type")
+  description String
+
+  careType CareType @relation(fields: [careTypeId], references: [id], onDelete: Cascade)
+
+  @@map("care_type_notes")
+  @@schema("published")
+  @@index([careTypeId], map: "idx_care_type_notes_care_type_id")
+}
+
+model BoundingBox {
+  geoType  String @map("geo_type")
+  geoCode  String @map("geo_code")
+  geoName  String? @map("geo_name")
+  bboxNorth Float  @map("bbox_north")
+  bboxSouth Float  @map("bbox_south")
+  bboxEast  Float  @map("bbox_east")
+  bboxWest  Float  @map("bbox_west")
+
+  @@id([geoType, geoCode])
+  @@map("bounding_boxes")
+  @@schema("published")
+}

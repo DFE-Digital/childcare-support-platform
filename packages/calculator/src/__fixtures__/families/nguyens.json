@@ -1,0 +1,153 @@
+{
+  "description": "Two-parent household testing the Carer's Allowance exception. One parent earns above threshold, the other is not working but receives Carer's Allowance — which is an explicit exemption from the 'both parents must work' rule for 30 hours and TFC eligibility. One child (Lily, age 3) uses a childminder only. Demonstrates the 3-4 year old funding rate shortfall (£5.52/hr government vs £7.50/hr provider).",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "OX2 0AA",
+      "ladCodes": ["E07000178"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "not_working",
+      "receivesQualifyingAllowance": true,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Lily",
+        "birthMonth": 6,
+        "birthYear": 2022,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "childminder",
+            "hoursPerWeek": 35,
+            "weeksPerYear": 44,
+            "providerId": "p2364030839202207152"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p2364030839202207152"]
+  },
+  "costEstimate": {
+    "description": "Worked example for The Nguyens. Key feature: one parent is not working but receives Carer's Allowance. Under normal rules, both parents must be in paid work for the family to qualify for 30 funded hours and Tax-Free Childcare. However, the government provides an explicit exception — a partner receiving Carer's Allowance is treated as meeting the work requirement. This means the Nguyens qualify for the full 30 hours and TFC despite only one parent earning. Lily (age 3) attends a childminder for 35 hours per week across a 44-week working year. The 3-4 year old funding rate (£5.52/hr) is well below the childminder's charge (£7.50/hr), producing a £1.98/hr shortfall on every funded hour.",
+    "lily": {
+      "child": "Lily (age 3, born June 2022)",
+      "narrative": "Lily attends Karen Thompson's childminding setting (provider_6) for 35 hours per week across a 44-week working year. Karen operates 46 weeks per year but the family uses 44 weeks (52 weeks minus annual leave, bank holidays, and the 2 weeks Karen is closed over Christmas). At age 3, Lily qualifies for 15 hours universal entitlement (available to all 3-4 year olds, no income test) plus 15 hours working parent top-up (available because the earning parent meets the income threshold and the non-working partner's Carer's Allowance triggers the exemption), giving 30 funded hours per week across the 38 term-time weeks. The government funding rate for 3-4 year olds is £5.52/hr, but Karen charges £7.50/hr — a shortfall of £1.98/hr that the parent must cover. Outside the 38 funded weeks, the remaining 6 working weeks are at the full provider rate with no subsidy.",
+      "selections": [
+        {
+          "careType": "childminder",
+          "source": "provider_6 (Karen Thompson, age 2+ rate: £7.50/hr)",
+          "configuration": "35 hours per week, 44 weeks per year (1,540 hours total)",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_6 age 2+ rate: £7.50/hr",
+              "totalHours": "35 hrs × 44 weeks = 1,540 hours",
+              "total": "1,540 × £7.50 = £11,550.00"
+            },
+            "step2_fundedHoursReduction": {
+              "scheme": "30 hours (15 universal + 15 working parent top-up for 3-4 year olds)",
+              "qualificationNote": "Normally both parents must work. The non-working partner receives Carer's Allowance, which is an explicit exemption — the family qualifies as if both parents were working.",
+              "fundedHoursPerWeek": 30,
+              "fundedWeeks": 38,
+              "totalFundedHours": "30 × 38 = 1,140 hours",
+              "governmentFundingRate": 5.52,
+              "providerRate": 7.5,
+              "shortfallPerHour": "£7.50 - £5.52 = £1.98/hr",
+              "shortfallNote": "The 3-4 year old funding rate (£5.52/hr) is substantially below the childminder's rate (£7.50/hr). This £1.98/hr shortfall is typical — childminder rates in Oxford commonly exceed the government funding rate by 25-35%. The parent pays this shortfall on every funded hour.",
+              "shortfallCostToParent": "30 hrs × £1.98 × 38 weeks = £2,257.20",
+              "savingToParent": "Without funding, 1,140 hours at £7.50 = £8,550.00. With funding, parent pays shortfall: 1,140 × £1.98 = £2,257.20. Saving = £8,550.00 - £2,257.20 = £6,292.80",
+              "costToGovernment": "30 hrs × £5.52 × 38 weeks = £6,292.80"
+            },
+            "step3_unfundedHours": {
+              "note": "Total hours (1,540) minus funded hours (1,140) = 400 unfunded hours. These arise from two sources: (a) 5 extra hours per week beyond the 30 funded hours during the 38 term weeks (5 × 38 = 190 hrs), and (b) all 35 hours per week during the 6 non-term working weeks (35 × 6 = 210 hrs). Total: 190 + 210 = 400 hours.",
+              "unfundedHours": 400,
+              "costPerHour": 7.5,
+              "unfundedCost": "400 × £7.50 = £3,000.00"
+            },
+            "step4_additionalCharges": {
+              "meals": "Karen charges £3.50/day for all meals and snacks. Attending 5 days per week for 44 weeks = 220 days.",
+              "mealsCost": "220 × £3.50 = £770.00"
+            },
+            "costToParent": "£2,257.20 (shortfall) + £3,000.00 (unfunded hours) + £770.00 (meals) = £6,027.20"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 11550,
+        "additionalCharges": 770,
+        "total": 12320,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "30 hours (15 universal + 15 working parent) for Lily",
+          "savingToParent": 6292.8,
+          "note": "Government pays 30 hrs × £5.52 × 38 wks = £6,292.80 to provider. Parent saves £8,550.00 (gross cost of funded hours) minus £2,257.20 (shortfall still paid) = £6,292.80. In this case government spend and parent saving are equal (£6,292.80). This is because the provider rate exceeds the government rate — the government pays £5.52/hr, the parent saves £5.52/hr worth of costs, and the remaining £1.98/hr shortfall stays with the parent."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare for Lily",
+          "savingToParent": 1051.44,
+          "note": "Both parents must normally be working. The Carer's Allowance exception means the non-working partner is treated as meeting the work requirement. Family is not on UC, earning parent is above minimum and below £100k. TFC eligible. £1,051.44 < £2,000 cap — not capped Government pays £2 for every £8 the parent deposits (equivalent to 20% top-up on parent's costs) 20% × £5,257.20 = £1,051.44 Registered childcare costs paid by parent (excluding meals): £2,257.20 (shortfall) + £3,000.00 (unfunded hours) = £5,257.20"
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 7344.24
+      },
+      "estimatedAnnualCostToFamily": 4975.76,
+      "summaryNote": "This family's childcare costs £12,320 per year. The government spends £7,344 (60% of total cost). After all support the family pays approximately £4,976. The Carer's Allowance exception is worth £4,198 per year to this family — without it, they would lose 15 funded hours per week and TFC eligibility, pushing their annual cost from £4,976 to £9,174. The funded hours shortfall is significant: even with 30 'free' hours, the parent still pays £2,257 in shortfall charges because the government rate (£5.52/hr) is 26% below the childminder's rate (£7.50/hr). This is a common source of frustration for parents who expect 'free hours' to mean no cost.",
+      "withoutCarersAllowanceException": {
+        "description": "For comparison: if the Carer's Allowance exception did not exist, the family would only qualify for the 15-hour universal entitlement (not the 30-hour working parent top-up) and would not qualify for TFC.",
+        "fundedHoursReduced": "15 hrs × £5.52 × 38 = £3,146.40 (government spend halved)",
+        "noTFC": "£0 (not eligible without both parents working)",
+        "parentCostWithoutException": "£12,320.00 - £3,146.40 = £9,173.60",
+        "additionalCostToFamily": "£9,173.60 - £4,975.76 = £4,197.84 more per year without the exception"
+      }
+    }
+  }
+}

@@ -1,0 +1,250 @@
+x-common-environment: &environment
+  - AWS_REGION=${AWS_REGION}
+  - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+  - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+
+x-common-config: &common-config
+  env_file:
+    - ${ENV_FILE:-.env}
+
+services:
+  # Include all service definitions from subdirectories
+  frontend:
+    extends:
+      file: docker-compose-frontend.yml
+      service: frontend
+    <<: *common-config
+    environment: *environment
+    networks:
+      - app-network
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "9999:8080" # Access Dozzle at http://localhost:9999
+    environment:
+      - DOZZLE_LEVEL=info
+      - DOZZLE_TAILSIZE=300
+      - DOZZLE_NO_ANALYTICS=true
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bsil-postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-bsil}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bsil_local}
+      - POSTGRES_DB=${POSTGRES_DB:-bsil}
+      - DAGSTER_PG_DB=${DAGSTER_PG_DB:-dagster}
+    volumes:
+      - postgres-data-beststartinlife:/var/lib/postgresql/data
+    configs:
+      - source: init_databases
+        target: /docker-entrypoint-initdb.d/init-databases.sh
+        mode: 0755
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bsil}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  prisma-migrate:
+    image: node:22-slim
+    container_name: prisma-migrate
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-bsil}:${POSTGRES_PASSWORD:-bsil_local}@postgres:5432/${POSTGRES_DB:-bsil}?schema=published
+    volumes:
+      - ./prisma:/app/prisma:ro
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint:
+      - sh
+      - -c
+      - |
+        apt-get update -y > /dev/null 2>&1 && apt-get install -y openssl > /dev/null 2>&1
+        npx --yes prisma@6 migrate deploy
+    restart: "no"
+
+  dagster-user-code:
+    build:
+      context: ./packages/data-pipeline
+      dockerfile: Dockerfile
+    container_name: dagster-user-code
+    command:
+      [
+        "watchfiles",
+        "--filter",
+        "python",
+        "dagster api grpc -h 0.0.0.0 -p 4000 -m bsil_pipeline.definitions",
+        "bsil_pipeline/",
+      ]
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-bsil}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bsil_local}
+      - POSTGRES_DB=${POSTGRES_DB:-bsil}
+      - DAGSTER_PG_HOST=postgres
+      - DAGSTER_PG_PORT=5432
+      - DAGSTER_PG_DB=${DAGSTER_PG_DB:-dagster}
+      - ORDINANCE_SURVEY_API_KEY=${ORDINANCE_SURVEY_API_KEY:-}
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY:-}
+      - POSTHOG_PROJECT_ID=${POSTHOG_PROJECT_ID:-}
+      - EXPORT_INCLUDE_METADATA=${EXPORT_INCLUDE_METADATA:-false}
+      - DAGSTER_CURRENT_IMAGE=dagster-user-code
+    volumes:
+      - ./packages/data-pipeline/bsil_pipeline:/opt/dagster/app/bsil_pipeline
+      - ./packages/data-pipeline/tests:/opt/dagster/app/tests
+      - ./packages/data-pipeline/data:/opt/dagster/app/data
+      - ./exported_data:/opt/dagster/app/output
+      - ./source_data:/opt/dagster/app/source_data
+      - ./packages/schemas/src:/opt/dagster/app/schemas/src
+      - ./packages/schemas/package.json:/opt/dagster/app/schemas/package.json:ro
+      - ./packages/schemas/tsconfig.json:/opt/dagster/app/schemas/tsconfig.json:ro
+      - ./prisma:/opt/dagster/app/schemas/prisma:ro
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      prisma-migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  dagster-webserver:
+    build:
+      context: ./packages/data-pipeline
+      dockerfile: Dockerfile
+    container_name: dagster-webserver
+    entrypoint:
+      [
+        "dagster-webserver",
+        "-h",
+        "0.0.0.0",
+        "-p",
+        "3000",
+        "-w",
+        "workspace.yaml",
+      ]
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-bsil}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bsil_local}
+      - POSTGRES_DB=${POSTGRES_DB:-bsil}
+      - DAGSTER_PG_HOST=postgres
+      - DAGSTER_PG_PORT=5432
+      - DAGSTER_PG_DB=${DAGSTER_PG_DB:-dagster}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages/data-pipeline/workspace.yaml:/opt/dagster/app/workspace.yaml:ro
+    networks:
+      - app-network
+    depends_on:
+      - dagster-user-code
+    restart: unless-stopped
+
+  dagster-daemon:
+    build:
+      context: ./packages/data-pipeline
+      dockerfile: Dockerfile
+    container_name: dagster-daemon
+    entrypoint: ["dagster-daemon", "run", "-w", "workspace.yaml"]
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-bsil}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bsil_local}
+      - POSTGRES_DB=${POSTGRES_DB:-bsil}
+      - DAGSTER_PG_HOST=postgres
+      - DAGSTER_PG_PORT=5432
+      - DAGSTER_PG_DB=${DAGSTER_PG_DB:-dagster}
+    volumes:
+      - ./packages/data-pipeline/workspace.yaml:/opt/dagster/app/workspace.yaml:ro
+    networks:
+      - app-network
+    depends_on:
+      - dagster-user-code
+    restart: unless-stopped
+
+  spatial-index-service:
+    build:
+      context: ./packages/spatial-index-service
+      dockerfile: Dockerfile
+    container_name: spatial-index-service
+    environment:
+      - SIS_API_TYPE=http
+      - SIS_BBOX_INFLATION=1
+      - SIS_RESULT_LIMIT=500
+      - SIS_FILEPATH=/app/data/app/spatial_index.sis
+      - SIS_PORT=3001
+      - RUST_LOG=info
+    volumes:
+      - ./exported_data/app:/app/data/app
+      - ./exported_data/parquet/published:/app/data/parquet:ro
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  jupyter:
+    build:
+      context: ./notebooks
+      dockerfile: Dockerfile
+    container_name: bsil-jupyter
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-bsil}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-bsil_local}
+      - POSTGRES_DB=${POSTGRES_DB:-bsil}
+    volumes:
+      - ./notebooks:/opt/notebooks
+      - ./source_data:/opt/source_data:ro
+      - ./exported_data:/opt/exported_data:ro
+    ports:
+      - "8888:8888"
+    networks:
+      - app-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+configs:
+  init_databases:
+    content: |
+      #!/bin/bash
+      set -e
+      psql -v ON_ERROR_STOP=1 --username "$$POSTGRES_USER" --dbname "$$POSTGRES_DB" <<-EOSQL
+          SELECT 'CREATE DATABASE $${DAGSTER_PG_DB}'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$${DAGSTER_PG_DB}')\gexec
+      EOSQL
+      psql -v ON_ERROR_STOP=1 --username "$$POSTGRES_USER" --dbname "$$POSTGRES_DB" <<-EOSQL
+          SELECT 'CREATE DATABASE bsil_test'
+          WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'bsil_test')\gexec
+      EOSQL
+
+volumes:
+  postgres-data-beststartinlife:
+
+networks:
+  app-network:
+    driver: bridge

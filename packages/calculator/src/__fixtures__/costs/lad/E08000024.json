@@ -1,0 +1,128 @@
+{
+  "laName": "Sunderland",
+  "regionName": "North East",
+  "nationName": "England",
+  "lastUpdated": "2026-04",
+  "showBetaWarning": true,
+  "averageCosts": {
+    "childminder": {
+      "fees": {
+        "age2": {
+          "perHour": {
+            "mean": 5.67,
+            "lower": 4.37,
+            "upper": 6.98,
+            "area": "region"
+          }
+        },
+        "age3to4": {
+          "perHour": {
+            "mean": 5.38,
+            "lower": 4.41,
+            "upper": 6.34,
+            "area": "region"
+          }
+        },
+        "under2": {
+          "perHour": {
+            "mean": 5.81,
+            "lower": 4.52,
+            "upper": 7.09,
+            "area": "region"
+          }
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": { "mean": 5.43, "lower": 0.78, "upper": 10.08, "area": "la" },
+          "unit": "per day",
+          "description": "Lunch and snacks if attending over lunchtime"
+        }
+      ]
+    },
+    "private_nursery": {
+      "fees": {
+        "age2": {
+          "perHour": {
+            "mean": 7.49,
+            "lower": 4.67,
+            "upper": 10.31,
+            "area": "region"
+          }
+        },
+        "age3to4": {
+          "perHour": {
+            "mean": 7.43,
+            "lower": 4.51,
+            "upper": 10.35,
+            "area": "region"
+          }
+        },
+        "under2": {
+          "perHour": {
+            "mean": 8.15,
+            "lower": 5.5,
+            "upper": 10.81,
+            "area": "region"
+          }
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": { "mean": 5.43, "lower": 0.78, "upper": 10.08, "area": "la" },
+          "unit": "per day",
+          "description": "Lunch and snacks"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5,
+        "afternoon": 5,
+        "fullDay": 10
+      },
+      "operatingWeeksPerYear": 50
+    },
+    "school_based_nursery": {
+      "fees": {
+        "age2": {
+          "perHour": {
+            "mean": 7.24,
+            "lower": 4.68,
+            "upper": 9.8,
+            "area": "national"
+          }
+        },
+        "age3to4": {
+          "perHour": {
+            "mean": 5.67,
+            "lower": 4.16,
+            "upper": 7.18,
+            "area": "region"
+          }
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": { "mean": 5.43, "lower": 0.78, "upper": 10.08, "area": "la" },
+          "unit": "per day",
+          "description": "Hot lunch if attending full day or over lunchtime"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.25,
+        "afternoon": 3.25
+      },
+      "operatingWeeksPerYear": 38
+    }
+  },
+  "governmentFundingRates": {
+    "under2": { "perHour": 11.52 },
+    "age2": { "perHour": 8.48 },
+    "age3to4": { "perHour": 6.01 }
+  },
+  "familyInformationServices": [
+    { "url": "https://www.togetherforchildren.org.uk/article/21166/Childcare" }
+  ]
+}

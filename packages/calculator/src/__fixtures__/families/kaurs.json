@@ -1,0 +1,204 @@
+{
+  "description": "Two working parents, both 21+, no UC. Rajan (age 10) has a disability — extends TFC eligibility to age 16 and doubles the annual cap to £4,000. Maya (age 4) gets 30 funded hours. Tests: disability flag, extended TFC, school-based nursery for age 3-4, 30-hour entitlement.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "BS9 1NJ",
+      "ladCodes": ["E06000023"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Rajan",
+        "birthMonth": 8,
+        "birthYear": 2015,
+        "hasSEND": true,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "free_breakfast_club",
+            "daysPerWeek": 5,
+            "providerId": "p2531667303950871088"
+          },
+          {
+            "id": 2,
+            "careType": "after_school_club",
+            "daysPerWeek": 4,
+            "providerId": "p2531667303950871088"
+          },
+          {
+            "id": 3,
+            "careType": "holiday_club",
+            "daysPerYear": 20,
+            "providerId": "p8353091746237267046"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Maya",
+        "birthMonth": 1,
+        "birthYear": 2022,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              },
+              "afternoon": {
+                "daysPerWeek": 3
+              }
+            },
+            "providerId": "p7612815013616358484"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": [
+      "p2531667303950871088",
+      "p7612815013616358484",
+      "p8353091746237267046"
+    ]
+  },
+  "costEstimate": {
+    "description": "The Kaurs are a two-income family with a disabled school-age child (Rajan) and a pre-school child (Maya). Rajan's disability extends his TFC eligibility to age 16 and doubles his annual cap to £4,000. Maya qualifies for 30 funded hours (both parents working, under £100k). The Bristol BS9 area offers a free breakfast club at Westbury-on-Trym CofE, reducing Rajan's costs compared to a paid club.",
+    "rajan": {
+      "child": "Rajan (age 10, born August 2015, has disability)",
+      "narrative": "Rajan attends Westbury-on-Trym CofE Primary School (provider_12) for a free breakfast club and after-school club, plus Bristol North West Holiday Club (provider_19) for holiday cover. As a school-age child, no funded hours apply. However, his disability extends TFC eligibility from age 11 to age 16 and doubles the annual cap from £2,000 to £4,000. The free breakfast club saves £1,140 per year compared to a paid club at £6/session.",
+      "selections": [
+        {
+          "careType": "free_breakfast_club",
+          "source": "provider_12 (Westbury-on-Trym CofE Primary, free)",
+          "configuration": "5 days per week, 38 term weeks",
+          "annualCost": "5 × £0 × 38 = £0.00"
+        },
+        {
+          "careType": "after_school_club",
+          "source": "provider_12 (Westbury-on-Trym CofE Primary, £14.00/session)",
+          "configuration": "4 days per week, 38 term weeks",
+          "annualCost": "4 × £14.00 × 38 = £2,128.00"
+        },
+        {
+          "careType": "holiday_club",
+          "source": "provider_19 (Bristol NW Holiday Club, £42.00/day)",
+          "configuration": "20 days per year",
+          "annualCost": "20 × £42.00 = £840.00"
+        }
+      ],
+      "rajanTotal": {
+        "grossChildcareCost": "£0 + £2,128 + £840 = £2,968.00",
+        "additionalCharges": 0,
+        "total": 2968,
+        "disabilityNote": "Rajan's disability doubles his TFC cap to £4,000/year. His actual costs (£2,968) are above the standard £2,000 cap, so the disability provision adds approximately £593.60 - £400.00 = £193.60 in additional TFC support compared to a non-disabled child capped at £2,000."
+      }
+    },
+    "maya": {
+      "child": "Maya (age 4, born January 2022)",
+      "narrative": "Maya attends Stoke Bishop Pre-School (provider_17) for 5 morning and 3 afternoon sessions per week during term time. Both parents are working and under £100k, so the family qualifies for the 30-hour entitlement. Maya uses 24 hours per week — all within the 30-hour cap, so every hour is funded. However, the provider's effective rate (£8.67/hr) exceeds the Bristol government funding rate (£5.46/hr), creating a £3.21/hr shortfall.",
+      "selections": [
+        {
+          "careType": "school_based_nursery",
+          "source": "provider_17 (Stoke Bishop Pre-School, age 3-4 rate: £26.00/session)",
+          "configuration": "5 mornings + 3 afternoons per week, 38 term weeks",
+          "calculation": {
+            "grossCost": "(5 × £26.00 + 3 × £26.00) × 38 = £208.00 × 38 = £7,904.00",
+            "effectiveHourlyRate": "£26.00 / 3 hrs = £8.67/hr",
+            "fundedHours": {
+              "scheme": "30 hours working families (15 universal + 15 working parent)",
+              "hoursPerWeek": 24,
+              "note": "Maya uses 24 hrs/week (5×3 + 3×3). All 24 hours fall within the 30-hour entitlement.",
+              "fundedWeeks": 38,
+              "governmentRate": 5.46,
+              "providerRate": 8.67,
+              "shortfallPerHour": "£8.67 - £5.46 = £3.21/hr",
+              "shortfallCostToParent": "24 × £3.21 × 38 = £2,927.52",
+              "savingToParent": "24 × £5.46 × 38 = £4,979.52",
+              "costToGovernment": "24 × £5.46 × 38 = £4,979.52"
+            },
+            "additionalCharges": {
+              "snacks": "8 sessions × £1.25 × 38 weeks = £380.00"
+            },
+            "costToParent": "£2,927.52 + £380.00 = £3,307.52"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 10872,
+        "additionalCharges": 380,
+        "total": 11252
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "30 hours working families (Maya only)",
+          "savingToParent": 4979.52,
+          "note": "Covers Maya's 24 hrs/week for 38 weeks. Rajan is school-age — no funded hours."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare for Rajan (disabled) and Maya",
+          "savingToParent": 1179.1,
+          "note": "Rajan: £2,968 × 20% = £593.60 (under £4,000 disability cap). Rajan's disability doubles the TFC cap to £4,000. His costs of £2,968 would exceed the standard £2,000 cap, so the disability provision gives an extra £593.60 - £400.00 = £193.60 compared to a non-disabled child capped at £2,000. Maya: £2,927.52 × 20% = £585.50 (under £2,000 cap). Total: £593.60 + £585.50 = £1,179.10"
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 6158.62
+      },
+      "estimatedAnnualCostToFamily": 5093.38,
+      "summaryNote": "Government support covers 55% of this family's childcare costs. Rajan's disability doubles his TFC cap to £4,000 — his actual costs (£2,968) exceed the standard £2,000 cap, so the disability provision provides an extra £194 in support. Maya benefits from having all 24 hours per week fully funded under the 30-hour entitlement, though the £3.21/hr shortfall between the provider rate (£8.67) and the Bristol government rate (£5.46) means the family still pays £2,928 towards her nursery fees. The family has 6 unused funded hours per week (30 entitlement - 24 used) which could cover additional sessions if needed. The free breakfast club at Westbury-on-Trym CofE saves £1,140 compared to a paid club at £6/session."
+    }
+  }
+}

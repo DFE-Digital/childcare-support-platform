@@ -1,0 +1,228 @@
+{
+  "description": "Family 4: The Clarkes. Two working parents — one earning above threshold, the other with adjusted net income over £100k. Demonstrates the sharp cliff edge where exceeding £100k blocks both the 30-hour working parent entitlement and Tax-Free Childcare, leaving only the 15-hour universal entitlement for the 3-year-old.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "BS9 1NJ",
+      "ladCodes": ["E06000023"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "income_over_100k",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Olivia",
+        "birthMonth": 11,
+        "birthYear": 2022,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p3218729260248788127"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Jack",
+        "birthMonth": 7,
+        "birthYear": 2017,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "free_breakfast_club",
+            "daysPerWeek": 5,
+            "providerId": "p2531667303950871088"
+          },
+          {
+            "id": 2,
+            "careType": "after_school_club",
+            "daysPerWeek": 3,
+            "providerId": "p2531667303950871088"
+          },
+          {
+            "id": 3,
+            "careType": "holiday_club",
+            "daysPerYear": 25,
+            "providerId": "p8353091746237267046"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": [
+      "p3218729260248788127",
+      "p2531667303950871088",
+      "p8353091746237267046"
+    ]
+  },
+  "costEstimate": {
+    "description": "Worked example for the Clarke family. One parent earns above the minimum threshold; the other has adjusted net income over £100,000. This triggers a sharp cliff edge: the family is blocked from the 30-hour working parent entitlement and Tax-Free Childcare. The only government support remaining is the 15-hour universal entitlement for 3- and 4-year-olds.",
+    "olivia": {
+      "child": "Olivia (age 3, born November 2022)",
+      "narrative": "Olivia attends Henleaze Day Nursery (provider_11) for 5 morning sessions per week. The nursery operates 51 weeks per year. At age 3, she qualifies for the 15-hour universal entitlement. However, because one parent has income over £100,000, the family is blocked from the additional 15 working-parent hours. The provider's effective hourly rate (£7.20/hr) exceeds the Bristol government funding rate (£5.46/hr), creating a £1.74/hr shortfall.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_11 (Henleaze Day Nursery, age 3-4 rate: £36.00/session)",
+          "configuration": "5 mornings per week, 51 operating weeks",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_11 age 3-4 rate: £36.00 per morning session",
+              "morningCost": "5 days × £36.00 × 51 weeks = £9,180.00",
+              "total": 9180
+            },
+            "step2_deriveEffectiveHourlyRate": {
+              "sessionFee": 36,
+              "sessionHours": 5,
+              "effectiveHourlyRate": "£36.00 / 5 hrs = £7.20/hr"
+            },
+            "step3_fundedHoursReduction": {
+              "scheme": "15-hour universal entitlement (age 3-4, no income test)",
+              "fundedHoursPerWeek": 15,
+              "fundedWeeks": 38,
+              "totalFundedHours": 570,
+              "governmentFundingRate": 5.46,
+              "providerEffectiveRate": 7.2,
+              "shortfallPerHour": "£7.20 - £5.46 = £1.74/hr",
+              "shortfallCostToParent": "15 hrs × £1.74 × 38 weeks = £991.80",
+              "unfundedTermTimeHours": "25 hrs/week - 15 funded = 10 unfunded hrs/week × 38 weeks = 380 hrs × £7.20 = £2,736.00",
+              "unfundedNonTermWeeks": "25 hrs/week × 13 non-term weeks × £7.20 = £2,340.00",
+              "costToGovernment": "15 hrs × £5.46 × 38 weeks = £3,112.20",
+              "savingToParent": 3112.2,
+              "blockedEntitlements": {
+                "workingParent30Hours": "BLOCKED — one parent has adjusted net income over £100,000.",
+                "taxFreeChildcare": "BLOCKED — same £100k threshold."
+              }
+            },
+            "step4_additionalCharges": {
+              "meals": "5 days × £3.75 × 51 weeks = £956.25",
+              "consumables": "£2.50 × 51 weeks = £127.50",
+              "total": 1083.75
+            },
+            "estimatedAnnualCostToParent": "£9,180.00 - £3,112.20 + £1,083.75 = £7,151.55"
+          }
+        }
+      ]
+    },
+    "jack": {
+      "child": "Jack (age 8, born July 2017)",
+      "narrative": "Jack is school-age. His term-time care consists of a free breakfast club and after-school club at Westbury-on-Trym CofE Primary School (provider_12). Holiday cover is provided by Bristol North West Holiday Club (provider_19). No funded hours apply. Because the family is blocked from Tax-Free Childcare by the £100k threshold, all costs are entirely self-funded.",
+      "termTimeCare": {
+        "weeks": 38,
+        "selections": [
+          {
+            "careType": "free_breakfast_club",
+            "source": "provider_12 (Westbury-on-Trym CofE, free)",
+            "configuration": "5 days per week, 38 term weeks",
+            "annualCost": "5 × £0 × 38 = £0.00"
+          },
+          {
+            "careType": "after_school_club",
+            "source": "provider_12 (Westbury-on-Trym CofE, £14.00/session)",
+            "configuration": "3 days per week, 38 term weeks",
+            "annualCost": "3 × £14.00 × 38 = £1,596.00"
+          }
+        ]
+      },
+      "holidayCare": {
+        "selections": [
+          {
+            "careType": "holiday_club",
+            "source": "provider_19 (Bristol NW Holiday Club, £42.00/day)",
+            "configuration": "25 days per year",
+            "annualCost": "25 × £42.00 = £1,050.00"
+          }
+        ]
+      },
+      "jackTotal": {
+        "grossChildcareCost": "£0 + £1,596 + £1,050 = £2,646.00",
+        "additionalCharges": 0,
+        "total": 2646,
+        "note": "Jack is school-age with no funded hours. TFC blocked by £100k threshold. Free breakfast club saves £1,140 compared to a paid club at £6/session."
+      }
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 11826,
+        "additionalCharges": 1083.75,
+        "total": 12909.75,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "15-hour universal entitlement (age 3-4) for Olivia",
+          "savingToParent": 3112.2,
+          "note": "Government pays 15 hrs × £5.46 × 38 wks = £3,112.20 to provider. Parent pays the £1.74/hr shortfall directly."
+        },
+        "taxFreeChildcare": null,
+        "ucChildcare": null,
+        "totalSavingToParent": 3112.2
+      },
+      "estimatedAnnualCostToFamily": 9797.55,
+      "summaryNote": "This family's childcare costs £12,910 per year. The government contributes just £3,112 (24%) — solely through the 15-hour universal entitlement for Olivia. Because one parent earns over £100,000, the family is locked out of the 30-hour entitlement and Tax-Free Childcare. The family pays £9,798 out of pocket.",
+      "cliffEdgeAnalysis": {
+        "description": "The £100,000 adjusted net income threshold creates one of the sharpest cliff edges in the childcare support system.",
+        "additionalFundedHours": "15 hrs × 38 weeks = 570 additional hours for Olivia. Saving: £3,112.20.",
+        "taxFreeChildcareGain": "Up to £4,000 per year (£2,000 per child × 2 children)",
+        "totalLostSupport": "Up to £7,112.20 per year in combined lost benefits",
+        "effectiveMarginalRate": "Earning £1 over the £100,000 threshold costs this family up to £7,112 in lost childcare support."
+      }
+    }
+  }
+}

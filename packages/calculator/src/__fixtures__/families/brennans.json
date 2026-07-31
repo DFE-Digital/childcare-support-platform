@@ -1,0 +1,152 @@
+{
+  "description": "Family 8: The Brennans — Newborn, under 9 months. Two working parents, both 21+, both earning above threshold, not on Universal Credit. One child (Isla, age 3 months, born November 2025). Demonstrates the 'early months gap' — the period between returning to work after parental leave and the start of funded hours. Despite both parents working and qualifying for all work-tested schemes, no funded hours are available because Isla hasn't reached 9 months. TFC is the only government support, covering just 14% of total costs.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "BS9 1NJ",
+      "ladCodes": ["E06000023"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Isla",
+        "birthMonth": 11,
+        "birthYear": 2025,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p7626126742172740045"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p7626126742172740045"]
+  },
+  "costEstimate": {
+    "description": "Worked example for the Brennan family. Both parents are working, earning above the standard threshold (£195/week), under £100,000, and not on Universal Credit. They meet every eligibility criterion for funded hours and Tax-Free Childcare. However, Isla is only 3 months old (born November 2025). The working parent entitlement for under-2s does not begin until the term after the child turns 9 months. Isla will turn 9 months in August 2026, so funded hours will start from the autumn term (September 2026). Until then, the family receives no funded hours at all. Tax-Free Childcare has no minimum child age requirement, so it is available immediately — but it covers only a fraction of the cost.",
+    "isla": {
+      "child": "Isla (age 3 months, born November 2025)",
+      "narrative": "Isla attends Bright Horizons Bristol (provider_18) for 5 morning sessions per week. The nursery operates 51 weeks per year. Each morning session is 5.5 hours at £52.00 per session for under-2s, giving an effective hourly rate of £9.45/hr. At just 3 months old, Isla is well below the 9-month threshold for the working parent entitlement. No funded hours are available — not because the parents fail any work or income test, but solely because of Isla's age.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_18 (Bright Horizons Bristol, under-2 rate: £52.00/morning session)",
+          "configuration": "5 mornings per week, 51 operating weeks",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_18 under-2 rate: £52.00 per morning session, 5.5 hours per session",
+              "morningCost": "5 days × £52.00 × 51 weeks = £13,260.00",
+              "total": 13260
+            },
+            "step2_deriveEffectiveHourlyRate": {
+              "sessionFee": 52,
+              "sessionHours": 5.5,
+              "effectiveHourlyRate": "£52.00 / 5.5 hrs = £9.45/hr"
+            },
+            "step3_fundedHoursReduction": {
+              "scheme": "NONE — child under 9 months",
+              "eligibilityNote": "The working parent entitlement for under-2s requires the child to be at least 9 months old at the start of the relevant term. Isla was born in November 2025 and is currently 3 months old. She will turn 9 months in August 2026. Funded hours will begin from the autumn term (September 2026). Until then, zero funded hours are available.",
+              "fundedHoursPerWeek": 0,
+              "fundedWeeks": 0,
+              "totalFundedHours": 0,
+              "savingToParent": 0,
+              "costToGovernment": 0,
+              "earlyMonthsGapNote": "Both parents are working and earning above the threshold. They meet every criterion for the working parent entitlement. The only barrier is Isla's age. This is the 'early months gap' — parents returning to work after parental leave face the highest childcare costs (under-2 rates) with no funded hours to offset them."
+            },
+            "step4_additionalCharges": {
+              "meals": "5 days × £4.50 × 51 weeks = £1,147.50",
+              "consumables": "£2.50 × 51 weeks = £127.50",
+              "total": 1275
+            },
+            "estimatedAnnualCostToParent_beforeTFC": "£13,260.00 + £1,275.00 = £14,535.00"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 13260,
+        "additionalCharges": 1275,
+        "total": 14535,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "Working parent entitlement (under 2) — NOT YET AVAILABLE",
+          "savingToParent": 0,
+          "note": "Isla is 3 months old. The working parent entitlement for under-2s does not begin until the term after the child turns 9 months. Once Isla reaches the 9-month threshold, the family will gain 15 funded hours per week during the 38 term-time weeks. At the provider's effective rate of £9.45/hr, this would save the parent 15 × £9.45 × 38 = £5,386.50 per year. The Bristol government funding rate (£11.20/hr) exceeds the provider rate, meaning there would be no shortfall. But for now: zero."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare for Isla",
+          "savingToParent": 2000,
+          "note": "TFC is capped at £2,000 per child per year. The family's eligible costs (£13,260) would generate a £2,652 top-up, but the cap limits this to £2,000. 20% × £13,260.00 = £2,652.00 > £2,000 cap — CAPPED at £2,000.00"
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 2000
+      },
+      "estimatedAnnualCostToFamily": 12535,
+      "summaryNote": "This family demonstrates the 'early months gap' — the period between returning to work after parental leave and the start of funded hours. Despite both parents working and qualifying for all work-tested schemes, no funded hours are available because Isla hasn't reached 9 months. TFC is the only support, covering just 14% of total costs. The family pays £12,535 out of pocket after TFC. Once Isla turns 9 months (August 2026), the family will gain 15 funded hours from the following term, potentially saving £5,386+ per year. Notably, the Bristol government funding rate (£11.20/hr) exceeds the provider's effective rate (£9.45/hr), meaning there would be no shortfall on funded hours once available.",
+      "earlyMonthsGapAnalysis": {
+        "description": "The 'early months gap' is the period between a parent returning to work after parental leave and the child reaching the age at which funded hours begin. For the Brennans, this gap spans from Isla's birth (November 2025) until the autumn term after she turns 9 months (September 2026) — approximately 10 months.",
+        "currentSituation": "Isla is 3 months old. No funded hours. Annual cost to family: £12,535 after TFC.",
+        "afterNineMonths": "Once Isla turns 9 months (August 2026) and funded hours start (September 2026), the family will gain 15 funded hours/week, saving £5,386.50/year. Because the Bristol government rate (£11.20/hr) exceeds the provider rate (£9.45/hr), there will be no shortfall. Annual cost would drop to approximately £7,148.50 after TFC.",
+        "costOfTheGap": "During the early months gap, the family pays £5,386 more per year than they would once funded hours begin.",
+        "policyImplication": "The early months gap disproportionately affects families who return to work soon after birth — often out of financial necessity. These families face the highest childcare costs (under-2 rates) at precisely the time when government support is at its lowest. TFC provides some relief but is capped at £2,000/year regardless of how high the costs are."
+      }
+    }
+  }
+}

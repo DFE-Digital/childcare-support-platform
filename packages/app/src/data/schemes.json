@@ -1,0 +1,450 @@
+{
+  "schemes": [
+    {
+      "id": "30_hours_working_families",
+      "name": "30 hours childcare for eligible working families in England",
+      "description": "30 hours per week (over 38 weeks of the year) of funded early education for children of working parents aged 9 months to 4 years",
+      "allSchemesDescription": "Available for children aged 9 months to 4 years.",
+      "financialType": "funded_hours",
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/15-and-30-hours-support/working-families/eligibility/",
+        "apply": "https://www.gov.uk/free-childcare-if-working/apply-for-free-childcare-if-youre-working"
+      },
+      "caveats": [
+        {
+          "text": "Providers may charge separately for meals, nappies, additional hours, and trips.",
+          "type": "warn"
+        },
+        {
+          "text": "Charges for extras must not be mandatory or a condition of a funded place.",
+          "type": "info"
+        },
+        {
+          "text": "Cannot be used with nannies, home carers, or relatives.",
+          "type": "info"
+        },
+        {
+          "text": "If you are on maternity, paternity, adoption, or shared parental leave for this child, the date of return to work affects which term access begins.",
+          "type": "info"
+        },
+        {
+          "text": "You must reconfirm your eligibility every 3 months.",
+          "type": "warn"
+        },
+        {
+          "text": "Parents must apply for 30 hours childcare the term before they want to use a 30 hours place. This means parents must apply by the 31st March, August, or December, before they want their child to start a place.",
+          "type": "warn"
+        },
+        {
+          "text": "If eligible, you can use this scheme until your child starts school, usually when they begin Reception.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, when they reach 9 months old.",
+        "loss": "{childName} will no longer be eligible from {date}, when they reach school age."
+      }
+    },
+    {
+      "id": "15_hours_universal",
+      "name": "15 hours childcare for all families in England",
+      "description": "15 hours per week (over 38 weeks of the year) of funded early education for all 3 and 4-year-olds.",
+      "allSchemesDescription": "For all children aged 3-4 years.",
+      "financialType": "funded_hours",
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/15-and-30-hours-support/universal-offer/eligibility/",
+        "apply": "https://www.gov.uk/help-with-childcare-costs/free-childcare-and-education-for-3-to-4-year-olds"
+      },
+      "caveats": [
+        {
+          "text": "Providers may charge separately for meals, nappies, additional hours, and trips.",
+          "type": "warn"
+        },
+        {
+          "text": "Charges for extras must not be mandatory or a condition of a funded place.",
+          "type": "info"
+        },
+        {
+          "text": "Cannot be used with nannies, home carers, or relatives.",
+          "type": "info"
+        },
+        {
+          "text": "If you are on maternity, paternity, adoption, or shared parental leave for this child, the date of return to work affects which term access begins.",
+          "type": "info"
+        },
+        {
+          "text": "If eligible, you can use this scheme until your child starts school, usually when they begin Reception.",
+          "type": "info"
+        },
+        {
+          "text": "If also eligible for the working families entitlement, you receive 15 hours from each scheme (max 30 hours total).",
+          "type": "warn"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, at the start of the term following their 3rd birthday.",
+        "loss": "{childName} will no longer be eligible from {date}, when they reach school age."
+      }
+    },
+    {
+      "id": "15_hours_2_year_olds",
+      "name": "Early Learning for 2 year olds",
+      "description": "15 hours of early learning each week (over 38 weeks of the year) for families in England who get extra support, like those on Universal Credit or children with an Education, Health, and Care Plan.",
+      "allSchemesDescription": "For children aged 2 years. 15 hours of early learning each week (over 38 weeks of the year) for families in England who get extra support, like those on Universal Credit or children with an Education, Health, and Care Plan.",
+      "financialType": "funded_hours",
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/15-and-30-hours-support/additional-support/eligibility/",
+        "apply": "https://www.gov.uk/help-with-childcare-costs/free-childcare-2-year-olds-extra-support"
+      },
+      "caveats": [
+        {
+          "text": "Providers may charge separately for meals, nappies, additional hours, and trips.",
+          "type": "warn"
+        },
+        {
+          "text": "Charges for extras must not be mandatory or a condition of a funded place.",
+          "type": "info"
+        },
+        {
+          "text": "Cannot be used with nannies, home carers, or relatives.",
+          "type": "info"
+        },
+        {
+          "text": "If you are on maternity, paternity, adoption, or shared parental leave for this child, the date of return to work affects which term access begins.",
+          "type": "info"
+        },
+        {
+          "text": "Your benefits will not be affected by taking up this offer.",
+          "type": "warn"
+        },
+        {
+          "text": "You should apply for this entitlement first.",
+          "type": "warn"
+        },
+        {
+          "text": "If also eligible for the working parent entitlement, you receive 15 hours from each scheme (max 30 hours total).",
+          "type": "warn"
+        },
+        {
+          "text": "Contact your local council and/or provider to apply.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, at the start of the term following their 2nd birthday.",
+        "loss": "{childName} will no longer be eligible from {date}, at the start of the term following their 3rd birthday."
+      }
+    },
+    {
+      "id": "tax_free_childcare",
+      "name": "Tax-Free Childcare",
+      "description": "Get up to £{annualCap} per year towards childcare costs. The government tops up every £8 you pay with an extra £2.",
+      "allSchemesDescription": "If you're a working parent or carer, you can get a £2 top-up for every £8 that you pay towards childcare.",
+      "defaultDescriptionParams": { "annualCap": "2,000" },
+      "financialType": "top_up",
+      "topUpRate": 0.25,
+      "maxGovernmentContributionPerYear": 2000,
+      "maxGovernmentContributionPerYearDisabled": 4000,
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/tax-free-childcare/eligibility/",
+        "apply": "https://www.gov.uk/tax-free-childcare/apply-for-tax-free-childcare"
+      },
+      "caveats": [
+        {
+          "text": "You must reconfirm your eligibility every 3 months.",
+          "type": "warn"
+        },
+        {
+          "text": "You are not eligible if you receive a childcare bursary or grant, or childcare vouchers.",
+          "type": "warn"
+        },
+        { "text": "Cannot be used alongside Universal Credit", "type": "warn" },
+        {
+          "text": "You will need to apply through the childcare service.",
+          "type": "info"
+        },
+        {
+          "text": "The government top-up is per child, not per family.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "loss": "{childName} will no longer be eligible from {date}, on 1 September after their 11th birthday."
+      }
+    },
+    {
+      "id": "universal_credit_childcare",
+      "name": "Universal Credit childcare",
+      "description": "Get up to 85% of your childcare costs paid back, up to £1,071.09 per month for one child.",
+      "allSchemesDescription": "For working families claiming Universal Credit.",
+      "financialType": "reimbursement",
+      "reimbursementRate": 0.85,
+      "maxPerMonthOneChild": 1071.09,
+      "maxPerMonthTwoOrMore": 1836.16,
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/universal-credit-childcare/eligibility-for-universal-credit-childcare/",
+        "apply": "https://www.gov.uk/help-with-childcare-costs/universal-credit"
+      },
+      "caveats": [
+        {
+          "text": "You must pay for childcare yourself first, then claim reimbursement.",
+          "type": "warn"
+        },
+        {
+          "text": "You may be eligible for an initial upfront childcare cost payment to help with costs before your first reimbursement.",
+          "type": "info"
+        },
+        {
+          "text": "Cannot be used alongside Tax-Free Childcare.",
+          "type": "warn"
+        },
+        {
+          "text": "Childcare must be with an Ofsted-registered provider (in England).",
+          "type": "info"
+        },
+        {
+          "text": "No minimum hours requirement, but childcare hours must relate to hours worked.",
+          "type": "info"
+        },
+        {
+          "text": "Universal Credit can cover up to 85% of eligible childcare costs (subject to monthly limits), but the amount received in your Universal Credit award will depend on your individual circumstances.",
+          "type": "warn"
+        }
+      ],
+      "transitionDescriptions": {
+        "loss": "{childName} will no longer be eligible from {date}, on 1 September after their 16th birthday."
+      }
+    },
+    {
+      "id": "wraparound_childcare",
+      "name": "Wraparound childcare",
+      "description": "Before and after school childcare, typically from around 8am to 6pm during term time.",
+      "allSchemesDescription": "Before and after school childcare, typically from around 8am to 6pm during term time.",
+      "financialType": "awareness",
+      "links": {
+        "info": "https://beststartinlife.gov.uk/childcare-early-years-education/breakfast-clubs-and-wraparound-childcare/wraparound-childcare/"
+      },
+      "caveats": [
+        {
+          "text": "This is paid childcare — providers set their own fees.",
+          "type": "info"
+        },
+        {
+          "text": "Tax-Free Childcare or Universal Credit childcare can be used to help with costs.",
+          "type": "info"
+        },
+        {
+          "text": "Availability varies by area — speak to the child's school or local Family Information Service.",
+          "type": "info"
+        },
+        {
+          "text": "All parents in England have the right to request their school consider setting up wraparound provision.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, when they reach school age.",
+        "loss": "{childName} will no longer be eligible from {date}, when they leave secondary school."
+      }
+    },
+    {
+      "id": "free_breakfast_clubs",
+      "name": "Free breakfast clubs",
+      "description": "Free 30-minute breakfast sessions before primary school, saving families up to £450 per year.",
+      "allSchemesDescription": "Free 30-minute breakfast sessions before primary school, saving families up to £450 per year.",
+      "financialType": "free_service",
+      "links": {
+        "info": "https://educationhub.blog.gov.uk/2026/02/free-breakfast-club-roll-out-everything-you-need-to-know/"
+      },
+      "secondaryLinks": [
+        {
+          "label": "Check the map",
+          "url": "https://dfe.maps.arcgis.com/apps/dashboards/117a6fad7f484b058570a4859a234577"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Not yet available in all schools — being phased in across England.",
+          "type": "info"
+        },
+        {
+          "text": "Available to all children in participating schools, not means-tested.",
+          "type": "info"
+        },
+        {
+          "text": "Disadvantaged schools (highest proportion of free school meal pupils) have been prioritised.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, when they reach school age.",
+        "loss": "{childName} will no longer be eligible from {date}, when they leave primary school."
+      }
+    },
+    {
+      "id": "haf",
+      "name": "Holiday Activities and Food (HAF)",
+      "description": "Free holiday club places during school holidays, including a healthy meal, physical activities, and fun enriching activities.",
+      "allSchemesDescription": "Free school-holiday childcare, healthy food, and fun activities. Mainly for children getting free school meals, but with some additional places. Contact your local authority to sign up.",
+      "financialType": "free_service",
+      "links": {
+        "info": "https://www.gov.uk/find-local-council"
+      },
+      "caveats": [
+        {
+          "text": "Your local council coordinates provision — check their website to find and book places.",
+          "type": "info"
+        },
+        {
+          "text": "Core provision covers Easter (minimum 4 days), summer (minimum 16 days), and Christmas (minimum 2 days).",
+          "type": "info"
+        },
+        {
+          "text": "Some councils also offer half-term provision.",
+          "type": "info"
+        },
+        {
+          "text": "Even if your child doesn't qualify through free school meals, your council may offer discretionary places — check locally.",
+          "type": "info"
+        }
+      ],
+      "transitionDescriptions": {
+        "gain": "{childName} becomes eligible from {date}, when they reach school age.",
+        "loss": "{childName} will no longer be eligible from {date}, when they reach 16 years old."
+      }
+    },
+    {
+      "id": "care_to_learn",
+      "name": "Care to Learn",
+      "description": "Childcare support of up to £180 per child per week (£195 in London) while you study (and additional travel costs).",
+      "allSchemesDescription": "Childcare support for parents studying on a publicly-funded course in England, who were under 20 when their course began.",
+      "financialType": "awareness",
+      "links": { "info": "https://www.gov.uk/care-to-learn" },
+      "caveats": [
+        {
+          "text": "Your education provider pays the childcare provider directly — you do not receive the money yourself.",
+          "type": "info"
+        },
+        {
+          "text": "Payments stop if you stop attending your course or your child stops attending childcare.",
+          "type": "info"
+        },
+        {
+          "text": "Claiming Care to Learn will not affect your family's benefits or allowances.",
+          "type": "info"
+        },
+        {
+          "text": "Apprentices receiving a salary are not eligible.",
+          "type": "info"
+        }
+      ]
+    },
+    {
+      "id": "learner_support",
+      "name": "Learner Support",
+      "description": "Help with childcare costs for adults studying further education courses.",
+      "allSchemesDescription": "For parents aged 19+ on further education courses at level 3 or below.",
+      "financialType": "awareness",
+      "links": { "info": "https://www.gov.uk/learner-support" },
+      "caveats": [
+        {
+          "text": "The amount you receive is at your learning provider's discretion — there is no fixed entitlement.",
+          "type": "info"
+        },
+        {
+          "text": "You cannot claim if you are receiving student finance for higher education.",
+          "type": "info"
+        },
+        {
+          "text": "Your learning provider may ask for proof of low income.",
+          "type": "info"
+        }
+      ]
+    },
+    {
+      "id": "childcare_grant",
+      "name": "Childcare Grant",
+      "description": "Up to 85% of childcare costs for eligible full-time higher education students, capped at £199.62 per week (one child) or £342.24 (two or more).",
+      "allSchemesDescription": "For full-time higher education students with children under 15 (or 17 if SEND).",
+      "financialType": "awareness",
+      "links": { "info": "https://www.gov.uk/childcare-grant" },
+      "caveats": [
+        {
+          "text": "Cannot be used alongside Tax-Free Childcare, Universal Credit childcare, or Working Tax Credit childcare element.",
+          "type": "info"
+        },
+        {
+          "text": "Cannot be used towards the 15 or 30 hours free childcare entitlement, or upfront costs like deposits.",
+          "type": "info"
+        },
+        {
+          "text": "You must reconfirm eligibility each academic year.",
+          "type": "info"
+        },
+        {
+          "text": "From the 2026-27 academic year, nanny-provided childcare is no longer eligible.",
+          "type": "info"
+        }
+      ]
+    }
+  ],
+  "caveatMessages": {
+    "partner_carers_allowance_exemption": {
+      "text": "Your partner's Carer's Allowance exempts them from the work requirement.",
+      "type": "info"
+    },
+    "user_carers_allowance_exemption": {
+      "text": "Your Carer's Allowance exempts you from the work requirement.",
+      "type": "info"
+    },
+    "user_self_employed_startup": {
+      "text": "You may qualify under the self-employed start-up exception even if earning below the minimum threshold.",
+      "type": "info"
+    },
+    "partner_self_employed_startup": {
+      "text": "Your partner may qualify under the self-employed start-up exception even if earning below the minimum threshold.",
+      "type": "info"
+    },
+    "apply_with_public_funds_parent": {
+      "text": "The parent who applies for this benefit must be the one who has access to public funds.",
+      "type": "info"
+    },
+    "nrpf_income_above_threshold": {
+      "text": "Household income is above the NRPF threshold of £{threshold}.",
+      "type": "info"
+    },
+    "nrpf_savings_above_limit": {
+      "text": "Household savings exceed the £16,000 limit.",
+      "type": "info"
+    },
+    "care_to_learn_age_caveat": {
+      "text": "You must be under 20 at the start of your course to be eligible.",
+      "type": "info"
+    },
+    "learner_support_age_caveat": {
+      "text": "You must be 19 or over to get funding for childcare costs through Learner Support.",
+      "type": "info"
+    },
+    "childcare_grant_income_caveat": {
+      "text": "Eligibility depends on household income — check gov.uk for current thresholds.",
+      "type": "info"
+    }
+  },
+  "devolvedNationLinks": [
+    {
+      "nation": "Wales",
+      "url": "https://www.gov.wales/get-help-paying-childcare",
+      "label": "Help paying for childcare (GOV.WALES)"
+    },
+    {
+      "nation": "Scotland",
+      "url": "https://www.mygov.scot/childcare-costs-help/funded-early-learning-and-childcare",
+      "label": "Funded early learning and childcare (mygov.scot)"
+    },
+    {
+      "nation": "Northern Ireland",
+      "url": "https://www.nidirect.gov.uk/articles/help-paying-approved-childcare",
+      "label": "Help paying for approved childcare (nidirect)"
+    }
+  ]
+}

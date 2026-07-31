@@ -1,0 +1,130 @@
+{
+  "description": "Family 9: Michelle — single parent, 21+, not working, on income-related ESA. Not on Universal Credit. One child (Connor, age 2) in school-based nursery. Tests: non-working parent with no partner, benefits-based eligibility for 15-hour 2-year-old entitlement (ESA route), ineligibility for 30-hour entitlement, TFC, and UC childcare reimbursement. This is the most limited support scenario — only the benefits-based 15 funded hours are available.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "SR4 9LT",
+      "ladCodes": ["E08000024"]
+    },
+    "household": {
+      "hasPartner": false
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "not_working",
+      "receivesQualifyingAllowance": false,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": null,
+    "qualifyingBenefits": ["esa"],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Connor",
+        "birthMonth": 9,
+        "birthYear": 2023,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "school_based_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p6927698004950313832"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p6927698004950313832"]
+  },
+  "costEstimate": {
+    "description": "Worked example for Michelle. Michelle is not working and is on income-related ESA. She has no partner. Because she is not working, she is NOT eligible for the 30-hour extended entitlement, NOT eligible for Tax-Free Childcare, and NOT eligible for UC childcare reimbursement. However, because she receives income-related ESA, Connor qualifies for 15 funded hours per week via the benefits route. The 15 funded hours are Michelle's only form of government childcare support. Importantly, in Sunderland the government funding rate exceeds the provider's charge, meaning there is no shortfall on funded hours.",
+    "connor": {
+      "child": "Connor (age 2, born September 2023)",
+      "narrative": "Connor attends Pennywell Early Years Centre (provider_22) for 5 morning sessions per week, 38 term weeks. At age 2, the government funds 15 hours per week via the early learning entitlement, accessed through the benefits route (income-related ESA). Each morning session is 3.5 hours, so 5 sessions = 17.5 hours/week — slightly more than the 15 funded hours. The 2.5 unfunded hours per week are at the parent's full cost. Crucially, the Sunderland government funding rate (£7.40/hr) exceeds the provider's effective rate (£6.29/hr), so there is no shortfall on funded hours — unlike higher-cost areas where providers charge above the government rate.",
+      "selections": [
+        {
+          "careType": "school_based_nursery",
+          "source": "provider_22 (Pennywell Early Years Centre, age 2 rate: £22.00/morning session)",
+          "configuration": "5 mornings per week, 38 term weeks",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_22 age 2 rate: £22.00 per morning session, 3.5 hours per session",
+              "morningCost": "5 days × £22.00 × 38 weeks = £4,180.00",
+              "total": 4180
+            },
+            "step2_deriveEffectiveHourlyRate": {
+              "sessionFee": 22,
+              "sessionHours": 3.5,
+              "effectiveHourlyRate": "£22.00 / 3.5 hrs = £6.29/hr"
+            },
+            "step3_fundedHoursReduction": {
+              "scheme": "15 hours early learning for 2-year-olds (benefits route — income-related ESA)",
+              "eligibilityNote": "Michelle is not working, so she does not qualify for any work-contingent schemes. However, because she receives income-related ESA — one of the qualifying benefits — Connor is eligible for 15 funded hours per week.",
+              "fundedHoursPerWeek": 15,
+              "fundedWeeks": 38,
+              "totalFundedHours": "15 × 38 = 570 hours",
+              "governmentFundingRate": 7.4,
+              "providerEffectiveRate": 6.29,
+              "shortfallPerHour": "max(£6.29 - £7.40, 0) = £0.00 — government rate exceeds provider rate",
+              "shortfallCostToParent": "£0.00 — no shortfall in Sunderland",
+              "unfundedHours": {
+                "note": "Connor attends 17.5 hrs/week but only 15 are funded. The remaining 2.5 hrs/week are at the parent's full cost.",
+                "unfundedHoursPerWeek": 2.5,
+                "unfundedCost": "2.5 hrs × £6.29 × 38 weeks = £597.55"
+              },
+              "savingToParent": "£4,180.00 - £597.55 = £3,582.45",
+              "costToGovernment": "15 hrs × £7.40 × 38 weeks = £4,218.00"
+            },
+            "step4_additionalCharges": {
+              "meals": "5 days × £2.00 × 38 weeks = £380.00"
+            },
+            "estimatedAnnualCostToParent": "£597.55 + £380.00 = £977.55"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 4180,
+        "additionalCharges": 380,
+        "total": 4560,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "15 hours early learning for 2-year-olds (benefits route — income-related ESA)",
+          "savingToParent": 3582.45,
+          "note": "Government pays 15 hrs × £7.40 × 38 wks = £4,218.00 to provider. Parent saves £3,582.45. Crucially, the Sunderland government funding rate (£7.40/hr) exceeds the provider's effective rate (£6.29/hr), so there is no shortfall — the parent pays nothing extra on the 15 funded hours. This contrasts with higher-cost areas where providers charge above the government rate, creating a per-hour shortfall. Michelle's remaining cost comes entirely from the 2.5 unfunded hours per week beyond the 15-hour cap."
+        },
+        "taxFreeChildcare": null,
+        "ucChildcare": null,
+        "totalSavingToParent": 3582.45
+      },
+      "estimatedAnnualCostToFamily": 977.55,
+      "summaryNote": "Michelle's only government support is the 15 hours early learning for 2-year-olds, accessed through the benefits route (income-related ESA). The government spends £4,218 on funded hours, covering 79% of the total £4,560 childcare cost. Michelle pays approximately £978 per year — comprising unfunded hours beyond the 15-hour cap (£598) and meals (£380). Notably, there is no funding rate shortfall in Sunderland: the government rate (£7.40/hr) exceeds the provider's effective rate (£6.29/hr). This is the most limited support scenario in the family set."
+    }
+  }
+}

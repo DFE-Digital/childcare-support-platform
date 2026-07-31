@@ -1,0 +1,43 @@
+[package]
+name = "spatial-index-service"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "sis-preprocess"
+path = "src/bin/sis_preprocess.rs"
+
+[[bin]]
+name = "sis-query"
+path = "src/bin/sis_query.rs"
+
+[[bin]]
+name = "sis-geometry"
+path = "src/bin/sis_geometry.rs"
+
+[dependencies]
+# Spatial index
+static_aabb2d_index = "2"
+rkyv = "0.8"
+
+# Parquet (SisPreProcess only, but simpler to include unconditionally)
+parquet = { version = "54", default-features = false, features = ["arrow", "snap"] }
+arrow = { version = "54", default-features = false }
+
+# HTTP server (SisQuery)
+axum = "0.8"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+memmap2 = "0.9"
+lambda_http = "0.14"
+tower-http = { version = "0.6", features = ["cors", "compression-gzip"] }
+
+# Shared
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dev-dependencies]
+reqwest = { version = "0.12", features = ["blocking"] }
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"

@@ -1,0 +1,5 @@
+account_name = "dev"
+aws_region   = "eu-west-2"
+project      = "beststartinlife"
+github_org   = "PMO-Data-Science"
+github_repo  = "10ds-atlas-beststartinlife"

@@ -1,0 +1,286 @@
+{
+  "description": "Large family with four children spanning every age band. Two working parents, both 21+, no UC. Tests: under-9-month gap (Noah), 30-hour entitlement (Ava), school-age wraparound (Leo), teen holiday club (Mia), TFC age limit, multiple-child TFC caps, highest total expenditure.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "BS9 1NJ",
+      "ladCodes": ["E06000023"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Mia",
+        "birthMonth": 4,
+        "birthYear": 2011,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "holiday_club",
+            "daysPerYear": 15,
+            "providerId": null
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "firstName": "Leo",
+        "birthMonth": 10,
+        "birthYear": 2017,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "free_breakfast_club",
+            "daysPerWeek": 5,
+            "providerId": "p2531667303950871088"
+          },
+          {
+            "id": 2,
+            "careType": "after_school_club",
+            "daysPerWeek": 3,
+            "providerId": "p2531667303950871088"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "firstName": "Ava",
+        "birthMonth": 2,
+        "birthYear": 2022,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              },
+              "afternoon": {
+                "daysPerWeek": 2
+              }
+            },
+            "providerId": "p8737845878559025513"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "firstName": "Noah",
+        "birthMonth": 8,
+        "birthYear": 2025,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "private_nursery",
+            "sessions": {
+              "morning": {
+                "daysPerWeek": 5
+              }
+            },
+            "providerId": "p7626126742172740045"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": [
+      "p2531667303950871088",
+      "p8737845878559025513",
+      "p7626126742172740045"
+    ]
+  },
+  "costEstimate": {
+    "description": "The most complex cost breakdown of any family. Four children across every age band: Noah (under 9 months, no funded hours), Ava (age 3, 30 funded hours), Leo (age 8, school-age wraparound), Mia (age 14, holiday club only, past TFC age limit). Bristol BS9 providers are slightly cheaper than Oxford equivalents, but the family still faces the highest total expenditure.",
+    "mia": {
+      "child": "Mia (age 14, born April 2011)",
+      "narrative": "Mia is too old for school-age clubs (age limit 11) but still attends holiday club (area average). At age 14, she is past the TFC age limit of 11, so her holiday club costs receive no government support at all.",
+      "selections": [
+        {
+          "careType": "holiday_club",
+          "source": "Area average for Bristol -- Westbury-on-Trym, Henleaze and Stoke Bishop (£42.00/day)",
+          "configuration": "15 days per year",
+          "annualCost": "15 × £42.00 = £630.00"
+        }
+      ],
+      "miaTotal": {
+        "grossChildcareCost": 630,
+        "additionalCharges": 0,
+        "total": 630,
+        "tfcEligible": false,
+        "tfcReason": "Mia is 14 — past the TFC age limit of 11 (16 for disabled children)"
+      }
+    },
+    "leo": {
+      "child": "Leo (age 8, born October 2017)",
+      "narrative": "Leo attends Westbury-on-Trym CofE Primary School (provider_12) for a free breakfast club and after-school club. No funded hours apply — Leo is school-age. TFC is available (age under 11). The free breakfast club saves £1,140 compared to a paid club at £6/session.",
+      "selections": [
+        {
+          "careType": "free_breakfast_club",
+          "source": "provider_12 (Westbury-on-Trym CofE Primary, free)",
+          "configuration": "5 days per week, 38 term weeks",
+          "annualCost": "5 × £0 × 38 = £0.00"
+        },
+        {
+          "careType": "after_school_club",
+          "source": "provider_12 (Westbury-on-Trym CofE Primary, £14.00/session)",
+          "configuration": "3 days per week, 38 term weeks",
+          "annualCost": "3 × £14.00 × 38 = £1,596.00"
+        }
+      ],
+      "leoTotal": {
+        "grossChildcareCost": "£0 + £1,596 = £1,596.00",
+        "additionalCharges": 0,
+        "total": 1596
+      }
+    },
+    "ava": {
+      "child": "Ava (age 3, born February 2022)",
+      "narrative": "Ava attends Treetops Nursery Westbury (provider_13) for 5 mornings and 2 afternoons per week. Both parents are working and under £100k, so the family qualifies for 30 funded hours. Ava uses 36 hrs/week (5×5 + 2×5.5), of which 30 are funded during term time. The remaining 6 hours and all non-term weeks are at full cost. The blended effective hourly rate is £7.39/hr, creating a £1.93/hr shortfall against the Bristol government rate of £5.46/hr.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_13 (Treetops Nursery Westbury, age 3-4 rate: £38.00/session)",
+          "configuration": "5 mornings + 2 afternoons per week, 50 operating weeks",
+          "calculation": {
+            "grossCost": "(5 + 2) × £38.00 × 50 = £266.00 × 50 = £13,300.00",
+            "effectiveHourlyRate": {
+              "morning": "£38.00 / 5 hrs = £7.60/hr",
+              "afternoon": "£38.00 / 5.5 hrs = £6.91/hr",
+              "blended": "£266.00 / 36 hrs = £7.39/hr"
+            },
+            "weeklyHours": "5 mornings × 5 hrs + 2 afternoons × 5.5 hrs = 36 hrs/week",
+            "fundedHours": {
+              "scheme": "30 hours working families (15 universal + 15 working parent)",
+              "hoursPerWeek": 30,
+              "attendedHoursPerWeek": 36,
+              "fundedWeeks": 38,
+              "governmentRate": 5.46,
+              "providerBlendedRate": 7.39,
+              "shortfallPerHour": "£7.39 - £5.46 = £1.93/hr",
+              "shortfallCostToParent": "30 × £1.93 × 38 = £2,200.20",
+              "unfundedTermTimeHours": "6 hrs/week × 38 weeks = 228 hrs × £7.39 = £1,684.92",
+              "nonTermWeeks": "(50 - 38) = 12 weeks × 36 hrs × £7.39 = £3,192.48",
+              "savingToParent": "30 × £5.46 × 38 = £6,224.40",
+              "costToGovernment": "30 × £5.46 × 38 = £6,224.40"
+            },
+            "additionalCharges": {
+              "meals": "5 days × £4.00 × 50 weeks = £1,000.00",
+              "consumables": "£2.00 × 50 weeks = £100.00",
+              "total": 1100
+            },
+            "costToParent": "£13,300.00 - £6,224.40 + £1,100.00 = £8,175.60"
+          }
+        }
+      ]
+    },
+    "noah": {
+      "child": "Noah (age 6 months, born August 2025)",
+      "narrative": "Noah attends Bright Horizons Bristol (provider_18) for 5 morning sessions per week. At 6 months old, he is below the 9-month threshold for funded hours — the working parent entitlement won't start until the term after he turns 9 months. TFC is the only available support.",
+      "selections": [
+        {
+          "careType": "private_nursery",
+          "source": "provider_18 (Bright Horizons Bristol, under-2 rate: £52.00/morning session)",
+          "configuration": "5 mornings per week, 51 operating weeks",
+          "calculation": {
+            "grossCost": "5 × £52.00 × 51 = £13,260.00",
+            "effectiveHourlyRate": "£52.00 / 5.5 hrs = £9.45/hr",
+            "fundedHours": {
+              "scheme": "None — Noah is under 9 months",
+              "note": "Working parent entitlement begins the term after the child turns 9 months. Noah turns 9 months in May 2026; funded hours would start from September 2026 term."
+            },
+            "additionalCharges": {
+              "meals": "5 × £4.50 × 51 = £1,147.50",
+              "consumables": "£2.50 × 51 = £127.50",
+              "total": 1275
+            },
+            "costToParent": "£13,260.00 + £1,275.00 = £14,535.00"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 28786,
+        "additionalCharges": 2375,
+        "total": 31161
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "30 hours working families (Ava only)",
+          "savingToParent": 6224.4,
+          "note": "Only Ava receives funded hours. Noah is under 9 months. Leo and Mia are school-age."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Tax-Free Childcare",
+          "savingToParent": 3734.32,
+          "note": "Mia: Not eligible — age 14, past TFC age limit of 11. Leo: £1,596 × 20% = £319.20 (under £2,000 cap). Ava: £7,075.60 × 20% = £1,415.12 (under £2,000 cap). Parent nursery cost = £13,300 - £6,224.40 = £7,075.60. Noah: £13,260 × 20% = £2,652.00, capped at £2,000. Total: £0 + £319.20 + £1,415.12 + £2,000.00 = £3,734.32"
+        },
+        "ucChildcare": null,
+        "totalSavingToParent": 9958.72
+      },
+      "estimatedAnnualCostToFamily": 21202.28,
+      "summaryNote": "This is the highest-cost family at £31,161 per year. Despite government support of £9,959 (32%), the family pays over £21,202. The per-child TFC cap of £2,000 means that even with 3 eligible children, TFC covers only £3,734 — well under the theoretical maximum of £6,000. Noah's under-9-month status costs the family approximately £5,300 in missed funded hours. Mia at age 14 falls entirely outside the support system — her £630 in holiday club costs receive no government subsidy at all. The free breakfast club at Westbury-on-Trym CofE saves £1,140 compared to a paid club at £6/session. Compared to Oxford (£32,926), total costs are lower by £1,765 — driven by slightly cheaper nursery fees in Bristol."
+    }
+  }
+}

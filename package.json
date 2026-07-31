@@ -1,0 +1,27 @@
+{
+  "name": "atlas-beststartinlife",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @bsil/app",
+    "postinstall": "node -e \"const f='node_modules/zod-prisma-types/dist/classes/directoryHelper.js',s=require('fs');s.writeFileSync(f,s.readFileSync(f,'utf8').replace('rmdirSync(path, { recursive: true })','rmSync(path, { recursive: true, force: true })'))\"",
+    "generate": "prisma generate",
+    "build": "npm run generate && npm run build --ws",
+    "lint": "npm run lint --ws --if-present",
+    "prettier": "prettier --write .",
+    "test": "npm run test -w @bsil/app",
+    "typecheck": "npm run generate && tsc -b --noEmit"
+  },
+  "overrides": {
+    "effect": ">=3.20.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "prisma": "^6.5.0",
+    "typescript": "~5.9.3",
+    "zod-prisma-types": "^3.2.4"
+  }
+}

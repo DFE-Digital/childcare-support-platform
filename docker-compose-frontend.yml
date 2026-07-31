@@ -1,0 +1,36 @@
+services:
+  frontend:
+    container_name: frontend-beststartinlife
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./packages/app/src:/app/packages/app/src
+      - ./packages/app/public:/app/packages/app/public
+      - ./packages/app/index.html:/app/packages/app/index.html
+      - ./packages/app/vite.config.ts:/app/packages/app/vite.config.ts
+      - ./packages/calculator/src:/app/packages/calculator/src
+      - ./exported_data/app:/app/exported_data:ro
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_DISABLE_PERSISTENCE=true
+
+  data-explorer:
+    container_name: data-explorer-beststartinlife
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    volumes:
+      - ./exported_data:/app/data
+      - ./packages/data-app:/app/data-app
+    ports:
+      - "8050:8080"
+    environment: []
+
+volumes:
+  node_modules_cache:
+    external: true

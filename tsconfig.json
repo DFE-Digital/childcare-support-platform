@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/schemas" },
+    { "path": "packages/app" },
+    { "path": "packages/calculator" }
+  ]
+}

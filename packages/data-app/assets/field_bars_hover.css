@@ -1,0 +1,4 @@
+/* Hide Plotly's native hover elements (arrow/caret) on the field bars chart */
+#field-bars-graph .hoverlayer {
+  display: none !important;
+}

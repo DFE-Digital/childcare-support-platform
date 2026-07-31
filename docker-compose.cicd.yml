@@ -1,0 +1,5 @@
+services:
+  frontend:
+    network_mode: host
+    env_file:
+      - ${ENV_FILE:-.env.test}

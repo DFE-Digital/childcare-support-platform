@@ -1,0 +1,50 @@
+/* Provider JSON panel — slide-in/out animation */
+
+/* Hidden */
+#provider-modal.provider-panel-closed {
+  display: none;
+}
+
+/* Visible but at starting position (off-screen, transparent backdrop).
+   Applied for one frame before transitioning to open. */
+#provider-modal.provider-panel-ready {
+  display: block;
+}
+
+#provider-modal.provider-panel-ready #provider-panel-backdrop {
+  opacity: 0;
+}
+
+#provider-modal.provider-panel-ready > div:last-child {
+  transform: translateX(100%);
+}
+
+/* Open — animate in */
+#provider-modal.provider-panel-open {
+  display: block;
+}
+
+#provider-modal.provider-panel-open #provider-panel-backdrop {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+#provider-modal.provider-panel-open > div:last-child {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Closing — animate out */
+#provider-modal.provider-panel-closing {
+  display: block;
+}
+
+#provider-modal.provider-panel-closing #provider-panel-backdrop {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#provider-modal.provider-panel-closing > div:last-child {
+  transform: translateX(100%);
+  transition: transform 0.2s ease;
+}

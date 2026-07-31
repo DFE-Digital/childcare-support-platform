@@ -1,0 +1,172 @@
+{
+  "description": "Family 7: Sam & Alex — two parents, both 21+, one earning above threshold, one not working. Not on Universal Credit. One child (Freddie, age 1) with a childminder. Tests: non-working partner disqualifies family from ALL work-tested schemes. This is the starkest 'no government support' scenario — despite one parent being in full-time paid work, the non-working partner creates a complete gap in childcare support.",
+  "localStorage": {
+    "schemaVersion": 2,
+    "location": {
+      "postcode": "SR4 9LT",
+      "ladCodes": ["E08000024"]
+    },
+    "household": {
+      "hasPartner": true
+    },
+    "user": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "earning_above_nmw",
+      "receivesQualifyingAllowance": null,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "partner": {
+      "isApprentice": false,
+      "firstYearApprentice": null,
+      "isSelfEmployed": false,
+      "selfEmployedLessThanTwelveMonths": null,
+      "ageBracket": "21+",
+      "workingStatus": "not_working",
+      "receivesQualifyingAllowance": false,
+      "startingWorkNextMonth": null,
+      "hasLimitedCapacityForWork": null,
+      "hasNationalInsuranceNumber": true,
+      "residencyStatus": "british_irish_citizen",
+      "isStudying": false,
+      "studyLevel": null,
+      "isFullTimeStudent": null,
+      "courseIsPubliclyFunded": null,
+      "eligibleForStudentFinance": null
+    },
+    "qualifyingBenefits": [],
+    "ucIncomeBelowThreshold": false,
+    "nrpfIncomeUnderThreshold": 0,
+    "nrpfSavingsUnderLimit": 0,
+    "children": [
+      {
+        "id": 1,
+        "firstName": "Freddie",
+        "birthMonth": 6,
+        "birthYear": 2024,
+        "hasSEND": false,
+        "sendDetails": null,
+        "isFostered": false,
+        "hasEHCP": false,
+        "hasLeftCareForAdoptionOrSpecialGuardianship": false,
+        "childcareSelections": [
+          {
+            "id": 1,
+            "careType": "childminder",
+            "hoursPerWeek": 30,
+            "weeksPerYear": 44,
+            "providerId": "p3577741280378257208"
+          }
+        ]
+      }
+    ],
+    "shortlistedProviders": ["p3577741280378257208"]
+  },
+  "costEstimate": {
+    "description": "Worked example for Sam & Alex. Sam is working full-time and earning above the £195/week threshold. Alex is not working. In a two-parent household, BOTH parents must meet the work test. Because Alex is not working, the family fails the both-parents-working test and receives zero government support.",
+    "freddie": {
+      "child": "Freddie (age 1, born June 2024)",
+      "narrative": "Freddie attends Lisa Henderson's childminding service (provider_24) for 30 hours per week over 44 weeks per year. At age 1, Freddie is over the 9-month threshold that would normally make him eligible for funded hours. However, Alex is not working and has no qualifying exception — so Freddie receives no funded hours at all. The childminder charges £5.50/hr for under-2s.",
+      "selections": [
+        {
+          "careType": "childminder",
+          "source": "provider_24 (Lisa Henderson, under-2 rate: £5.50/hr, 48 operating weeks)",
+          "configuration": "30 hours per week, 44 weeks per year",
+          "calculation": {
+            "step1_childcareFees": {
+              "note": "Using provider_24 under-2 rate: £5.50/hr. Family uses 44 of the childminder's 48 operating weeks.",
+              "hourlyRate": 5.5,
+              "hoursPerWeek": 30,
+              "weeksPerYear": 44,
+              "total": "30 hrs × £5.50 × 44 weeks = £7,260.00"
+            },
+            "step2_fundedHoursReduction": {
+              "scheme": "Working parent entitlement (under 2)",
+              "eligible": false,
+              "reason": "Both parents must be working (or meet specific exceptions). Alex is not working and has no qualifying exception.",
+              "fundedHoursPerWeek": 0,
+              "savingToParent": "£0.00",
+              "costToGovernment": "£0.00",
+              "whatIfNote": "If Alex were working (earning above £195.36/week), Freddie would gain 15 funded hours per week. At the childminder's rate of £5.50/hr, this would save the parent 15 × £5.50 × 38 = £3,135.00 per year."
+            },
+            "step3_taxFreeChildcare": {
+              "scheme": "Tax-Free Childcare",
+              "eligible": false,
+              "reason": "Same both-parents-working test. Alex is not working, so TFC is not available.",
+              "savingToParent": "£0.00",
+              "whatIfNote": "If Alex were working, the family could receive a 20% top-up capped at £2,000/year per child."
+            },
+            "step4_ucChildcare": {
+              "scheme": "Universal Credit childcare",
+              "eligible": false,
+              "reason": "The family is not on Universal Credit.",
+              "savingToParent": "£0.00"
+            },
+            "step5_additionalCharges": {
+              "meals": {
+                "note": "Freddie attends approximately 6 hours per day (30 hrs / 5 days), qualifying for a daily meal charge.",
+                "daysPerWeek": 5,
+                "weeksPerYear": 44,
+                "totalDays": 220,
+                "dailyMealCost": 2.5,
+                "totalMeals": "220 days × £2.50 = £550.00"
+              },
+              "total": 550
+            },
+            "estimatedAnnualCostToParent": "£7,260.00 + £550.00 = £7,810.00"
+          }
+        }
+      ]
+    },
+    "familyTotal": {
+      "totalCostOfChildcare": {
+        "childcareFees": 7260,
+        "additionalCharges": 550,
+        "total": 7810,
+        "description": "The total annual cost of all childcare for this family, before any government support is applied."
+      },
+      "totalGovernmentSupport": {
+        "fundedHours": {
+          "scheme": "None — both-parents-working test failed",
+          "savingToParent": 0,
+          "note": "Freddie is age-eligible for the working parent entitlement (over 9 months, under 2). Sam meets the earnings test. But Alex is not working — so the family is ineligible."
+        },
+        "taxFreeChildcare": {
+          "scheme": "Not eligible — both-parents-working test failed",
+          "savingToParent": 0,
+          "note": "TFC requires both parents to be working. Alex is not working."
+        },
+        "ucChildcare": {
+          "scheme": "Not eligible — not on Universal Credit",
+          "savingToParent": 0,
+          "note": ""
+        },
+        "totalSavingToParent": 0
+      },
+      "estimatedAnnualCostToFamily": 7810,
+      "summaryNote": "This is the starkest 'no government support' scenario. Despite one parent working full-time, the non-working partner disqualifies the family from all work-tested schemes. The family pays the full £7,810 with zero government contribution. The lower absolute cost compared to Oxford (£10,560) reflects Sunderland's cheaper childminder rates (£5.50/hr vs £7.50/hr), but the policy outcome is identical: 0% support.",
+      "nonWorkingPartnerImpact": {
+        "description": "The financial impact of having a non-working partner rather than a working partner.",
+        "ifAlexWereWorking": {
+          "fundedHoursSaving": "15 hrs × £5.50 × 38 weeks = £3,135.00",
+          "tfcSaving": "Up to £2,000.00 (20% top-up capped at £2,000/child/year)",
+          "totalPotentialSaving": "£3,135 + £2,000 = up to £5,135.00",
+          "revisedCostToParent": "£7,810 - £5,135 = £2,675.00",
+          "swingFromNotWorkingToWorking": "£7,810 - £2,675 = £5,135.00"
+        },
+        "note": "The difference between a non-working partner and a working partner is over £5,000 per year in government support."
+      }
+    }
+  }
+}
