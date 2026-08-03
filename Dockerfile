@@ -34,7 +34,7 @@ ENV VITE_FEATURE_NO_ADDITIONAL_CHARGES=true
 RUN npm run build -w @bsil/calculator && npm run build -w @bsil/app
 
 # Cargo-chef base — installs the chef binary once per rust toolchain bump
-FROM rust:1.86-slim AS chef
+FROM rust:1.97-slim AS chef
 RUN cargo install cargo-chef --locked
 WORKDIR /app
 
