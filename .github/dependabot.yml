@@ -20,5 +20,6 @@ updates:
     directories:
       - "packages/app/"
       - "packages/calculator/"
+      - "packages/schemas/"
     schedule:
       interval: "weekly"
