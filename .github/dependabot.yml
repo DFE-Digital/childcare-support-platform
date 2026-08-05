@@ -15,3 +15,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directories:
+      - "packages/app/"
+      - "packages/calculator/"
+    schedule:
+      interval: "weekly"
