@@ -1,0 +1,18 @@
+{
+  "resourceGroupName": { "value": "s288d01rg-uks-tfstate" },
+  "location": { "value": "uksouth" },
+  "storageAccountName" : { "value" : "s288devtfstatestorage"},
+  "workspaceName" : { "value" : "myapp-dev-uks-law-tf-state"},
+  "vnetName": { "value": "s288d01vnet-uks-tfstate" },
+  "vnetAddressPrefix": { "value": "10.1.0.0/16" },
+  "subnetName": { "value": "s288d01snet-uks-tfstate" },
+  "subnetAddressPrefix": { "value": "10.1.0.0/24" },
+  "tags": {
+    "value": {
+      "Environment": "Dev",
+      "Source": "bicep",
+      "Product": "Terraform Backend Blueprint",
+      "Service Offering": "Terraform Backend Blueprint"
+    }
+  }
+}
