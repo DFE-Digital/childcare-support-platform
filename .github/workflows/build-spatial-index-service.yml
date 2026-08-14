@@ -1,0 +1,9 @@
+name: "build spatial index service"
+
+on:
+    pull_request:
+
+jobs:
+    build-sis:
+        name: "build spatial index service"
+        runs-on: ubuntu-latest
