@@ -2,6 +2,7 @@ name: build-sis
 
 on:
   push:
+    paths: "packages/spatial-index-service/**"
 
 jobs:
   build-sis:
