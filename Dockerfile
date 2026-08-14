@@ -33,44 +33,39 @@ ENV VITE_FEATURE_NO_ADDITIONAL_CHARGES=true
 
 RUN npm run build -w @bsil/calculator && npm run build -w @bsil/app
 
-# Cargo-chef base — installs the chef binary once per rust toolchain bump
-FROM rust:1.86-slim AS chef
-RUN cargo install cargo-chef --locked
+# SIS (Spatial Index Service) build stage
+FROM rust:1.86-slim AS sis-builder
 WORKDIR /app
 
-# Planner — produces a recipe.json describing the dependency graph.
-# Reused by both sis-builder and lambda-builder so dep resolution happens once.
-FROM chef AS planner
 COPY packages/spatial-index-service/Cargo.toml packages/spatial-index-service/Cargo.lock packages/spatial-index-service/rust-toolchain.toml ./
 COPY packages/spatial-index-service/src/ src/
-RUN cargo chef prepare --recipe-path recipe.json
 
-# SIS (Spatial Index Service) build stage — host target.
-# Layers, in cache priority order:
-#   1. Cooked deps (changes only when recipe.json changes — i.e. Cargo.lock changes)
-#   2. App source compile (changes on every src/ edit, but reuses cooked deps)
-# No --mount=type=cache: target/ output ends up in the layer, GHA cache (mode=max)
-# carries the cooked-deps layer across CI runs.
-FROM chef AS sis-builder
-COPY --from=planner /app/recipe.json recipe.json
-RUN cargo chef cook --release --recipe-path recipe.json
-COPY packages/spatial-index-service/Cargo.toml packages/spatial-index-service/Cargo.lock packages/spatial-index-service/rust-toolchain.toml ./
-COPY packages/spatial-index-service/src/ src/
-RUN cargo build --release && \
+# BuildKit mount caches persist the cargo registry and incremental build artifacts
+# across image rebuilds, even when the layer cache is cold (e.g. CI, Cargo.lock update).
+# Binaries are copied to /usr/local/bin/ within the same RUN so they exist in the image
+# layer — the cache-mounted /app/target directory is not visible to other stages.
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/app/target \
+    cargo build --release && \
     cp target/release/sis-preprocess target/release/sis-query target/release/sis-geometry /usr/local/bin/
 
 # Lambda build stage — static musl binary for AWS Lambda (x86_64-unknown-linux-musl).
-# Separate from sis-builder because the musl target produces different artefacts.
-FROM chef AS lambda-builder
-RUN apt-get update && \
+# Only used by `make sis/lambda-bundle`; not referenced by the production build.
+FROM rust:1.86-slim AS lambda-builder
+WORKDIR /app
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && \
     apt-get install -y --no-install-recommends musl-tools && \
-    rm -rf /var/lib/apt/lists/* && \
     rustup target add x86_64-unknown-linux-musl
-COPY --from=planner /app/recipe.json recipe.json
-RUN cargo chef cook --release --target x86_64-unknown-linux-musl --recipe-path recipe.json
+
 COPY packages/spatial-index-service/Cargo.toml packages/spatial-index-service/Cargo.lock packages/spatial-index-service/rust-toolchain.toml ./
 COPY packages/spatial-index-service/src/ src/
-RUN cargo build --release --target x86_64-unknown-linux-musl --bin sis-query && \
+
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/app/target \
+    cargo build --release --target x86_64-unknown-linux-musl --bin sis-query && \
     cp target/x86_64-unknown-linux-musl/release/sis-query /usr/local/bin/sis-query-lambda
 
 # Test stage — gate production on tests passing
