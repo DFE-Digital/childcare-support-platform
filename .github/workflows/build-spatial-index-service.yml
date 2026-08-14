@@ -1,9 +1,44 @@
 name: "build spatial index service"
 
 on:
-    pull_request:
+  pull_request:
 
 jobs:
-    build-sis:
-        name: "build spatial index service"
-        runs-on: ubuntu-latest
+  build-sis:
+    name: "build spatial index service"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Prepare filesystem
+        run: |
+          mkdir -p packages/spatial-index-service/target/sis-bundle
+          # attempt to remove the directory if it exists, we don't care if it fails
+          docker rm bsil-lambda-extract 2>/dev/null || true
+
+      - name: Build spatial index service image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --target lambda-builder \
+            --tag bsil-lambda-builder \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            --load \
+            .
+
+      - name: Bundle spatial index service
+        run: |
+          docker create --platform linux/amd64 --name bsil-lambda-extract bsil-lambda-builder
+          docker cp bsil-lambda-extract:/usr/local/bin/sis-query-lambda \
+            packages/spatial-index-service/target/sis-bundle/handler
+          docker rm bsil-lambda-extract
+          cp exported_data/app/spatial_index.sis \
+            packages/spatial-index-service/target/sis-bundle/spatial_index.sis
+          cd packages/spatial-index-service/target/sis-bundle && \
+            zip -j ../sis-bundle.zip hander spatial_index.sis
