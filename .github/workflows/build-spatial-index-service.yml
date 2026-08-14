@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-sis:
-    name: "build spatial index service"
+    name: "build-sis"
     runs-on: ubuntu-latest
 
     steps:
