@@ -1,11 +1,11 @@
-name: "build spatial index service"
+name: build-sis
 
 on:
   push:
 
 jobs:
   build-sis:
-    name: "build-sis"
+    name: build-sis
     runs-on: ubuntu-latest
 
     steps:
