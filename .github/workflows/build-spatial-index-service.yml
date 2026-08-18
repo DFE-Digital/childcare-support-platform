@@ -39,6 +39,15 @@ jobs:
           # TODO: Change this to be an actual variable rather than hard-coded
           echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
           echo "storage_account_name=cccepfdatastoredev" >> $GITHUB_OUTPUT
+          echo "resource_group=s288d01rg-ukw-data" >> $GITHUB_OUTPUT
+          echo "ip=$(curl -s https://ifconfig.me)" >> "$GITHUB_OUTPUT"
+
+      - name: Add firewall rule
+        run: |
+          az storage account network-rule add \
+            --account-name ${{ steps.config.outputs.storage_account_name }} \
+            --resource-group ${{ steps.config.outputs.resource_group }} \
+            --ip-address ${{ steps.config.outputs.ip }}
 
       - name: Fetch exported data from blob storage
         run: |
@@ -114,3 +123,11 @@ jobs:
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
           cd packages/spatial-index-service/target/sis-bundle && \
             zip -j ../sis-bundle.zip hander spatial_index.sis
+
+      - name: Remove firewall rule
+        if: always()
+        run: |
+          az storage account network-rule remove \
+            --account-name ${{ steps.config.outputs.storage_account_name }} \
+            --resource-group ${{ steps.config.outputs.resource_group }} \
+            --ip-address ${{ steps.config.outputs.ip }}
