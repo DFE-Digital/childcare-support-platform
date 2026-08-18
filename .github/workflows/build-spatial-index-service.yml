@@ -49,6 +49,12 @@ jobs:
             --resource-group ${{ steps.config.outputs.resource_group }} \
             --ip-address ${{ steps.config.outputs.ip }}
 
+      - name: List firewall rules
+        run: |
+          az storage account network-rule list \
+            --account-name ${{ steps.config.outputs.storage_account_name }} \
+            --resource-group ${{ steps.config.outputs.resource_group }}
+
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data/app
