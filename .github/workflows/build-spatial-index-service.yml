@@ -47,7 +47,7 @@ jobs:
           az storage blob download-batch \
             -d exported_data/app/ \
             -s ${{ steps.config.outputs.source_data }} \
-            --acount-name ${{ steps.config.outputs.storage_account_name }} \
+            --account-name ${{ steps.config.outputs.storage_account_name }} \
             --pattern "app/*" \
             --overwrite true
 
