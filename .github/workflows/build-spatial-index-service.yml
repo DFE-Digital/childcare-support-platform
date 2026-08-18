@@ -28,7 +28,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Azure connection string
-        run: az storage account show-connection-string
+        run: az storage account show-connection-string --name cccepfdatastoredev
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v4
