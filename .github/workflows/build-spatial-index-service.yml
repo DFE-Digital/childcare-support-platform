@@ -30,6 +30,29 @@ jobs:
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v4
 
+      - name: Set environment config
+        id: config
+        run: |
+          # Set the environment config here
+          # With things like the Azure Storage Container Name / Id
+          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
+
+      - name: Fetch exported data from blob storage
+        run: |
+          mkdir -p exported_data/app
+          # I think that this is the equivalent to the AWS command
+          # aws s3 sync s3://my-s3-bucket-url --delete
+          az storage blob download-batch \
+            -d exported_data/app/ \
+            -s ${{ steps.config.outputs.source_data }} \ # TODO: Make this a variable
+            --pattern "app/*" \
+            --overwrite true
+
+      - name: Populate .docker-data for Docker build context
+        run: |
+          mkdir -p .docker-data/app
+          cp -r ./exported_data/app/ .docker-data/app/
+
       - name: Prepare filesystem
         run: |
           mkdir -p packages/spatial-index-service/target/sis-bundle
