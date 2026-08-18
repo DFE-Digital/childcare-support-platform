@@ -35,6 +35,7 @@ jobs:
         run: |
           # Set the environment config here
           # With things like the Azure Storage Container Name / Id
+          # TODO: Change this to be an actual variable rather than hard-coded
           echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
 
       - name: Fetch exported data from blob storage
@@ -44,7 +45,7 @@ jobs:
           # aws s3 sync s3://my-s3-bucket-url --delete
           az storage blob download-batch \
             -d exported_data/app/ \
-            -s ${{ steps.config.outputs.source_data }} \ # TODO: Make this a variable
+            -s ${{ steps.config.outputs.source_data }} \
             --pattern "app/*" \
             --overwrite true
 
