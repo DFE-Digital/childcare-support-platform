@@ -48,6 +48,7 @@ jobs:
             -d exported_data/app/ \
             -s ${{ steps.config.outputs.source_data }} \
             --account-name ${{ steps.config.outputs.storage_account_name }} \
+            --connection-name ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }} \
             --pattern "app/*" \
             --overwrite true
 
