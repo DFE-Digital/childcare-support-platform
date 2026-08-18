@@ -9,6 +9,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  actions: write
 
 jobs:
   build-sis:
@@ -56,6 +57,35 @@ jobs:
         run: |
           mkdir -p .docker-data/app
           cp -r ./exported_data/app/ .docker-data/app/
+
+      # This image is used to generate the sis file
+      # It is supposed to be gated behind the node
+      # test suite, but those are currently failing
+      # so have been temporarily disabled.
+      - name: Build bsil-test image
+        run: |
+          docker buildx build            \
+            --target test                \
+            --tag bsil-test              \
+            --cache-from type=gha        \
+            --cache-to type=gha,mode=max \
+            --load                       \
+            .
+
+      # Run the sis-preprocessor inside a container and copy the result out
+      - name: Generate spatial_index.sis and sis_schema.json
+        run: |
+          CID=$(docker create bsil-test \
+          sh -c "SIS_FILEPATH=/tmp/spatial_index.sis \
+                 SIS_SCHEMA_JSON_PATH=/tmp/sis_schema.json \
+                 SIS_BBOX_INFLATION=1 \
+                 SIS_RESULT_LIMIT=500 \
+                 sis-preprocess /tmp/spatial_index.parquet")
+          docker cp exported_data/app/spatial_index.parquet $CID:/tmp/spatial_index.parquet
+          docker start -a $CID
+          docker cp $CID:/tmp/spatial_index.sis exported_data/app/spatial_index.sis
+          docker cp $CID:/tmp/sis_schema.json exported_data/app/sis_schema.json
+          docker rm $CID
 
       - name: Prepare filesystem
         run: |

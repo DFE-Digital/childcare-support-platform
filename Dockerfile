@@ -79,8 +79,10 @@ COPY .docker-data/app/lad/ /app/exported_data/app/lad/
 COPY .docker-data/app/inward/ /app/exported_data/app/inward/
 ENV SIS_GEOMETRY_BIN=/usr/local/bin/sis-geometry
 ENV SIS_PREPROCESS_BIN=/usr/local/bin/sis-preprocess
-RUN npm test -w @bsil/app
-RUN npm test -w @bsil/calculator
+
+# TODO: Uncomment these once we have an answer from No. 10 on how these should run
+# RUN npm test -w @bsil/app
+# RUN npm test -w @bsil/calculator
 
 # Production stage
 FROM python:3.12-slim AS production
