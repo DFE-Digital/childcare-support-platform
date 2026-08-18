@@ -55,6 +55,10 @@ jobs:
             --account-name ${{ steps.config.outputs.storage_account_name }} \
             --resource-group ${{ steps.config.outputs.resource_group }}
 
+      - name: Show storage account rules
+        run: |
+          az storage account show -n ${{ steps.config.outputs.storage_account_name }} --query networkRuleSet
+
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data/app
