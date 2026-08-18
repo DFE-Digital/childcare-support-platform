@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Build bsil-test image
-        uses: ./build-bsil-test.yml
+        uses: ./.github/workflows/build-bsil-test.yml
 
       - name: Extract frontend dist from image
         run: |
