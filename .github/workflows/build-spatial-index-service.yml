@@ -27,6 +27,9 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: \[TEMP\] Validate azure login
+        run: az account show
+
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v4
 
