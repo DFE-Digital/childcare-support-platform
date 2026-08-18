@@ -37,6 +37,7 @@ jobs:
           # With things like the Azure Storage Container Name / Id
           # TODO: Change this to be an actual variable rather than hard-coded
           echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
+          echo "storage_account_name=cccepfdatastoredev" >> $GITHUB_OUTPUT
 
       - name: Fetch exported data from blob storage
         run: |
@@ -46,6 +47,7 @@ jobs:
           az storage blob download-batch \
             -d exported_data/app/ \
             -s ${{ steps.config.outputs.source_data }} \
+            --acount-name ${{ steps.config.outputs.storage_account_name }} \
             --pattern "app/*" \
             --overwrite true
 
