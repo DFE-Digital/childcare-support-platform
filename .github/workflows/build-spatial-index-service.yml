@@ -2,7 +2,9 @@ name: build-sis
 
 on:
   push:
-    paths: "packages/spatial-index-service/**"
+    paths: 
+      - "packages/spatial-index-service/**"
+      - ".github/workflows/build-spatial-index-service.yml" # Temporary - just for development purposes
   
 permissions:
   id-token: write
