@@ -1,0 +1,31 @@
+name: build-bsil-test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-bsil-test:
+    environment: Dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # TODO: Setup storage dependencies
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build bsil-test image
+        run: |
+          docker buildx build \
+            --target test \
+            --tag bsil-test \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            --load \
+            .

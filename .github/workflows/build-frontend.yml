@@ -1,0 +1,41 @@
+name: build-frontend
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build-frontend.yml" # Temporary - only for debugging purposes 
+
+permissions:
+  contents: read
+
+jobs:
+  build-frontend:
+    environment: Dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build bsil-test image
+        uses: ./build-bsil-test.yml
+
+      - name: Extract frontend dist from image
+        run: |
+          docker rm bsil-frontend-extract 2>/dev/null || true
+          docker create --name bsil-frontend-extract bsil-test
+          mkdir -p packages/app/dist
+          docker cp bsil-frontend-extract:/app/packages/app/dist/. packages/app/dist/
+          docker rm bsil-frontend-extract
+
+      - name: Package dist folder
+        # Bundle everything except the index.html file into a zip
+        run: zip dist.zip * -x index.html
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: frontend
+          path: |
+            dist.zip
+            index.html
