@@ -1,4 +1,4 @@
-name: build-sis
+name: build-spatial-index-service
 
 on:
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
       id-token: write
       contents: read
 
-  build-sis:
+  build-spatial-index-service:
     environment: Dev
     runs-on: ubuntu-latest
     needs: [build-bsil-test]
