@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - ".github/workflows/build-frontend.yml" # Temporary - only for debugging purposes 
+      - ".github/workflows/build-bsil-test.yml" # Temporary - only for debugging purposes
 
 permissions:
   id-token: write

@@ -4,14 +4,13 @@ on:
   workflow_dispatch:
   workflow_call:
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   build-bsil-test:
     environment: Dev
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
