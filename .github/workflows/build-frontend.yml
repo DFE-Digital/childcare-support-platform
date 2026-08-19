@@ -9,6 +9,10 @@ permissions:
   contents: read
 
 jobs:
+  build-bsil-test:
+    name: Build BSIL Test Image
+    uses: ./.github/workflows/build-bsil-test.yml
+
   build-frontend:
     environment: Dev
     runs-on: ubuntu-latest
@@ -16,9 +20,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
-      - name: Build bsil-test image
-        uses: ./.github/workflows/build-bsil-test.yml
 
       - name: Extract frontend dist from image
         run: |
