@@ -1,6 +1,8 @@
 name: build-frontend
 
 on:
+  workflow_dispatch:
+  workflow_call:
   push:
     paths:
       - ".github/workflows/build-frontend.yml" # Temporary - only for debugging purposes 
