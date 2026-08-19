@@ -10,12 +10,12 @@ permissions:
 
 jobs:
   build-bsil-test:
-    name: Build BSIL Test Image
     uses: ./.github/workflows/build-bsil-test.yml
 
   build-frontend:
     environment: Dev
     runs-on: ubuntu-latest
+    needs: [build-bsil-test]
 
     steps:
       - name: Checkout
