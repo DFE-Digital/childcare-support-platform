@@ -3,6 +3,15 @@ name: build-bsil-test
 on:
   workflow_dispatch:
   workflow_call:
+    # Ensure that when this workflow is called from another
+    # the necessary secrets are passed down
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
 
 jobs:
   build-bsil-test:
@@ -26,12 +35,10 @@ jobs:
       - name: Set environment config
         id: config
         run: |
-          # Set the environment config here
-          # With things like the Azure Storage Container Name / Id
           # TODO: Change this to be an actual variable rather than hard-coded
-          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
-          echo "storage_account_name=cccepfdatastoredev" >> $GITHUB_OUTPUT
           echo "resource_group=s288d01rg-ukw-data" >> $GITHUB_OUTPUT
+          echo "storage_account_name=cccepfdatastoredev" >> $GITHUB_OUTPUT
+          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
 
       - name: Fetch exported data from blob storage
         run: |
