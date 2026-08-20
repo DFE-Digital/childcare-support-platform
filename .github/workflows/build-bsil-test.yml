@@ -67,15 +67,7 @@ jobs:
       - name: Populate .docker-data for Docker build context
         run: |
           mkdir -p .docker-data/app
-          cp -r ./exported_data/app/ .docker-data/app/
-
-      - name: (TEMP) Print out current file structure
-        run: |
-          ls -la
-          echo "\n\n"
-          ls -la .docker-data
-          echo "\n\n"
-          ls -la .docker-data/app
+          cp -r ./exported_data/ .docker-data/
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v3
