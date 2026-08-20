@@ -1,0 +1,35 @@
+name: Main Integration
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - docs/**
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # security scans ??? TBC
+
+  
+  build-SIS-SPA:
+    name: Build Spacial Index service + SPA
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+    uses: ./.github/workflows/build.yml
+    with:
+      publish: true
+  
+  
+  
+  # run tests ??? TBC
+
+
+    
+  
+    
