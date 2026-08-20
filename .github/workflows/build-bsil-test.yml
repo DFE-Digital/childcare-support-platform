@@ -50,8 +50,8 @@ jobs:
 
           az storage copy \
             --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+            --source-blob "app/" \
             --destination exported_data/app/ \
-            --include-path "app/" \
             --recursive
 
           # az storage blob download-batch \
