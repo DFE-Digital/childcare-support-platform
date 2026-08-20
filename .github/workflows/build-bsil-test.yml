@@ -67,7 +67,10 @@ jobs:
       - name: Populate .docker-data for Docker build context
         run: |
           mkdir -p .docker-data/app
-          cp -r ./exported_data/ .docker-data/
+          cp -r ./exported_data/ ./.docker-data/
+
+      - name: (Temp) Logs
+        run: ls -la .docker-data/app/inward/
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v3
