@@ -70,7 +70,12 @@ jobs:
           cp -r ./exported_data/ ./.docker-data/
 
       - name: (Temp) Logs
-        run: ls -la .docker-data/app/inward/
+        run: |
+          ls -la .docker-data/
+          echo "\n\n\n"
+          ls -la .docker-data/app/
+          echo "\n\n\n"
+          ls -la .docker-data/app/inward/
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v3
