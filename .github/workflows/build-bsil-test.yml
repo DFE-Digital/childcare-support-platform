@@ -44,7 +44,7 @@ jobs:
 
       - name: Fetch exported data from blob storage
         run: |
-          mkdir -p exported_data/app
+          mkdir -p exported_data
           # I think that this is the equivalent to the AWS command
           # aws s3 sync s3://my-s3-bucket-url --delete
 
@@ -52,7 +52,7 @@ jobs:
             --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
             --source-container "${{ steps.config.outputs.source_data }}" \
             --source-blob "app/" \
-            --destination exported_data/app/ \
+            --destination exported_data/ \
             --recursive
 
           # az storage blob download-batch \
@@ -72,14 +72,13 @@ jobs:
       - name: (Temp) Logs
         run: |
           ls -la exported_data/
-          echo "\n\n\n"
+          echo -e "\n"
           ls -la exported_data/app/
-          echo "\n\n\n"
  
           ls -la .docker-data/
-          echo "\n\n\n"
+          echo -e "\n"
           ls -la .docker-data/app/
-          echo "\n\n\n"
+          echo -e "\n"
           ls -la .docker-data/app/inward/
 
       - name: Setup docker buildx
