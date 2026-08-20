@@ -1,0 +1,124 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    environment: Dev
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set environment config
+        id: config
+        run: |
+          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
+
+      - name: Fetch exported data from blob storage
+        run: |
+          mkdir -p exported_data
+
+          az storage copy \
+            --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+            --source-container "${{ steps.config.outputs.source_data }}" \
+            --source-blob "app/" \
+            --destination exported_data/ \
+            --recursive
+
+      - name: Populate .docker-data for Docker build context
+        run: |
+          mkdir -p .docker-data/app
+          cp -r ./exported_data/app ./.docker-data/
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build bsil-test image
+        run: |
+          docker buildx build \
+            --target test \
+            --tag bsil-test \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -- load \
+            .
+        
+      - name: Generate SIS file and Schema
+        run: |
+          CID=$(docker create bsil-test \
+          sh -c "SIS_FILEPATH=/tmp/spatial_index.sis \
+                 SIS_SCHEMA_JSON_PATH=/tmp/sis_schema.json \
+                 SIS_BBOX_INFLATION=1 \
+                 SIS_RESULT_LIMIT=500 \
+                 sis-preprocess /tmp/spatial_index.parquet")
+          docker cp exported_data/app/spatial_index.parquet $CID:/tmp/spatial_index.parquet
+          docker start -a $CID
+          docker cp $CID:/tmp/spatial_index.sis exported_data/app/spatial_index.sis
+          docker cp $CID:/tmp/sis_schema.json exported_data/app/sis_schema.json
+          docker rm $CID
+
+      - name: Prepare filesystem
+        run: |
+          mkdir -p packages/spatial-index-service/target/sis-bundle
+          docker rm bsil-lambda-extract 2>/dev/null || true
+
+      - name: Build spatial index service image
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --target lambda-builder \
+            --tag bsil-lambda-builder \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            --load \
+            .
+
+      - name: Bundle spatial index service
+        run: |
+          docker create --platform linux/amd64 --name bsil-lambda-extract bsil-lambda-builder
+          docker cp bsil-lambda-extract:/usr/local/bin/sis-query-lambda \
+            packages/spatial-index-service/target/sis-bundle/handler
+          docker rm bsil-lambda-extract
+          cp exported_data/app/spatial_index.sis \
+            packages/spatial-index-service/target/sis-bundle/spatial_index.sis
+          cd packages/spatial-index-service/target/sis-bundle && \
+            zip -j ../sis-bundle.zip hander spatial_index.sis
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: spatial-index-service
+          path: packages/spatial-index-service/target/sis-bundle.zip
+
+      - name: Extract frontend dist from image
+        run: |
+          docker rm bsil-frontend-extract 2>/dev/null || true
+          docker create --name bsil-frontend-extract bsil-test
+          mkdir -p packages/app/dist
+          docker cp bsil-frontend-extract:/app/packages/app/dist/. packages/app/dist/
+          docker rm bsil-frontend-extract
+
+      - name: Package dist folder
+        # Bundle everything except the index.html file into a zip
+        run: zip dist.zip * -x index.html
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: frontend
+          path: |
+            dist.zip
+            index.html
