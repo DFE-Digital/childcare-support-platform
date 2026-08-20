@@ -54,7 +54,7 @@ jobs:
             --tag bsil-test \
             --cache-from type=gha \
             --cache-to type=gha,mode=max \
-            -- load \
+            --load \
             .
         
       - name: Generate SIS file and Schema
