@@ -96,7 +96,7 @@ jobs:
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
           cd packages/spatial-index-service/target/sis-bundle && \
-            zip -j ../sis-bundle.zip hander spatial_index.sis
+            zip -j ../sis-bundle.zip handler spatial_index.sis
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
@@ -114,12 +114,15 @@ jobs:
 
       - name: Package dist folder
         # Bundle everything except the index.html file into a zip
-        run: zip dist.zip * -x index.html
+        run: |
+          cd packages/app/dist
+          zip ../dist.zip * -x index.html
+
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
           name: frontend
           path: |
-            dist.zip
-            index.html
+            packages/app/dist.zip
+            packages/app/dist/index.html
