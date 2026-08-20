@@ -12,6 +12,8 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
+      AZURE_STORAGE_CONNECTION_STRING:
+        required: true
 
 jobs:
   build-bsil-test:
@@ -45,14 +47,21 @@ jobs:
           mkdir -p exported_data/app
           # I think that this is the equivalent to the AWS command
           # aws s3 sync s3://my-s3-bucket-url --delete
-          az storage blob download-batch \
-            -d exported_data/app/ \
-            -s ${{ steps.config.outputs.source_data }} \
-            --account-name "${{ steps.config.outputs.storage_account_name }}" \
-            --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-            --pattern "app/*" \
-            --overwrite true \
-            --no-progress
+
+          az storage copy \
+            --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+            --destination exported_data/app/ \
+            --include-path "app/" \
+            --recursive
+
+          # az storage blob download-batch \
+          #   -d exported_data/app/ \
+          #   -s ${{ steps.config.outputs.source_data }} \
+          #   --account-name "${{ steps.config.outputs.storage_account_name }}" \
+          #   --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+          #   --pattern "app/*" \
+          #   --overwrite true \
+          #   --no-progress
 
       - name: Populate .docker-data for Docker build context
         run: |
