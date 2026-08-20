@@ -74,6 +74,8 @@ jobs:
           ls -la
           echo "\n\n"
           ls -la .docker-data
+          echo "\n\n"
+          ls -la .docker-data/app
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v3
