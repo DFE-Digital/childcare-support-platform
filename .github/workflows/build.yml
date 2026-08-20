@@ -116,7 +116,7 @@ jobs:
         # Bundle everything except the index.html file into a zip
         run: |
           cd packages/app/dist
-          zip ../dist.zip * -x index.html
+          zip dist.zip * -x index.html
 
 
       - name: Upload artifacts
@@ -124,5 +124,5 @@ jobs:
         with:
           name: frontend
           path: |
-            packages/app/dist.zip
+            packages/app/dist/dist.zip
             packages/app/dist/index.html
