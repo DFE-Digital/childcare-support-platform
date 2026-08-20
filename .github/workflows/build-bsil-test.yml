@@ -50,6 +50,7 @@ jobs:
 
           az storage copy \
             --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+            --source-container "${{ steps.config.outputs.source_data }}" \
             --source-blob "app/" \
             --destination exported_data/app/ \
             --recursive
