@@ -1,0 +1,131 @@
+{
+  "id": "p5022303470445078338",
+  "name": "Thorney Close Primary School",
+  "institutionType": "school_primary",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Torquay Road",
+    "line2": "Thorney Close",
+    "city": "Sunderland",
+    "postcode": "SR4 9RN"
+  },
+  "latitude": 54.8835,
+  "longitude": -1.411,
+  "distanceMiles": 0.8,
+  "phone": "0191 553 0026",
+  "email": "office@thorneycloseprimary.example.com",
+  "website": "https://thorneycloseprimary.example.com",
+  "ofsted": {
+    "framework": "report_card",
+    "inspectionDate": "2026-02-04",
+    "safeguardingMet": true,
+    "achievement": "Expected standard",
+    "curriculumAndTeaching": "Strong standard",
+    "attendanceAndBehaviour": "Expected standard",
+    "personalDevelopmentWellbeing": "Strong standard",
+    "leadershipAndGovernance": "Expected standard",
+    "earlyYears": "Strong standard"
+  },
+  "staff": {
+    "graduatePercentage": 25,
+    "turnoverPercentage": 12
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:45",
+          "close": "15:00"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age2": {
+          "morningSession": 20,
+          "afternoonSession": 20
+        },
+        "age3to4": {
+          "morningSession": 16,
+          "afternoonSession": 16
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2.3,
+          "unit": "per day",
+          "description": "School dinner"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.25,
+        "afternoon": 3
+      },
+      "eligibleAgeRange": {
+        "minYears": 2,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available for all sessions"
+        },
+        {
+          "type": "tick",
+          "description": "Apply through Sunderland City Council admissions or contact school."
+        }
+      ]
+    },
+    {
+      "type": "free_breakfast_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:00",
+          "close": "08:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 0
+      },
+      "additionalCharges": [],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "All pupils welcome. Register at school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 26
+}

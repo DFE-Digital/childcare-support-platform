@@ -1,0 +1,112 @@
+{
+  "id": "p3656585809843655259",
+  "name": "North Oxford Community Primary School",
+  "institutionType": "school_primary",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "North Parade Avenue",
+    "line2": "North Oxford",
+    "city": "Oxford",
+    "postcode": "OX2 6LX"
+  },
+  "latitude": 51.7668,
+  "longitude": -1.265,
+  "distanceMiles": 0.3,
+  "phone": "01865 555 003",
+  "email": "office@northoxfordprimary.example.com",
+  "website": "https://northoxfordprimary.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-06-10",
+    "legacyRating": "Outstanding",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 33,
+    "turnoverPercentage": 6
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "free_breakfast_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:00",
+          "close": "08:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 0
+      },
+      "additionalCharges": [],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    },
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:15",
+          "close": "17:30"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 14.5
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Light snack included in session fee"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "duration": "term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Spaces available on all days"
+        },
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 40
+}

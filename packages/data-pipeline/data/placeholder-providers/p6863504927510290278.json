@@ -1,0 +1,124 @@
+{
+  "id": "p6863504927510290278",
+  "name": "Active Clubs Oxford",
+  "institutionType": "school_primary",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "Cutteslowe Park",
+    "line2": "Harbord Road",
+    "city": "Oxford",
+    "postcode": "OX2 8ES"
+  },
+  "latitude": 51.782,
+  "longitude": -1.259,
+  "distanceMiles": 1.5,
+  "phone": "01865 555 007",
+  "email": "bookings@activeclubsoxford.example.com",
+  "website": "https://activeclubsoxford.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-06-12",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 12,
+    "turnoverPercentage": 30
+  },
+  "careTypes": [
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:15",
+          "close": "17:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 15
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Healthy snack included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleInstitutions": [
+        "North Oxford Community Primary School",
+        "West Oxford Primary School"
+      ],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Collection service from North Oxford Community Primary and West Oxford Primary"
+        },
+        {
+          "type": "warn",
+          "description": "Spaces on all days except Wednesday"
+        },
+        {
+          "type": "tick",
+          "description": "Book online at activeclubsoxford.example.com or call to register."
+        }
+      ]
+    },
+    {
+      "type": "holiday_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:30",
+          "close": "17:30"
+        }
+      ],
+      "fees": {
+        "perDay": 38
+      },
+      "additionalCharges": [
+        {
+          "item": "Lunch",
+          "cost": 0,
+          "unit": "per day",
+          "description": "Bring packed lunch. Snacks provided."
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 5,
+        "maxYears": 12
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": false,
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Easter and summer holidays. Runs for 4 weeks during summer."
+        },
+        {
+          "type": "tick",
+          "description": "Book online. Individual days or full weeks available."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 38
+}

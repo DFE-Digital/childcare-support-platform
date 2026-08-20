@@ -1,0 +1,114 @@
+{
+  "id": "p1358070129789077173",
+  "name": "Little Pioneers Nursery & Pre-School",
+  "institutionType": "nursery",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "42 Banbury Road",
+    "line2": "Summertown",
+    "city": "Oxford",
+    "postcode": "OX2 7AN"
+  },
+  "latitude": 51.7751,
+  "longitude": -1.2601,
+  "distanceMiles": 0.8,
+  "phone": "01865 555 001",
+  "email": "info@littlepioneers.example.com",
+  "website": "https://littlepioneers.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-11-15",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 14,
+    "turnoverPercentage": 18
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "private_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "07:30",
+          "close": "18:00"
+        }
+      ],
+      "operatingWeeksPerYear": 51,
+      "fees": {
+        "under2": {
+          "morningSession": 55,
+          "afternoonSession": 55,
+          "fullDay": 95
+        },
+        "age2": {
+          "morningSession": 48,
+          "afternoonSession": 48,
+          "fullDay": 82
+        },
+        "age3to4": {
+          "morningSession": 42,
+          "afternoonSession": 42,
+          "fullDay": 72
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3.5,
+          "unit": "per day",
+          "description": "Lunch and two snacks"
+        },
+        {
+          "item": "Consumables and supplies",
+          "cost": 2.25,
+          "unit": "per week",
+          "description": "Nappies, wipes, sun cream, art supplies"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5,
+        "afternoon": 5,
+        "fullDay": 10
+      },
+      "eligibleAgeRange": {
+        "minMonths": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "months": 4
+        },
+        "age2": {
+          "weeks": 6
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "amount": 2,
+        "unitPerWeek": "full_days",
+        "duration": "term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Limited places for under-2s from September 2026"
+        },
+        {
+          "type": "tick",
+          "description": "Contact nursery to arrange a visit. Application form available on website."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 52
+}

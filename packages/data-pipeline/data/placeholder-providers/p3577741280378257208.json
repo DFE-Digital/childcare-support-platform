@@ -1,0 +1,91 @@
+{
+  "id": "p3577741280378257208",
+  "name": "Lisa - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "31 Grindon Lane",
+    "line2": "Grindon",
+    "city": "Sunderland",
+    "postcode": "SR4 9QB"
+  },
+  "latitude": 54.8858,
+  "longitude": -1.4075,
+  "distanceMiles": 0.6,
+  "phone": "07700 555 024",
+  "email": "__________@example.com",
+  "website": null,
+  "ofsted": {
+    "inspectionDate": "2025-06-20",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "07:30",
+          "close": "17:30"
+        },
+        {
+          "days": "5",
+          "open": "07:30",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 48,
+      "fees": {
+        "under2": {
+          "perHour": 5.5
+        },
+        "age2plus": {
+          "perHour": 5
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2.5,
+          "unit": "per day",
+          "description": "Lunch and snacks"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 6,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 3
+        },
+        "age2plus": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Has capacity for 2 additional children"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Lisa by phone to arrange an introductory visit."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

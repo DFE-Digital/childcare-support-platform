@@ -1,0 +1,121 @@
+{
+  "id": "p3218729260248788127",
+  "name": "Henleaze Day Nursery",
+  "institutionType": "nursery",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "36 Henleaze Road",
+    "line2": "Henleaze",
+    "city": "Bristol",
+    "postcode": "BS9 4QY"
+  },
+  "latitude": 51.4882,
+  "longitude": -2.6058,
+  "distanceMiles": 0.4,
+  "phone": "0117 962 0011",
+  "email": "info@henleazedaynursery.example.com",
+  "website": "https://henleazedaynursery.example.com",
+  "ofsted": {
+    "framework": "report_card",
+    "inspectionDate": "2026-01-15",
+    "safeguardingMet": true,
+    "achievement": "Exceptional",
+    "curriculumAndTeaching": "Exceptional",
+    "behaviourAttitudesRoutines": "Strong standard",
+    "childrensWelfareWellbeing": "Exceptional",
+    "inclusion": "Strong standard",
+    "leadershipAndGovernance": "Exceptional",
+    "ccrMet": true
+  },
+  "staff": {
+    "graduatePercentage": 38,
+    "turnoverPercentage": 10
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "private_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "07:30",
+          "close": "18:00"
+        }
+      ],
+      "operatingWeeksPerYear": 51,
+      "fees": {
+        "under2": {
+          "morningSession": 48,
+          "afternoonSession": 48,
+          "fullDay": 82
+        },
+        "age2": {
+          "morningSession": 40,
+          "afternoonSession": 40,
+          "fullDay": 68
+        },
+        "age3to4": {
+          "morningSession": 36,
+          "afternoonSession": 36,
+          "fullDay": 62
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3.75,
+          "unit": "per day",
+          "description": "Freshly prepared lunch and two snacks"
+        },
+        {
+          "item": "Consumables and supplies",
+          "cost": 2.5,
+          "unit": "per week",
+          "description": "Nappies, wipes, sun cream, craft materials"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5,
+        "afternoon": 5,
+        "fullDay": 10
+      },
+      "eligibleAgeRange": {
+        "minMonths": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "months": 6
+        },
+        "age2": {
+          "weeks": 8
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "amount": 2,
+        "unitPerWeek": "full_days",
+        "duration": "term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Forest school sessions weekly for all age groups"
+        },
+        {
+          "type": "tick",
+          "description": "Contact nursery to arrange a visit. Application form on website."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 40
+}

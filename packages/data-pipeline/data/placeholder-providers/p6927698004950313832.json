@@ -1,0 +1,93 @@
+{
+  "id": "p6927698004950313832",
+  "name": "Pennywell Early Years Centre",
+  "institutionType": "nursery",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Beaumont Street",
+    "line2": "Pennywell",
+    "city": "Sunderland",
+    "postcode": "SR4 9DJ"
+  },
+  "latitude": 54.8905,
+  "longitude": -1.3985,
+  "distanceMiles": 0.4,
+  "phone": "0191 553 0022",
+  "email": "office@pennywelleyc.example.com",
+  "website": "https://pennywelleyc.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-09-18",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 20,
+    "turnoverPercentage": 10
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:30",
+          "close": "15:30"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age2": {
+          "morningSession": 22,
+          "afternoonSession": 22
+        },
+        "age3to4": {
+          "morningSession": 18,
+          "afternoonSession": 18
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2,
+          "unit": "per day",
+          "description": "Hot lunch provided"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.5,
+        "afternoon": 3.5
+      },
+      "eligibleAgeRange": {
+        "minYears": 2,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available for all sessions"
+        },
+        {
+          "type": "tick",
+          "description": "Apply through Sunderland City Council admissions or contact the centre directly."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 60
+}

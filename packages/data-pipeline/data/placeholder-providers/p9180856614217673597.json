@@ -1,0 +1,69 @@
+{
+  "id": "p9180856614217673597",
+  "name": "Sunderland South Community Holiday Club",
+  "institutionType": "school_primary",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Pennywell Youth and Community Centre",
+    "line2": "Pennywell Road",
+    "city": "Sunderland",
+    "postcode": "SR4 9HE"
+  },
+  "latitude": 54.8895,
+  "longitude": -1.3995,
+  "distanceMiles": 0.3,
+  "phone": "0191 534 0028",
+  "email": "bookings@sunderlandsouthholiday.example.com",
+  "website": "https://sunderlandsouthholiday.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-07-22",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "careTypes": [
+    {
+      "type": "holiday_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "09:00",
+          "close": "16:00"
+        }
+      ],
+      "fees": {
+        "perDay": 22
+      },
+      "additionalCharges": [
+        {
+          "item": "Lunch",
+          "cost": 0,
+          "unit": "per day",
+          "description": "Bring packed lunch. Drinks and snacks provided."
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 5,
+        "maxYears": 12
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": false,
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Summer holidays and half-terms. Subsidised places available for families on Universal Credit."
+        },
+        {
+          "type": "tick",
+          "description": "Book by phone or drop in. Individual days available."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 28
+}

@@ -1,0 +1,91 @@
+{
+  "id": "p5833713484063384288",
+  "name": "Wolvercote Pre-School",
+  "institutionType": "nursery",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "Wolvercote Village Hall",
+    "line2": "First Turn",
+    "city": "Oxford",
+    "postcode": "OX2 8AH"
+  },
+  "latitude": 51.789,
+  "longitude": -1.287,
+  "distanceMiles": 2.1,
+  "phone": "01865 555 008",
+  "email": "info@wolvercotepreschool.example.com",
+  "website": "https://wolvercotepreschool.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-09-30",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 30
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": false
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "09:00",
+          "close": "15:00"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age2": {
+          "morningSession": 28,
+          "afternoonSession": 28
+        },
+        "age3to4": {
+          "morningSession": 25,
+          "afternoonSession": 25
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 1,
+          "unit": "per session",
+          "description": "Fruit and milk"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3,
+        "afternoon": 3
+      },
+      "eligibleAgeRange": {
+        "minYears": 2,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Morning and afternoon sessions available"
+        },
+        {
+          "type": "tick",
+          "description": "Contact pre-school to arrange a visit. Application form on website."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 44
+}

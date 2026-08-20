@@ -1,0 +1,172 @@
+{
+  "id": "p2531667303950871088",
+  "name": "Westbury-on-Trym CofE Primary School Nursery",
+  "institutionType": "school_primary",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "Channells Hill",
+    "line2": "Westbury-on-Trym",
+    "city": "Bristol",
+    "postcode": "BS9 3HQ"
+  },
+  "latitude": 51.4913,
+  "longitude": -2.6118,
+  "distanceMiles": 0.3,
+  "phone": "0117 377 0012",
+  "email": "office@wotnursery.example.com",
+  "website": "https://wotnursery.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-10-15",
+    "legacyRating": "Outstanding",
+    "framework": "legacy",
+    "safeguardingMet": true,
+    "legacySubGrades": {
+      "qualityOfEducation": "Good",
+      "behaviourAndAttitudes": "Good",
+      "personalDevelopment": "Outstanding",
+      "leadershipAndManagement": "Good",
+      "earlyYears": "Good"
+    }
+  },
+  "staff": {
+    "graduatePercentage": 30,
+    "turnoverPercentage": 8
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:45",
+          "close": "15:15"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age3to4": {
+          "morningSession": 26,
+          "afternoonSession": 26
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2.5,
+          "unit": "per day",
+          "description": "Hot lunch from school kitchen"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.25,
+        "afternoon": 3.25
+      },
+      "eligibleAgeRange": {
+        "minYears": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available for September 2026 intake"
+        },
+        {
+          "type": "tick",
+          "description": "Apply through Bristol City Council admissions portal."
+        }
+      ]
+    },
+    {
+      "type": "free_breakfast_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:00",
+          "close": "08:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 0
+      },
+      "additionalCharges": [],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    },
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:15",
+          "close": "17:30"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 14
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Light snack included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Spaces available Monday to Thursday"
+        },
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 30
+}

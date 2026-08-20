@@ -1,0 +1,164 @@
+{
+  "id": "p673888428820612136",
+  "name": "St Anne's Primary School",
+  "institutionType": "school_primary",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Toward Road",
+    "line2": "Grindon",
+    "city": "Sunderland",
+    "postcode": "SR4 9QH"
+  },
+  "latitude": 54.887,
+  "longitude": -1.4055,
+  "distanceMiles": 0.5,
+  "phone": "0191 553 0023",
+  "email": "office@stannesprimary.example.com",
+  "website": "https://stannesprimary.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-03-14",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 28,
+    "turnoverPercentage": 8
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:45",
+          "close": "15:00"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age3to4": {
+          "morningSession": 16,
+          "afternoonSession": 16
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2.3,
+          "unit": "per day",
+          "description": "School dinner"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.25,
+        "afternoon": 3
+      },
+      "eligibleAgeRange": {
+        "minYears": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available for September 2026 intake"
+        },
+        {
+          "type": "tick",
+          "description": "Apply through Sunderland City Council admissions portal."
+        }
+      ]
+    },
+    {
+      "type": "free_breakfast_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:00",
+          "close": "08:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 0
+      },
+      "additionalCharges": [],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Register with the school office. All pupils welcome."
+        }
+      ]
+    },
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:00",
+          "close": "17:00"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 8
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Light snack included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Spaces available on all days"
+        },
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 32
+}
