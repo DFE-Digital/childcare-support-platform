@@ -51,7 +51,8 @@ jobs:
             --account-name "${{ steps.config.outputs.storage_account_name }}" \
             --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
             --pattern "app/*" \
-            --overwrite true
+            --overwrite true \
+            --no-progress
 
       - name: Populate .docker-data for Docker build context
         run: |
