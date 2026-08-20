@@ -1,0 +1,68 @@
+{
+  "id": "p8353091746237267046",
+  "name": "Bristol North West Holiday Club",
+  "institutionType": null,
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "Westbury-on-Trym Village Hall",
+    "line2": "Westbury Hill",
+    "city": "Bristol",
+    "postcode": "BS9 3AA"
+  },
+  "latitude": 51.49,
+  "longitude": -2.6155,
+  "distanceMiles": 0.2,
+  "phone": "0117 962 0019",
+  "email": "bookings@bnwholidayclub.example.com",
+  "website": "https://bnwholidayclub.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-08-14",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "careTypes": [
+    {
+      "type": "holiday_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:30",
+          "close": "17:30"
+        }
+      ],
+      "fees": {
+        "perDay": 42
+      },
+      "additionalCharges": [
+        {
+          "item": "Extended hours",
+          "cost": 5,
+          "unit": "per session",
+          "description": "Early drop-off from 08:00 or late collection to 18:00"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 12
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": false,
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "All school holidays. Runs 4 weeks during summer, 1 week each half-term."
+        },
+        {
+          "type": "tick",
+          "description": "Book online by the day or by the week. 10% sibling discount."
+        }
+      ]
+    }
+  ]
+}

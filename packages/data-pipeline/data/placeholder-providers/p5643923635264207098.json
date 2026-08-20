@@ -1,0 +1,93 @@
+{
+  "id": "p5643923635264207098",
+  "name": "Silksworth Sure Start Nursery",
+  "institutionType": "nursery",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Silksworth Row",
+    "line2": "Silksworth",
+    "city": "Sunderland",
+    "postcode": "SR4 9AB"
+  },
+  "latitude": 54.878,
+  "longitude": -1.4,
+  "distanceMiles": 1,
+  "phone": "0191 553 0030",
+  "email": "surestart.silksworth@example.com",
+  "website": "https://silksworthsurestart.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-01-30",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 18,
+    "turnoverPercentage": 14
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "school_based_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:30",
+          "close": "15:30"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "age2": {
+          "morningSession": 20,
+          "afternoonSession": 20
+        },
+        "age3to4": {
+          "morningSession": 15,
+          "afternoonSession": 15
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2,
+          "unit": "per day",
+          "description": "Hot lunch"
+        }
+      ],
+      "sessionHours": {
+        "morning": 3.5,
+        "afternoon": 3.5
+      },
+      "eligibleAgeRange": {
+        "minYears": 2,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Family support services also available on site"
+        },
+        {
+          "type": "tick",
+          "description": "Contact centre to arrange a visit. Self-referrals welcome."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 30
+}

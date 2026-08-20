@@ -1,0 +1,114 @@
+{
+  "id": "p7626126742172740045",
+  "name": "Bright Horizons Bristol",
+  "institutionType": "nursery",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "15 Passage Road",
+    "line2": "Westbury-on-Trym",
+    "city": "Bristol",
+    "postcode": "BS9 3HN"
+  },
+  "latitude": 51.4898,
+  "longitude": -2.6145,
+  "distanceMiles": 0.2,
+  "phone": "0117 950 0018",
+  "email": "bristol@brighthorizons.example.com",
+  "website": "https://brighthorizons.example.com/bristol",
+  "ofsted": {
+    "inspectionDate": "2024-11-28",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 20,
+    "turnoverPercentage": 22
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "private_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "07:00",
+          "close": "18:30"
+        }
+      ],
+      "operatingWeeksPerYear": 51,
+      "fees": {
+        "under2": {
+          "morningSession": 52,
+          "afternoonSession": 52,
+          "fullDay": 90
+        },
+        "age2": {
+          "morningSession": 45,
+          "afternoonSession": 45,
+          "fullDay": 76
+        },
+        "age3to4": {
+          "morningSession": 40,
+          "afternoonSession": 40,
+          "fullDay": 68
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 4.5,
+          "unit": "per day",
+          "description": "Breakfast, lunch, tea and snacks"
+        },
+        {
+          "item": "Consumables",
+          "cost": 2.5,
+          "unit": "per week",
+          "description": "Nappies, wipes, sun cream"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5.5,
+        "afternoon": 5.5,
+        "fullDay": 11.5
+      },
+      "eligibleAgeRange": {
+        "minMonths": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "months": 7
+        },
+        "age2": {
+          "weeks": 6
+        },
+        "age3to4": {
+          "weeks": 2
+        }
+      },
+      "minimumCommitment": {
+        "amount": 2,
+        "unitPerWeek": "full_days",
+        "duration": "term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Open from 07:00 for early drop-off"
+        },
+        {
+          "type": "tick",
+          "description": "Book a tour online or call to enquire."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 26
+}

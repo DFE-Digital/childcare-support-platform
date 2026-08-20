@@ -1,0 +1,98 @@
+{
+  "id": "p2364030839202207152",
+  "name": "Karen - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "___________",
+    "line2": "Wolvercote",
+    "city": "Oxford",
+    "postcode": "OX2 8PB"
+  },
+  "latitude": 51.787,
+  "longitude": -1.278,
+  "distanceMiles": 1.9,
+  "phone": "07700 555 006",
+  "email": "_________@example.com",
+  "website": null,
+  "ofsted": {
+    "framework": "report_card",
+    "inspectionDate": "2025-12-10",
+    "safeguardingMet": true,
+    "achievement": "Strong standard",
+    "curriculumAndTeaching": "Exceptional",
+    "behaviourAttitudesRoutines": "Exceptional",
+    "childrensWelfareWellbeing": "Strong standard",
+    "inclusion": "Strong standard",
+    "leadershipAndGovernance": "Strong standard",
+    "ccrMet": true,
+    "vcrMet": true
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": false,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "08:00",
+          "close": "17:30"
+        },
+        {
+          "days": "5",
+          "open": "08:00",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 46,
+      "fees": {
+        "under2": {
+          "perHour": 8.5
+        },
+        "age2plus": {
+          "perHour": 7.5
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3.5,
+          "unit": "per day",
+          "description": "All meals and snacks included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 12,
+        "maxYears": 8
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "months": 6
+        },
+        "age2plus": {
+          "months": 4
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "No current vacancies"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Karen by phone to join the waiting list."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

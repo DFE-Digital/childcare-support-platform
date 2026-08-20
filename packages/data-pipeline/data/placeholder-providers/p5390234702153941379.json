@@ -1,0 +1,87 @@
+{
+  "id": "p5390234702153941379",
+  "name": "Henleaze Infant School",
+  "institutionType": "school_primary",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "Park Grove",
+    "line2": "Henleaze",
+    "city": "Bristol",
+    "postcode": "BS9 4LG"
+  },
+  "latitude": 51.4875,
+  "longitude": -2.602,
+  "distanceMiles": 0.5,
+  "phone": "0117 377 0016",
+  "email": "office@henleazeinfants.example.com",
+  "website": "https://henleazeinfants.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-06-10",
+    "framework": "legacy_transition",
+    "safeguardingMet": true,
+    "legacySubGrades": {
+      "qualityOfEducation": "Outstanding",
+      "behaviourAndAttitudes": "Outstanding",
+      "personalDevelopment": "Outstanding",
+      "leadershipAndManagement": "Outstanding",
+      "earlyYears": "Outstanding"
+    }
+  },
+  "staff": {
+    "graduatePercentage": 40,
+    "turnoverPercentage": 5
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:15",
+          "close": "17:45"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 15.5
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Healthy snack included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 7
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 4
+        }
+      },
+      "minimumCommitment": {
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "warn",
+          "description": "Wednesday and Friday currently full"
+        },
+        {
+          "type": "tick",
+          "description": "Register with the school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 24
+}

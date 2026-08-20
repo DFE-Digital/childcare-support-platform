@@ -1,0 +1,114 @@
+{
+  "id": "p4955773874276034538",
+  "name": "Jericho Day Nursery",
+  "institutionType": "nursery",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "85 Walton Street",
+    "line2": "Jericho",
+    "city": "Oxford",
+    "postcode": "OX2 6EA"
+  },
+  "latitude": 51.759,
+  "longitude": -1.2665,
+  "distanceMiles": 0.4,
+  "phone": "01865 555 010",
+  "email": "enquiries@jerichodaynursery.example.com",
+  "website": "https://jerichodaynursery.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-09-14",
+    "legacyRating": "Requires Improvement",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 9,
+    "turnoverPercentage": 28
+  },
+  "facilities": {
+    "hasGarden": false,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "private_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "08:00",
+          "close": "18:00"
+        }
+      ],
+      "operatingWeeksPerYear": 50,
+      "fees": {
+        "under2": {
+          "morningSession": 50,
+          "afternoonSession": 50,
+          "fullDay": 86
+        },
+        "age2": {
+          "morningSession": 42,
+          "afternoonSession": 42,
+          "fullDay": 72
+        },
+        "age3to4": {
+          "morningSession": 38,
+          "afternoonSession": 38,
+          "fullDay": 65
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3,
+          "unit": "per day",
+          "description": "Lunch and snacks"
+        },
+        {
+          "item": "Consumables",
+          "cost": 2,
+          "unit": "per week",
+          "description": "Nappies and wipes if required"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5,
+        "afternoon": 5,
+        "fullDay": 10
+      },
+      "eligibleAgeRange": {
+        "minMonths": 6,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 10
+        },
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "amount": 3,
+        "unitPerWeek": "sessions",
+        "duration": "term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available across all age groups"
+        },
+        {
+          "type": "tick",
+          "description": "Contact nursery to arrange a visit. Flexible start dates."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 72
+}
