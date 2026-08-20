@@ -67,10 +67,15 @@ jobs:
       - name: Populate .docker-data for Docker build context
         run: |
           mkdir -p .docker-data/app
-          cp -r ./exported_data/ ./.docker-data/
+          cp -r ./exported_data/app ./.docker-data/
 
       - name: (Temp) Logs
         run: |
+          ls -la exported_data/
+          echo "\n\n\n"
+          ls -la exported_data/app/
+          echo "\n\n\n"
+ 
           ls -la .docker-data/
           echo "\n\n\n"
           ls -la .docker-data/app/
