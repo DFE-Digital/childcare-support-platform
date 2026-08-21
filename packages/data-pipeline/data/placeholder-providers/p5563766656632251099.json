@@ -1,0 +1,115 @@
+{
+  "id": "p5563766656632251099",
+  "name": "West Oxford Primary School",
+  "institutionType": "school_primary",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "Ferry Hinksey Road",
+    "line2": "Osney",
+    "city": "Oxford",
+    "postcode": "OX2 0BY"
+  },
+  "latitude": 51.7472,
+  "longitude": -1.271,
+  "distanceMiles": 1.2,
+  "phone": "01865 555 004",
+  "email": "office@westoxfordprimary.example.com",
+  "website": "https://westoxfordprimary.example.com",
+  "ofsted": {
+    "inspectionDate": "2023-09-22",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 28,
+    "turnoverPercentage": 20
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "breakfast_club",
+      "openingHours": [{
+        "days": "12345",
+        "open": "07:45",
+        "close": "08:45"
+      }],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 6.5
+      },
+      "additionalCharges": [],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Spaces available all days"
+        },
+        {
+          "type": "tick",
+          "description": "Register at school office."
+        }
+      ]
+    },
+    {
+      "type": "after_school_club",
+      "openingHours": [{
+        "days": "12345",
+        "open": "15:15",
+        "close": "17:30"
+      }],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 13
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Included in session fee"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": true,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 6
+        }
+      },
+      "minimumCommitment": {
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Tuesday to Thursday available. Monday and Friday full."
+        },
+        {
+          "type": "tick",
+          "description": "Register at school office."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 45
+}

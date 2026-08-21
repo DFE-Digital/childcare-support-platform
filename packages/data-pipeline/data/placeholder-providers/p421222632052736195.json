@@ -1,0 +1,91 @@
+{
+  "id": "p421222632052736195",
+  "name": "Rachel - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "__________",
+    "line2": "Westbury-on-Trym",
+    "city": "Bristol",
+    "postcode": "BS9 3DE"
+  },
+  "latitude": 51.492,
+  "longitude": -2.617,
+  "distanceMiles": 0.6,
+  "phone": "07700 555 015",
+  "email": "__________@example.com",
+  "website": null,
+  "ofsted": {
+    "inspectionDate": "2025-07-10",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": false
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "08:00",
+          "close": "17:30"
+        },
+        {
+          "days": "5",
+          "open": "08:00",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 46,
+      "fees": {
+        "under2": {
+          "perHour": 7
+        },
+        "age2plus": {
+          "perHour": 6.5
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3,
+          "unit": "per day",
+          "description": "Lunch and afternoon snack"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 9,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 6
+        },
+        "age2plus": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Has capacity for 1 child under 2 and 2 children aged 2+"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Rachel to arrange an initial visit."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

@@ -1,0 +1,91 @@
+{
+  "id": "p3096841754915858436",
+  "name": "Claire - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E06000023",
+  "address": {
+    "line1": "__________",
+    "line2": "Westbury-on-Trym",
+    "city": "Bristol",
+    "postcode": "BS9 3JJ"
+  },
+  "latitude": 51.4905,
+  "longitude": -2.6135,
+  "distanceMiles": 0.3,
+  "phone": "07700 555 014",
+  "email": "__________@example.com",
+  "website": null,
+  "ofsted": {
+    "inspectionDate": "2024-03-12",
+    "legacyRating": "Outstanding",
+    "framework": "legacy"
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "07:30",
+          "close": "18:00"
+        },
+        {
+          "days": "5",
+          "open": "07:30",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 47,
+      "fees": {
+        "under2": {
+          "perHour": 7.5
+        },
+        "age2plus": {
+          "perHour": 6.8
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3.5,
+          "unit": "per day",
+          "description": "Home-cooked lunch and snacks"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 6,
+        "maxYears": 8
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "months": 8
+        },
+        "age2plus": {
+          "months": 3
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "warn",
+          "description": "No current vacancies for under-2s"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Claire by phone to discuss your needs and join the waiting list."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

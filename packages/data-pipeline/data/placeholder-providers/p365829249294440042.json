@@ -1,0 +1,91 @@
+{
+  "id": "p365829249294440042",
+  "name": "Sarah - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "________",
+    "line2": "Jericho",
+    "city": "Oxford",
+    "postcode": "OX2 6BX"
+  },
+  "latitude": 51.761,
+  "longitude": -1.268,
+  "distanceMiles": 0.5,
+  "phone": "07700 555 005",
+  "email": "_______@mitchellchildminding.example.com",
+  "website": null,
+  "ofsted": {
+    "inspectionDate": "2025-01-18",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": false
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "07:30",
+          "close": "18:00"
+        },
+        {
+          "days": "5",
+          "open": "07:30",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 48,
+      "fees": {
+        "under2": {
+          "perHour": 7.5
+        },
+        "age2plus": {
+          "perHour": 6.5
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 3,
+          "unit": "per day",
+          "description": "Lunch and snacks if attending over lunchtime"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 6,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 8
+        },
+        "age2plus": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Has capacity for 1 additional child"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Sarah directly to discuss your needs and arrange a visit."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

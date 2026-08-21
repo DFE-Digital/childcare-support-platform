@@ -1,0 +1,114 @@
+{
+  "id": "p7991950606735894723",
+  "name": "Sandhill Community Nursery",
+  "institutionType": "nursery",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "14 Hylton Road",
+    "line2": "Pennywell",
+    "city": "Sunderland",
+    "postcode": "SR4 9AU"
+  },
+  "latitude": 54.892,
+  "longitude": -1.402,
+  "distanceMiles": 0.3,
+  "phone": "0191 534 0021",
+  "email": "info@sandhillnursery.example.com",
+  "website": "https://sandhillnursery.example.com",
+  "ofsted": {
+    "inspectionDate": "2025-02-10",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 12,
+    "turnoverPercentage": 25
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": true
+  },
+  "careTypes": [
+    {
+      "type": "private_nursery",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "07:30",
+          "close": "18:00"
+        }
+      ],
+      "operatingWeeksPerYear": 50,
+      "fees": {
+        "under2": {
+          "morningSession": 36,
+          "afternoonSession": 36,
+          "fullDay": 62
+        },
+        "age2": {
+          "morningSession": 30,
+          "afternoonSession": 30,
+          "fullDay": 52
+        },
+        "age3to4": {
+          "morningSession": 28,
+          "afternoonSession": 28,
+          "fullDay": 48
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2.5,
+          "unit": "per day",
+          "description": "Hot lunch and snacks"
+        },
+        {
+          "item": "Consumables",
+          "cost": 1.5,
+          "unit": "per week",
+          "description": "Nappies and wipes if needed"
+        }
+      ],
+      "sessionHours": {
+        "morning": 5,
+        "afternoon": 5,
+        "fullDay": 10
+      },
+      "eligibleAgeRange": {
+        "minMonths": 3,
+        "maxYears": 4
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 4
+        },
+        "age2": {
+          "weeks": 0
+        },
+        "age3to4": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": {
+        "amount": 2,
+        "unitPerWeek": "sessions",
+        "duration": "half_term"
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Places available across all age groups"
+        },
+        {
+          "type": "tick",
+          "description": "Contact nursery to arrange a visit. Flexible start dates."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 55
+}

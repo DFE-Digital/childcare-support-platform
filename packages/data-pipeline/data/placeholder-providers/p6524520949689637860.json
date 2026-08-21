@@ -1,0 +1,62 @@
+{
+  "id": "p6524520949689637860",
+  "name": "Oxford Holiday Adventures",
+  "institutionType": null,
+  "lad25cd": "E07000178",
+  "address": {
+    "line1": "Ferry Sports Centre",
+    "line2": "Diamond Place",
+    "city": "Oxford",
+    "postcode": "OX2 6DP"
+  },
+  "latitude": 51.7635,
+  "longitude": -1.2555,
+  "distanceMiles": 0.7,
+  "phone": "01865 555 009",
+  "email": "hello@oxholidayadventures.example.com",
+  "website": "https://oxholidayadventures.example.com",
+  "careTypes": [
+    {
+      "type": "holiday_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "09:00",
+          "close": "17:00"
+        }
+      ],
+      "fees": {
+        "perDay": 42
+      },
+      "additionalCharges": [
+        {
+          "item": "Extended hours",
+          "cost": 5,
+          "unit": "per session",
+          "description": "Early drop-off from 08:00 or late collection until 18:00"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 5,
+        "maxYears": 14
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "All school holidays. Runs 2 weeks at Easter, 5 weeks in summer, 1 week at half-terms."
+        },
+        {
+          "type": "tick",
+          "description": "Book online by the day or by the week. 10% sibling discount."
+        }
+      ]
+    }
+  ]
+}

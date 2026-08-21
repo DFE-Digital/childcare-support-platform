@@ -1,0 +1,91 @@
+{
+  "id": "p5508706675069673612",
+  "name": "Dawn - Childminder",
+  "institutionType": "childminder",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "__________",
+    "line2": "Pennywell",
+    "city": "Sunderland",
+    "postcode": "SR4 9EN"
+  },
+  "latitude": 54.8912,
+  "longitude": -1.396,
+  "distanceMiles": 0.4,
+  "phone": "07700 555 025",
+  "email": "__________@example.com",
+  "website": null,
+  "ofsted": {
+    "inspectionDate": "2025-04-30",
+    "legacyRating": "Requires Improvement",
+    "framework": "legacy"
+  },
+  "staff": {
+    "turnoverPercentage": 0
+  },
+  "facilities": {
+    "hasGarden": true,
+    "hasKitchen": false
+  },
+  "careTypes": [
+    {
+      "type": "childminder",
+      "openingHours": [
+        {
+          "days": "1234",
+          "open": "08:00",
+          "close": "17:00"
+        },
+        {
+          "days": "5",
+          "open": "08:00",
+          "close": "16:30"
+        }
+      ],
+      "operatingWeeksPerYear": 46,
+      "fees": {
+        "under2": {
+          "perHour": 5
+        },
+        "age2plus": {
+          "perHour": 4.5
+        }
+      },
+      "additionalCharges": [
+        {
+          "item": "Meals",
+          "cost": 2,
+          "unit": "per day",
+          "description": "Lunch and snack"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minMonths": 9,
+        "maxYears": 8
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleOther": [],
+      "fundedHoursAccepted": true,
+      "waitingList": {
+        "under2": {
+          "weeks": 0
+        },
+        "age2plus": {
+          "weeks": 0
+        }
+      },
+      "minimumCommitment": false,
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Immediate availability for all ages"
+        },
+        {
+          "type": "tick",
+          "description": "Contact Dawn by phone to discuss your requirements."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 6
+}

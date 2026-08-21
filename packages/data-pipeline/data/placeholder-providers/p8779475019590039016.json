@@ -1,0 +1,77 @@
+{
+  "id": "p8779475019590039016",
+  "name": "Grindon Active After-School",
+  "institutionType": "school_primary",
+  "lad25cd": "E08000024",
+  "address": {
+    "line1": "Grindon Lane Community Centre",
+    "line2": "Grindon",
+    "city": "Sunderland",
+    "postcode": "SR4 9QN"
+  },
+  "latitude": 54.8848,
+  "longitude": -1.4088,
+  "distanceMiles": 0.7,
+  "phone": "0191 534 0029",
+  "email": "info@grindonactive.example.com",
+  "website": "https://grindonactive.example.com",
+  "ofsted": {
+    "inspectionDate": "2024-12-05",
+    "legacyRating": "Good",
+    "framework": "legacy"
+  },
+  "staff": {
+    "graduatePercentage": 10,
+    "turnoverPercentage": 28
+  },
+  "careTypes": [
+    {
+      "type": "after_school_club",
+      "openingHours": [
+        {
+          "days": "12345",
+          "open": "15:00",
+          "close": "17:30"
+        }
+      ],
+      "operatingWeeksPerYear": 38,
+      "fees": {
+        "perSession": 9.5
+      },
+      "additionalCharges": [
+        {
+          "item": "Snack",
+          "cost": 0,
+          "unit": "per session",
+          "description": "Light snack included"
+        }
+      ],
+      "eligibleAgeRange": {
+        "minYears": 4,
+        "maxYears": 11
+      },
+      "eligibleAttendeesOnly": false,
+      "eligibleInstitutions": [
+        "St Anne's Primary School",
+        "Thorney Close Primary School"
+      ],
+      "fundedHoursAccepted": false,
+      "waitingList": {
+        "all": {
+          "weeks": 0
+        }
+      },
+      "notes": [
+        {
+          "type": "tick",
+          "description": "Collection service from St Anne's Primary and Thorney Close Primary"
+        },
+        {
+          "type": "tick",
+          "description": "Spaces on all days. Book by the half-term or by the week."
+        }
+      ]
+    }
+  ],
+  "registeredPlaces": 50
+}

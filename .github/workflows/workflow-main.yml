@@ -1,0 +1,48 @@
+name: Main Integration
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - docs/**
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  # security scans ??? TBC
+
+  
+  build-SIS-SPA:
+    name: Build Spacial Index service + SPA
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: read
+    uses: ./.github/workflows/build.yml
+    with:
+      publish: true
+  
+  deploy-dev:
+    name: Deploy Development
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+    needs: [build-SIS-SPA] 
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: development
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  
+  # run tests ??? TBC
+
+
+    
+  
+    
