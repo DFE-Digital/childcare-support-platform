@@ -11,10 +11,15 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
 jobs:
+
   # security scans ??? TBC
 
-  
   build-SIS-SPA:
     name: Build Spacial Index service + SPA
     permissions:

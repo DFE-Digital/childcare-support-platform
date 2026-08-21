@@ -25,10 +25,6 @@ jobs:
       id-token: write
       contents: read
       actions: read
-
-    defaults:
-      run:
-        working-directory: ./infrastructure/terraform
     
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
