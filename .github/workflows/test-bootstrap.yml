@@ -3,6 +3,11 @@ name: test-bootstrap
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
 jobs:
   call-deploy:
     uses: ./.github/workflows/deploy-environment.yml
