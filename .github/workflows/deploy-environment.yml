@@ -67,7 +67,7 @@ jobs:
         echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
 
     - name: Test Unlock Terraform State
-      working-directory: ./infra
+      working-directory: ./infrastructure
       env:
         ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
         RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
@@ -78,7 +78,7 @@ jobs:
 
     - name: Test Lock Terraform State
       if: ${{ always() }}
-      working-directory: ./infra
+      working-directory: ./infrastructure
       env:
         ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
         RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
