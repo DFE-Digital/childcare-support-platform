@@ -33,7 +33,9 @@ jobs:
       ARM_USE_OIDC: true
     
     steps:
-
+    - name: Checkout
+      uses: actions/checkout@v4
+      
     - name: Azure Login (OIDC)
       uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca
       with:
