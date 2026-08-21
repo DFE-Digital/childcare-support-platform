@@ -1,11 +1,11 @@
 {
-  "resourceGroupName": { "value": "s279d01rg-uks-cec-terraform" },
+  "resourceGroupName": { "value": "s288d01rg-uks-bsil-terraform" },
   "location": { "value": "uksouth" },
-  "storageAccountName" : { "value" : "s279d01tfstatestorage"},
-  "workspaceName" : { "value" : "s279d01-uks-cec-law-tf-state"},
-  "vnetName": { "value": "s279d01-uks-cec-vnet-tf-state" },
+  "storageAccountName" : { "value" : "s288d01tfstatestorage"},
+  "workspaceName" : { "value" : "s288d01-uks-bsil-law-tf-state"},
+  "vnetName": { "value": "s288d01-uks-bsil-vnet-tf-state" },
   "vnetAddressPrefix": { "value": "10.1.0.0/16" },
-  "subnetName": { "value": "s279d01-uks-cec-snet-tf-state" },
+  "subnetName": { "value": "s288d01-uks-bsil-snet-tf-state" },
   "subnetAddressPrefix": { "value": "10.1.0.0/24" },
   "tags": {
     "value": {

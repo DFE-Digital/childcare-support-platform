@@ -25,7 +25,20 @@ jobs:
     with:
       publish: true
   
-  
+  deploy-dev:
+    name: Deploy Development
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+    needs: [build-SIS-SPA] 
+    uses: ./.github/workflows/deploy-environment.yml
+    with:
+      environment: development
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
   
   # run tests ??? TBC
 
