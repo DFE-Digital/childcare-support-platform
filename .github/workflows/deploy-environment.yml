@@ -1,0 +1,95 @@
+name: Deploy Environment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        default: 'Dev'
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+
+jobs:
+  deploy:
+    name: 'Provision & deploy environment'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+
+    defaults:
+      run:
+        working-directory: ./infrastructure/terraform
+    
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+    
+    steps:
+
+    - name: Azure Login (OIDC)
+      uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Get Workflow Service Principal Object ID
+      id: get-sp-id
+      run: |
+        SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
+        echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
+    
+    - name: Bootstrap Terraform
+      id: bootstrap-tf
+      uses: azure/arm-deploy@v2
+      with:
+        scope: subscription
+        region: uksouth
+        template: ./infrastructure/bicep/main.bicep
+        deploymentName: terraform-${{ inputs.environment }}
+        parameters: ./infrastructure/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }}
+
+    - name: Confirm bootstrap output
+      run: |
+        echo "Resource Group: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}"
+        echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
+
+    - name: Test Unlock Terraform State
+      working-directory: ./infrastructure
+      env:
+        ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
+        RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+      shell: bash
+      run: |
+        chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
+
+    - name: Test Lock Terraform State
+      if: ${{ always() }}
+      working-directory: ./infrastructure
+      env:
+        ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
+        RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+      shell: bash
+      run: |
+        chmod +x scripts/manage-storage-access.sh
+        ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
+
+    # web app deploy steps TBC
+
+    
+
+
+
