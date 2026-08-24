@@ -98,7 +98,7 @@ jobs:
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
           cd packages/spatial-index-service/target/sis-bundle && \
-            zip -j ../sis-bundle.zip handler spatial_index.sis
+            zip -j ../sis-bundle.zip handler spatial_index.sis host.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
