@@ -92,6 +92,8 @@ jobs:
           docker cp bsil-lambda-extract:/usr/local/bin/sis-query-lambda \
             packages/spatial-index-service/target/sis-bundle/handler
           docker rm bsil-lambda-extract
+          cp packages/spatial-index-service/host.json \
+            packages/spatial-index-service/target/sis-bundle/host.json
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
           cd packages/spatial-index-service/target/sis-bundle && \
