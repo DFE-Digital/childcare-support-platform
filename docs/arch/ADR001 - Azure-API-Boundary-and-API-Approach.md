@@ -14,14 +14,30 @@
 
 ## Decision
 Decision Pending. 
-This ADR is being raised to determine the appropriate Azure API boundary and API-management approach for the migration from AWS. No assumption at this stage that APIM is required.
-The decision will follow assessment of the Azure options against required behaviour, origin protection, security, performance, delivery effort, cost, DfE enterprise patterns and the end of September 2026 deadline.
+This ADR records the investigation and options for determining the appropriate Azure API boundary and API-management approach. It does not assume a) that APIM is required simply because the existing solution uses AWS API Gateway b) that APIM is simply not needed without addressing the capability provided by the existing API boundary.
+The decision will follow a review with senior DfE architects. The selected option must preserve required behaviour and security characteristics while remaining appropriate for the like-for-like migration, latency-sensitive request path, cost constraints and end-of-September deadline.
 <!-- 
     In a few sentences, describe the decision taken. 
 -->
 
 ## Context
-The project is migrating an existing AWS solution to Azure. The objective is a like-for-like migration rather than any re-design. 
+The project is migrating an existing AWS solution to Azure. The chosen migration option is a like-for-like migration rather than a redesign. The migration is targeting the end of September 2026, while the project is still progressing through environment build. Given deadlines any departure from the existing architecture needs to be assessed for additional design, engineering, configuration/coding, testing, assurance and schedule risk.
+
+The existing AWS request path is CloudFront → API Gateway → Lambda. Investigation of the AWS Terraform established that API Gateway is a REST API with a catch-all proxy method, requires an API key, associates the key with a usage plan and integrates with Lambda using an AWS proxy integration. The CloudFront Function adds the x-api-key header to /api/* requests before forwarding them to API Gateway. The browser therefore does not directly possess the API key.
+
+The No. 10 team has confirmed the following key architectural findings: the API Gateway is primarily present to facilitate calling the Lambda from the CloudFront deployment; the API key is baked into the CloudFront deployment from AWS SSM Parameter Store at deployment time; a WAF is associated with the API Gateway and has default protections enabled; and no throttling or rate limiting is enabled, although rate-limiting capability exists.
+
+The API Gateway configuration identified in Terraform uses authorization = NONE. No OAuth, Cognito or per-user API credentials have been identified. The API key therefore should not be interpreted as consumer authentication. Its role in the existing implementation is better understood as part of the trusted CloudFront-to-API-Gateway request path and API boundary.
+
+Origin protection is an important architectural consideration. The intended request path is through the public edge and then the API boundary to the backend. The Azure design must establish how the Function is prevented from being directly invoked in a way that bypasses the intended Front Door/WAF path. The same broader principle applies to other origins, such as Blob Storage: the design should consider whether an origin can be accessed directly rather than through the intended edge.
+
+The API is internet-facing in the sense that browser clients need to reach it through the public edge, but it is not an open public API in the sense of exposing an unauthenticated backend endpoint to clients. This distinction is relevant when assessing the need for an API-management service.
+
+The API request path is latency-sensitive. Introducing additional network hops or processing layers therefore needs to be considered against the performance requirement rather than assuming that an additional service is neutral.
+
+The No.10 team is providing read-only access to the AWS Production web console so that the deployed API Gateway, WAF and associated settings can be inspected directly. This is intended to verify any remaining details that cannot be confidently established from Terraform alone.
+
+The architectural question is not simply 'What is the Azure equivalent of API Gateway?'. The question is: what capabilities and security boundaries must be preserved, what Azure options can provide them, and which option represents the appropriate balance of like-for-like behaviour, security, latency, delivery effort, cost, enterprise standards and schedule risk?
 <!-- 
     Describe the forces and circumstances that brought about this decision. 
 -->
