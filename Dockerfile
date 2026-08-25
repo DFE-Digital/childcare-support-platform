@@ -1,5 +1,5 @@
 # Development stage
-FROM node:20-alpine AS development
+FROM node:25-alpine AS development
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -13,7 +13,7 @@ COPY packages/app ./packages/app
 CMD ["npm", "run", "dev", "-w", "@bsil/app", "--", "--host"]
 
 # Build stage (Debian, not Alpine — test stage needs glibc SIS binaries from sis-builder)
-FROM node:20-slim AS builder
+FROM node:25-slim AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
