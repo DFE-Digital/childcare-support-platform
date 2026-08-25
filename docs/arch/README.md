@@ -20,7 +20,6 @@ Please note that not all technical decisions are architectural decisions. An arc
 
 ## Summary of ADRs
 
-
-| ID | Title |
-| --- | --- |
-| ADR001| Azure API Boundary and APIM Approach](./ADR001 - Azure-API-Boundary-and-API-Approach.md) |
+| ID     | Title                                                                                    |
+| ------ | ----------------------------------------------------------------------------------------- |
+| ADR001 | [Azure API Boundary and APIM Approach](./ADR001%20-%20Azure-API-Boundary-and-API-Approach.md) |
