@@ -22,4 +22,4 @@ Please note that not all technical decisions are architectural decisions. An arc
 
 
 | ID | Title |
-| --- | --- |
+| ADR001| Azure API Boundary and APIM Approach](./ADR001 - Azure-API-Boundary-and-API-Approach.md) |
