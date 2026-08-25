@@ -5,21 +5,23 @@
     decision itself. Make it specific.    
 -->
 
-# <!-- Identifier: --> ADRXXX - <!-- Title: --> TITLE
+# <!-- Identifier: --> ADR001 - <!-- Title: --> Azure API Boundary and APIM Approach
 
 <!-- Metadata section. All fields are mandatory. -->
-- **Status**: Draft
-- **Date**: <!-- The day the draft was started, in the YYYY-MM-DD format, for example '1970-01-01' -->
-- **Author**:<!-- Your full name as the owner of the decision, for example 'Joe Bloggs'. -->
+- **Status**: Draft - decision pending architectural review
+- **Date**: <!-- The day the draft was started, in the YYYY-MM-DD format, for example '1970-01-01' --> 2026/08/25
+- **Author**:<!-- Your full name as the owner of the decision, for example 'Joe Bloggs'. --> Robin Appleton-Power
 
 ## Decision
-
+Decision Pending. 
+This ADR is being raised to determine the appropriate Azure API boundary and API-management approach for the migration from AWS. No assumption at this stage that APIM is required.
+The decision will follow assessment of the Azure options against required behaviour, origin protection, security, performance, delivery effort, cost, DfE enterprise patterns and the end of September 2026 deadline.
 <!-- 
     In a few sentences, describe the decision taken. 
 -->
 
 ## Context
-
+The project is migrating an existing AWS solution to Azure. The objective is a like-for-like migration rather than any re-design. 
 <!-- 
     Describe the forces and circumstances that brought about this decision. 
 -->
