@@ -64,7 +64,7 @@ jobs:
         echo "Resource Group: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}"
         echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
 
-    - name: Test Unlock Terraform State
+    - name: Unlock Terraform State
       working-directory: ./infrastructure
       env:
         ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
