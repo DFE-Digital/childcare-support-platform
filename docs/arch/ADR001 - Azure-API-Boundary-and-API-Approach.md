@@ -78,6 +78,7 @@ Potential consequences / risks:
 • If APIM provides capabilities not actually required by the migrated solution, the option may introduce unnecessary cost and complexity.
 
 Option 2 – Front Door → Function
+
 Potential benefits:
 • Avoids the ongoing cost of a dedicated APIM layer.
 • Reduces the number of services and potentially the number of hops in the request path.
@@ -91,10 +92,12 @@ Potential consequences / risks:
 • The additional design and assurance effort could affect the end-of-September deadline and project estimates.
 
 Option 3 – Alternative DfE-approved API pattern
+
 Potential benefits:
 • May align more closely with an established DfE enterprise architecture or platform pattern.
 • Could provide an appropriate balance between security, cost, operational support, latency and delivery effort.
 • Specialist input may identify an existing capability that avoids unnecessary bespoke design.
+
 Potential consequences / risks:
 • The specific alternative is currently undefined and requires specialist architectural advice.
 • A materially different pattern may introduce additional design, engineering or assurance work.
