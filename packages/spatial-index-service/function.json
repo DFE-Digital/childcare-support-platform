@@ -1,17 +1,17 @@
 {
+    "$schema": "https://www.schemastore.org/function.json",
     "bindings": [
         {
-            "authLevel": "anonymous",
             "type": "httpTrigger",
             "direction": "in",
-            "route": "/",
-            "name": "req",
-            "methods": ["GET"]
+            "name": "request",
+            "authLevel": "anonymous",
+            "methods": ["get"]
         },
         {
             "type": "http",
             "direction": "out",
-            "name": "res"
+            "name": "response"
         }
     ]
 }
