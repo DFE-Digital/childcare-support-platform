@@ -96,13 +96,13 @@ jobs:
 
           cp packages/spatial-index-service/host.json \
             packages/spatial-index-service/target/sis-bundle/host.json
-          cp packages/spatial-index-service/function.json \
-            packages/spatial-index-service/target/sis-bundle/function.json
+          cp packages/spatial-index-service/SpatialIndexService/function.json \
+            packages/spatial-index-service/target/sis-bundle/SpatialIndexService/function.json
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
 
           cd packages/spatial-index-service/target/sis-bundle && \
-            zip -j ../sis-bundle.zip handler spatial_index.sis host.json function.json
+            zip ../sis-bundle.zip handler spatial_index.sis host.json function.json SpatialIndexService/function.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7

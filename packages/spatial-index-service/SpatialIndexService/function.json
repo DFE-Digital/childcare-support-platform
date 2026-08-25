@@ -1,5 +1,6 @@
 {
-    "$schema": "https://www.schemastore.org/function.json",
+    "$schema": "https://json.schemastore.org/function.json",
+    "entryPoint": "handler",
     "bindings": [
         {
             "type": "httpTrigger",
