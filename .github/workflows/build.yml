@@ -74,6 +74,7 @@ jobs:
       - name: Prepare filesystem
         run: |
           mkdir -p packages/spatial-index-service/target/sis-bundle
+          mkdir -p packages/spatial-index-service/target/sis-bundle/SpatialIndexService
           docker rm bsil-lambda-extract 2>/dev/null || true
 
       - name: Build spatial index service image
