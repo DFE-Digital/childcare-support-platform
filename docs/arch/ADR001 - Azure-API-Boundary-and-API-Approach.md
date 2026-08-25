@@ -64,6 +64,7 @@ Adopt another DfE/Azure API pattern if other DfE architects identify an establis
 
 ## Consequences
 Option 1 – Front Door → APIM → Function
+
 Potential benefits:
 • Provides a dedicated API boundary and is conceptually close to the existing AWS request path.
 • May reduce the architectural change required to reproduce the existing API boundary and its protection model.
