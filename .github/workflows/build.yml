@@ -123,7 +123,7 @@ jobs:
         # Bundle everything except the index.html file into a zip
         run: |
           cd packages/app/dist
-          zip dist.zip * -x index.html
+          zip -r dist.zip * -x index.html
 
 
       - name: Upload artifacts
