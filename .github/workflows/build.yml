@@ -26,7 +26,7 @@ jobs:
       - name: Set environment config
         id: config
         run: |
-          echo "source_data=s288d01stc-uks-source-data-01" >> $GITHUB_OUTPUT
+          echo "source_data=s288d01bc-uks-source-data-01" >> $GITHUB_OUTPUT
 
       - name: Fetch exported data from blob storage
         run: |
