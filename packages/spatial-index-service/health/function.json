@@ -7,7 +7,8 @@
             "direction": "in",
             "name": "request",
             "authLevel": "anonymous",
-            "methods": ["get"]
+            "methods": ["get"],
+            "route": "/health"
         },
         {
             "type": "http",

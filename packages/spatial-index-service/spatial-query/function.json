@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json.schemastore.org/function.json",
+    "entryPoint": "handler",
+    "bindings": [
+        {
+            "type": "httpTrigger",
+            "direction": "in",
+            "name": "request",
+            "authLevel": "anonymous",
+            "methods": ["get"],
+            "route": "/api/spatial-query"
+        },
+        {
+            "type": "http",
+            "direction": "out",
+            "name": "response"
+        }
+    ]
+}
