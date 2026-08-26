@@ -26,7 +26,7 @@ jobs:
       - name: Set environment config
         id: config
         run: |
-          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
+          echo "source_data=s288d01stc-uks-source-data-01" >> $GITHUB_OUTPUT
 
       - name: Fetch exported data from blob storage
         run: |
@@ -74,7 +74,7 @@ jobs:
       - name: Prepare filesystem
         run: |
           mkdir -p packages/spatial-index-service/target/sis-bundle
-          mkdir -p packages/spatial-index-service/target/sis-bundle/SpatialIndexService
+          mkdir -p packages/spatial-index-service/target/sis-bundle/spatial-query
           docker rm bsil-lambda-extract 2>/dev/null || true
 
       - name: Build spatial index service image
@@ -97,13 +97,13 @@ jobs:
 
           cp packages/spatial-index-service/host.json \
             packages/spatial-index-service/target/sis-bundle/host.json
-          cp packages/spatial-index-service/SpatialIndexService/function.json \
-            packages/spatial-index-service/target/sis-bundle/SpatialIndexService/function.json
+          cp packages/spatial-index-service/spatial-query/function.json \
+            packages/spatial-index-service/target/sis-bundle/spatial-query/function.json
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
 
           cd packages/spatial-index-service/target/sis-bundle && \
-            zip ../sis-bundle.zip handler spatial_index.sis host.json function.json SpatialIndexService/function.json
+            zip ../sis-bundle.zip handler spatial_index.sis host.json function.json spatial-query/function.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
