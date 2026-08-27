@@ -7,7 +7,7 @@
   },
   "customHandler": {
     "description": {
-      "defaultExecutablePath": "handler",
+      "defaultExecutablePath": "start.sh",
       "workingDirectory": "",
       "arguments": []
     },
