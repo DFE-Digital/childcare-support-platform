@@ -4,7 +4,7 @@
       "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
-      "route": "api/spatial-query",
+      "route": "health",
       "name": "req",
       "methods": [
         "get"
