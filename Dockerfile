@@ -65,11 +65,8 @@ COPY packages/spatial-index-service/src/ src/
 
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/target \
-    # --target x86_64-unknown-linux-musl
-    # Commenting out the target for now in case this is the cause of the runtime issues
-    cargo build --release --bin sis-query && \
-    # cp target/x86_64-unknown-linux-musl/release/sis-query /usr/local/bin/sis-query-lambda
-    cp target/release/sis-query /usr/local/bin/sis-query-lambda
+    cargo build --release --target x86_64-unknown-linux-musl --bin sis-query && \
+    cp target/x86_64-unknown-linux-musl/release/sis-query /usr/local/bin/sis-query-lambda
 
 
 # Test stage — gate production on tests passing
