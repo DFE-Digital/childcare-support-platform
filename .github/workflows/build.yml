@@ -98,11 +98,11 @@ jobs:
 
           cp packages/spatial-index-service/host.json \
             packages/spatial-index-service/target/sis-bundle/host.json
-          cp packages/spatial-index-service/start.sh
+          cp packages/spatial-index-service/start.sh \
             packages/spatial-index-service/target/sis-bundle/start.sh
-          cp -r packages/spatial-index-service/spatial-query
+          cp -r packages/spatial-index-service/spatial-query \
             packages/spatial-index-service/target/sis-bundle/spatial-query
-          cp -r packages/spatial-index-service/health
+          cp -r packages/spatial-index-service/health \
             packages/spatial-index-service/target/sis-bundle/health
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
