@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "azurerm"
-      version = "4.80.0"
-    }
-  }
-}
-provider "azurerm" {
-  features {}
-}
 resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-security"
@@ -17,6 +6,7 @@ resource "azurerm_resource_group" "res-0" {
     Product     = "Childcare Platform"
   }
 }
+
 resource "azurerm_key_vault" "res-1" {
   access_policy                   = []
   enabled_for_deployment          = false
@@ -43,6 +33,7 @@ resource "azurerm_key_vault" "res-1" {
     virtual_network_subnet_ids = []
   }
 }
+
 resource "azurerm_user_assigned_identity" "res-2" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-apim-identity-01"
@@ -52,6 +43,7 @@ resource "azurerm_user_assigned_identity" "res-2" {
     Product     = "Childcare Platform"
   }
 }
+
 resource "azurerm_user_assigned_identity" "res-3" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-azf-identity-01"
@@ -61,6 +53,7 @@ resource "azurerm_user_assigned_identity" "res-3" {
     Product     = "Childcare Platform"
   }
 }
+
 resource "azurerm_user_assigned_identity" "res-4" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-frontdoor-identity-01"

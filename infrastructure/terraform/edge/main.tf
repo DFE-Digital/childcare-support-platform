@@ -1,23 +1,10 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "azurerm"
-      version = "4.80.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
-  }
-}
-provider "azurerm" {
-  features {}
-}
 resource "random_password" "spatial_index_service_function_key" {
   length  = 40
   special = false
 }
+
 data "azurerm_client_config" "current" {}
+
 resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
@@ -26,6 +13,7 @@ resource "azurerm_resource_group" "res-0" {
     Product     = "Childcare Platform"
   }
 }
+
 resource "azurerm_api_management" "res-1" {
   client_certificate_enabled    = false
   gateway_disabled              = false
@@ -78,6 +66,7 @@ resource "azurerm_api_management" "res-1" {
     triple_des_ciphers_enabled                          = false
   }
 }
+
 resource "azurerm_api_management_api" "res-2" {
   api_management_name   = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_type              = "http"
@@ -100,6 +89,7 @@ resource "azurerm_api_management_api" "res-2" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_api_operation" "res-3" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -116,6 +106,7 @@ resource "azurerm_api_management_api_operation" "res-3" {
     azurerm_api_management_api.res-2,
   ]
 }
+
 resource "azurerm_api_management_api_operation_policy" "res-4" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -126,6 +117,7 @@ resource "azurerm_api_management_api_operation_policy" "res-4" {
     azurerm_api_management_api_operation.res-3,
   ]
 }
+
 resource "azurerm_api_management_api_operation" "res-5" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -142,6 +134,7 @@ resource "azurerm_api_management_api_operation" "res-5" {
     azurerm_api_management_api.res-2,
   ]
 }
+
 resource "azurerm_api_management_api_operation_policy" "res-6" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -152,6 +145,7 @@ resource "azurerm_api_management_api_operation_policy" "res-6" {
     azurerm_api_management_api_operation.res-5,
   ]
 }
+
 resource "azurerm_api_management_api_policy" "res-7" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -161,6 +155,7 @@ resource "azurerm_api_management_api_policy" "res-7" {
     azurerm_api_management_api.res-2,
   ]
 }
+
 resource "azurerm_api_management_backend" "res-8" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   description         = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
@@ -180,6 +175,7 @@ resource "azurerm_api_management_backend" "res-8" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_diagnostic" "res-9" {
   always_log_errors        = false
   api_management_logger_id = azurerm_api_management_logger.res-16.id
@@ -209,6 +205,7 @@ resource "azurerm_api_management_diagnostic" "res-9" {
     }
   }
 }
+
 resource "azurerm_api_management_group_user" "res-12" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   group_name          = "administrators"
@@ -218,6 +215,7 @@ resource "azurerm_api_management_group_user" "res-12" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_group_user" "res-14" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   group_name          = "developers"
@@ -227,6 +225,7 @@ resource "azurerm_api_management_group_user" "res-14" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_logger" "res-16" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   buffered            = true
@@ -240,6 +239,7 @@ resource "azurerm_api_management_logger" "res-16" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_named_value" "res-17" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   display_name        = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01-key"
@@ -252,10 +252,12 @@ resource "azurerm_api_management_named_value" "res-17" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_api_management_policy" "res-25" {
   api_management_id = azurerm_api_management.res-1.id
   xml_content       = "<!--\r\n    IMPORTANT:\r\n    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n    - Only the <forward-request> policy element can appear within the <backend> section element.\r\n    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n    - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n    - To remove a policy, delete the corresponding policy statement from the policy document.\r\n    - Policies are applied in the order of their appearance, from the top down.\r\n-->\r\n<policies>\r\n\t<inbound></inbound>\r\n\t<backend>\r\n\t\t<forward-request />\r\n\t</backend>\r\n\t<outbound></outbound>\r\n</policies>"
 }
+
 resource "azurerm_api_management_subscription" "res-29" {
   allow_tracing       = false
   api_id              = azurerm_api_management_api_policy.res-7.id
@@ -268,6 +270,7 @@ resource "azurerm_api_management_subscription" "res-29" {
   subscription_id     = "${var.subscription_prefix}${var.environment_prefix}sub-${local.location_prefix}-sis-sub-01"
   user_id             = azurerm_api_management_user.res-44.id
 }
+
 resource "azurerm_api_management_user" "res-44" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   email               = "isaac.NAYLOR@education.gov.uk"
@@ -282,6 +285,7 @@ resource "azurerm_api_management_user" "res-44" {
     azurerm_api_management.res-1,
   ]
 }
+
 resource "azurerm_cdn_frontdoor_profile" "res-45" {
   name                     = "${var.subscription_prefix}${var.environment_prefix}afd-${local.location_prefix}-frontdoor-01"
   resource_group_name      = azurerm_resource_group.res-0.name
@@ -297,6 +301,7 @@ resource "azurerm_cdn_frontdoor_profile" "res-45" {
     type         = "UserAssigned"
   }
 }
+
 resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
   enabled                  = true
@@ -307,6 +312,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
     "Service Offering" = ""
   }
 }
+
 resource "azurerm_cdn_frontdoor_route" "res-47" {
   cdn_frontdoor_custom_domain_ids = []
   cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.res-46.id
@@ -321,6 +327,7 @@ resource "azurerm_cdn_frontdoor_route" "res-47" {
   patterns_to_match               = ["/*"]
   supported_protocols             = ["Http", "Https"]
 }
+
 resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
   name                                                      = "default-origin-group-5b5349a1"
@@ -338,6 +345,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
     successful_samples_required        = 3
   }
 }
+
 resource "azurerm_cdn_frontdoor_origin" "res-49" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-48.id
   certificate_name_check_enabled = true
@@ -356,6 +364,7 @@ resource "azurerm_cdn_frontdoor_origin" "res-49" {
     target_type            = "web"
   }
 }
+
 resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
@@ -373,6 +382,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
     successful_samples_required        = 3
   }
 }
+
 resource "azurerm_cdn_frontdoor_origin" "res-51" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-50.id
   certificate_name_check_enabled = true
@@ -385,6 +395,7 @@ resource "azurerm_cdn_frontdoor_origin" "res-51" {
   priority                       = 1
   weight                         = 1000
 }
+
 resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-runtime-data-01"
@@ -402,6 +413,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
     successful_samples_required        = 3
   }
 }
+
 resource "azurerm_cdn_frontdoor_origin" "res-53" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-52.id
   certificate_name_check_enabled = true
@@ -414,10 +426,12 @@ resource "azurerm_cdn_frontdoor_origin" "res-53" {
   priority                       = 1
   weight                         = 1000
 }
+
 resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
   name                     = "MapApiRequestToApim"
 }
+
 resource "azurerm_cdn_frontdoor_rule" "res-55" {
   behavior_on_match         = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-54.id
@@ -446,10 +460,12 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
     }
   }
 }
+
 resource "azurerm_cdn_frontdoor_rule_set" "res-56" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
   name                     = "MapDataRequestToRuntimeContainer"
 }
+
 resource "azurerm_cdn_frontdoor_rule" "res-57" {
   behavior_on_match         = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
@@ -478,6 +494,7 @@ resource "azurerm_cdn_frontdoor_rule" "res-57" {
     }
   }
 }
+
 resource "azurerm_private_endpoint" "res-58" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
   location                      = var.region

@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "azurerm"
-      version = "4.80.0"
-    }
-  }
-}
-provider "azurerm" {
-  features {}
-}
 resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-runtime"
@@ -17,6 +6,7 @@ resource "azurerm_resource_group" "res-0" {
     Product     = "Childcare Platform"
   }
 }
+
 resource "azurerm_storage_account" "res-2" {
   access_tier                       = "Hot"
   account_kind                      = "StorageV2"
@@ -63,24 +53,28 @@ resource "azurerm_storage_account" "res-2" {
     }
   }
 }
+
 resource "azurerm_storage_container" "res-4" {
   container_access_type = "private"
   metadata              = {}
   name                  = "azure-webjobs-hosts"
   storage_account_id    = azurerm_storage_account.res-2.id
 }
+
 resource "azurerm_storage_container" "res-5" {
   container_access_type = "private"
   metadata              = {}
   name                  = "azure-webjobs-secrets"
   storage_account_id    = azurerm_storage_account.res-2.id
 }
+
 resource "azurerm_storage_container" "res-6" {
   container_access_type = "private"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
   storage_account_id    = azurerm_storage_account.res-2.id
 }
+
 resource "azurerm_service_plan" "res-10" {
   location                        = var.region
   maximum_elastic_worker_count    = 1
@@ -97,6 +91,7 @@ resource "azurerm_service_plan" "res-10" {
   }
   zone_balancing_enabled = false
 }
+
 resource "azurerm_function_app_flex_consumption" "res-11" {
   app_settings                       = {}
   client_certificate_enabled         = false
@@ -155,6 +150,7 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
     }
   }
 }
+
 resource "azurerm_function_app_function" "res-15" {
   config_json = jsonencode({
     bindings = [{
@@ -174,6 +170,7 @@ resource "azurerm_function_app_function" "res-15" {
   function_app_id = azurerm_function_app_flex_consumption.res-11.id
   name            = "health"
 }
+
 resource "azurerm_function_app_function" "res-16" {
   config_json = jsonencode({
     bindings = [{
@@ -193,6 +190,7 @@ resource "azurerm_function_app_function" "res-16" {
   function_app_id = azurerm_function_app_flex_consumption.res-11.id
   name            = "spatial-query"
 }
+
 resource "azurerm_app_service_custom_hostname_binding" "res-17" {
   app_service_name    = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
   hostname            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01-gqergngzg3hwcdcw.uksouth-01.azurewebsites.net"
@@ -201,6 +199,7 @@ resource "azurerm_app_service_custom_hostname_binding" "res-17" {
     azurerm_function_app_flex_consumption.res-11,
   ]
 }
+
 resource "azurerm_monitor_action_group" "res-18" {
   enabled             = true
   location            = "global"
@@ -223,6 +222,7 @@ resource "azurerm_monitor_action_group" "res-18" {
     use_common_alert_schema = true
   }
 }
+
 resource "azurerm_application_insights" "res-19" {
   application_type                     = "web"
   daily_data_cap_in_gb                 = 100

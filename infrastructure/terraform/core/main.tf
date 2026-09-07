@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "azurerm"
-      version = "4.80.0"
-    }
-  }
-}
-provider "azurerm" {
-  features {}
-}
 resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-core"
@@ -18,6 +7,7 @@ resource "azurerm_resource_group" "res-0" {
     "Service Offering" = "Childcare Platform"
   }
 }
+
 resource "azurerm_network_security_group" "res-1" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-nsg-01"
@@ -29,6 +19,7 @@ resource "azurerm_network_security_group" "res-1" {
     "Service Offering" = "Childcare Platform"
   }
 }
+
 resource "azurerm_virtual_network" "res-2" {
   address_space                  = ["10.226.188.0/25"]
   dns_servers                    = ["10.210.64.4", "10.210.64.5"]
@@ -42,6 +33,7 @@ resource "azurerm_virtual_network" "res-2" {
     "Service Offering" = "Childcare Platform"
   }
 }
+
 resource "azurerm_subnet" "res-3" {
   address_prefixes                              = ["10.226.188.96/28"]
   default_outbound_access_enabled               = false
@@ -63,10 +55,12 @@ resource "azurerm_subnet" "res-3" {
     azurerm_virtual_network.res-2,
   ]
 }
+
 resource "azurerm_subnet_network_security_group_association" "res-4" {
   network_security_group_id = azurerm_network_security_group.res-1.id
   subnet_id                 = azurerm_subnet.res-3.id
 }
+
 resource "azurerm_subnet" "res-5" {
   address_prefixes                              = ["10.226.188.0/26"]
   default_outbound_access_enabled               = false
@@ -81,10 +75,12 @@ resource "azurerm_subnet" "res-5" {
     azurerm_virtual_network.res-2,
   ]
 }
+
 resource "azurerm_subnet_network_security_group_association" "res-6" {
   network_security_group_id = azurerm_network_security_group.res-1.id
   subnet_id                 = azurerm_subnet.res-5.id
 }
+
 resource "azurerm_subnet" "res-7" {
   address_prefixes                              = ["10.226.188.64/27"]
   default_outbound_access_enabled               = false
@@ -99,10 +95,12 @@ resource "azurerm_subnet" "res-7" {
     azurerm_virtual_network.res-2,
   ]
 }
+
 resource "azurerm_subnet_network_security_group_association" "res-8" {
   network_security_group_id = azurerm_network_security_group.res-1.id
   subnet_id                 = azurerm_subnet.res-7.id
 }
+
 resource "azurerm_subnet" "res-9" {
   address_prefixes                              = ["10.226.188.112/28"]
   default_outbound_access_enabled               = false
@@ -124,10 +122,12 @@ resource "azurerm_subnet" "res-9" {
     azurerm_virtual_network.res-2,
   ]
 }
+
 resource "azurerm_subnet_network_security_group_association" "res-10" {
   network_security_group_id = azurerm_network_security_group.res-1.id
   subnet_id                 = azurerm_subnet.res-9.id
 }
+
 resource "azurerm_virtual_network_peering" "res-11" {
   allow_forwarded_traffic                = false
   allow_gateway_transit                  = false
