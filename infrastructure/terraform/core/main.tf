@@ -129,6 +129,7 @@ resource "azurerm_subnet_network_security_group_association" "res-10" {
 }
 
 resource "azurerm_virtual_network_peering" "res-11" {
+  count                                  = var.remote_virtual_network_id != null ? 1 : 0
   allow_forwarded_traffic                = false
   allow_gateway_transit                  = false
   allow_virtual_network_access           = true
@@ -137,7 +138,7 @@ resource "azurerm_virtual_network_peering" "res-11" {
   only_ipv6_peering_enabled              = false
   peer_complete_virtual_networks_enabled = true
   remote_subnet_names                    = []
-  remote_virtual_network_id              = "/subscriptions/9b3161b2-387b-4b46-9a3d-eebfcbdc165d/resourceGroups/RG_h101p01hub-uks-con01_25635592-a404-41e5-9f35-864f9de6feb7/providers/Microsoft.Network/virtualNetworks/HV_h101p01hub-uks-con01_cb4ae2a3-d0b8-40f9-83c8-f92ca723be32"
+  remote_virtual_network_id              = var.remote_virtual_network_id
   resource_group_name                    = azurerm_resource_group.res-0.name
   use_remote_gateways                    = true
   virtual_network_name                   = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
