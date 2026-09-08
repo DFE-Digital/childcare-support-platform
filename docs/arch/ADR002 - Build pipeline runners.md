@@ -18,7 +18,7 @@
     In a few sentences, describe the decision taken. 
 -->
 
-The decision has been made to go with Option 2 (Self-hosted runners).
+The decision has been made to go with Option 1 (Self-hosted runners) for now. If there is a decision made by the DfE to allow the Github hosted runners, then we will likely switch to Option 2.
 
 The reason for this decision, is that we do not have a timeline on when we would have Github hosted runners made available to us, and using self-hosted runners will prevent us from getting blocked by another team for this piece of work.
 
@@ -69,17 +69,7 @@ This means that we need to ensure the actions runner is able to access the data 
     etc.
 -->
 
-### Option 1 - Github hosted runners
-
-Positives:
-
-- Github hosted runners require little to no maintenance
-
-Negatives:
-
-- This requires collaboration with the wider DfE Digital Tools / Infrastructure teams, to co-ordinate the configuration 
-
-### Option 2 - Self-hosted runners
+### Option 1 - Self-hosted runners
 
 Positives:
 
@@ -88,6 +78,16 @@ Positives:
 Negatives:
 
 - Requires more set-up / overall maintenance time
+
+### Option 2 - Github hosted runners
+
+Positives:
+
+- Github hosted runners require little to no maintenance
+
+Negatives:
+
+- This requires collaboration with the wider DfE Digital Tools / Infrastructure teams, to co-ordinate the configuration 
 
 ## Advice
 
@@ -99,7 +99,7 @@ Negatives:
     members or stakeholders who will be affected by the decision.
 -->
 
-John Carter suggested that the Github Hosted Runners (Option 1) would be the sensible option to go with, and this is our preferred implementation.
+John Carter suggested that the Github Hosted Runners (Option 2) would be the sensible option to go with, and this is our preferred implementation.
 However, he also advised that the lead-time on getting Github Hosted Runners would be quite long, as it is a decision that must be made by the DfE Enterprise Team.
 
-Pradeep Neelakandan has advised the team to go with Self-Hosted (Option 2), at least until a formal decision is made by the enterprise team.
+Pradeep Neelakandan has advised the team to go with Self-Hosted (Option 1), at least until a formal decision is made by the enterprise team.
