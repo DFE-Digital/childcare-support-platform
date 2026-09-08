@@ -47,9 +47,3 @@ variable "region" {
   description = "Azure region for resources that follow the primary deployment region (e.g. \"uksouth\"). The ukwest API Management instance is not parameterised by this variable."
   type        = string
 }
-
-variable "application_insights_instrumentation_key" {
-  description = "Instrumentation key of the runtime module's Application Insights resource, used by the API Management logger."
-  type        = string
-  sensitive   = true
-}

@@ -176,70 +176,6 @@ resource "azurerm_api_management_backend" "res-8" {
   ]
 }
 
-resource "azurerm_api_management_diagnostic" "res-9" {
-  always_log_errors        = false
-  api_management_logger_id = azurerm_api_management_logger.res-16.id
-  api_management_name      = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
-  identifier               = "azuremonitor"
-  log_client_ip            = true
-  resource_group_name      = azurerm_resource_group.res-0.name
-  sampling_percentage      = 100
-  backend_request {
-    body_bytes     = 0
-    headers_to_log = []
-    data_masking {
-      query_params {
-        mode  = "Hide"
-        value = "*"
-      }
-    }
-  }
-  frontend_request {
-    body_bytes     = 0
-    headers_to_log = []
-    data_masking {
-      query_params {
-        mode  = "Hide"
-        value = "*"
-      }
-    }
-  }
-}
-
-resource "azurerm_api_management_group_user" "res-12" {
-  api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
-  group_name          = "administrators"
-  resource_group_name = azurerm_resource_group.res-0.name
-  user_id             = "1"
-  depends_on = [
-    azurerm_api_management.res-1,
-  ]
-}
-
-resource "azurerm_api_management_group_user" "res-14" {
-  api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
-  group_name          = "developers"
-  resource_group_name = azurerm_resource_group.res-0.name
-  user_id             = "1"
-  depends_on = [
-    azurerm_api_management.res-1,
-  ]
-}
-
-resource "azurerm_api_management_logger" "res-16" {
-  api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
-  buffered            = true
-  description         = ""
-  name                = "azuremonitor"
-  resource_group_name = azurerm_resource_group.res-0.name
-  application_insights {
-    instrumentation_key = var.application_insights_instrumentation_key
-  }
-  depends_on = [
-    azurerm_api_management.res-1,
-  ]
-}
-
 resource "azurerm_api_management_named_value" "res-17" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   display_name        = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01-key"
@@ -268,22 +204,7 @@ resource "azurerm_api_management_subscription" "res-29" {
   secondary_key       = "" # Masked sensitive attribute
   state               = "active"
   subscription_id     = "${var.subscription_prefix}${var.environment_prefix}sub-${local.location_prefix}-sis-sub-01"
-  user_id             = azurerm_api_management_user.res-44.id
-}
-
-resource "azurerm_api_management_user" "res-44" {
-  api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
-  email               = "isaac.NAYLOR@education.gov.uk"
-  first_name          = "Administrator"
-  last_name           = "Administrator" # TODO: placeholder, real value was blank on export
-  note                = ""
-  password            = "" # Masked sensitive attribute
-  resource_group_name = azurerm_resource_group.res-0.name
-  state               = "active"
-  user_id             = "1"
-  depends_on = [
-    azurerm_api_management.res-1,
-  ]
+  user_id             = "${azurerm_api_management.res-1.id}/users/1"
 }
 
 resource "azurerm_cdn_frontdoor_profile" "res-45" {
@@ -353,7 +274,7 @@ resource "azurerm_cdn_frontdoor_origin" "res-49" {
   host_name                      = var.storage_primary_web_host
   http_port                      = 80
   https_port                     = 443
-  name                           = "default-origin"
+  name                           = "staticweb"
   origin_host_header             = var.storage_primary_web_host
   priority                       = 1
   weight                         = 1000

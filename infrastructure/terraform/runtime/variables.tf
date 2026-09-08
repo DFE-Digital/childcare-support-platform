@@ -23,11 +23,6 @@ variable "azf_identity_id" {
   type        = string
 }
 
-variable "log_analytics_workspace_id" {
-  description = "ID of the (externally managed) Log Analytics workspace used by Application Insights. Not created by this configuration, so it must be supplied."
-  type        = string
-}
-
 variable "unique_suffix" {
   description = "Random 4-hex-digit suffix used to keep globally-unique resource names (e.g. the storage account) unique across deployments."
   type        = string

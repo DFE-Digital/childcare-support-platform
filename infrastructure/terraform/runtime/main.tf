@@ -108,6 +108,7 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   runtime_name                       = "custom"
   runtime_version                    = "1.0"
   service_plan_id                    = azurerm_service_plan.res-10.id
+  storage_access_key                 = azurerm_storage_account.res-2.primary_access_key
   storage_authentication_type        = "StorageAccountConnectionString"
   storage_container_endpoint         = "https://${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}.blob.core.windows.net/${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
   storage_container_type             = "blobContainer"
@@ -117,7 +118,12 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
     "Service Offering"                       = ""
     "hidden-link: /app-insights-resource-id" = azurerm_application_insights.res-19.id
   }
-  webdeploy_publish_basic_authentication_enabled = false
+  # TODO: basic auth is only enabled to allow zip_deploy_file below to publish the
+  # placeholder handler. Once real code deployment moves to CI/CD (e.g. az functionapp
+  # deployment or GitHub Actions with an Entra/OIDC service principal), set this back
+  # to false and remove zip_deploy_file.
+  webdeploy_publish_basic_authentication_enabled = true
+  zip_deploy_file                                = data.archive_file.placeholder_handler.output_path
   identity {
     identity_ids = [var.azf_identity_id]
     type         = "UserAssigned"
@@ -130,74 +136,25 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
     container_registry_use_managed_identity = false
     default_documents                       = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php"]
     elastic_instance_minimum                = 0
-    health_check_path                       = ""
-    http2_enabled                           = false
-    load_balancing_mode                     = "LeastRequests"
-    managed_pipeline_mode                   = "Integrated"
-    minimum_tls_version                     = "1.2"
-    remote_debugging_enabled                = false
-    remote_debugging_version                = "VS2022"
-    runtime_scale_monitoring_enabled        = false
-    scm_minimum_tls_version                 = "1.2"
-    scm_use_main_ip_restriction             = false
-    use_32_bit_worker                       = false
-    vnet_route_all_enabled                  = false
-    websockets_enabled                      = false
-    worker_count                            = 1
+    #health_check_path                       = ""
+    http2_enabled                    = false
+    load_balancing_mode              = "LeastRequests"
+    managed_pipeline_mode            = "Integrated"
+    minimum_tls_version              = "1.2"
+    remote_debugging_enabled         = false
+    remote_debugging_version         = "VS2022"
+    runtime_scale_monitoring_enabled = false
+    scm_minimum_tls_version          = "1.2"
+    scm_use_main_ip_restriction      = false
+    use_32_bit_worker                = false
+    vnet_route_all_enabled           = false
+    websockets_enabled               = false
+    worker_count                     = 1
     cors {
       allowed_origins     = ["https://portal.azure.com"]
       support_credentials = true
     }
   }
-}
-
-resource "azurerm_function_app_function" "res-15" {
-  config_json = jsonencode({
-    bindings = [{
-      authLevel = "anonymous"
-      direction = "in"
-      methods   = ["get"]
-      name      = "req"
-      route     = "health"
-      type      = "httpTrigger"
-      }, {
-      direction = "out"
-      name      = "res"
-      type      = "http"
-    }]
-  })
-  enabled         = true
-  function_app_id = azurerm_function_app_flex_consumption.res-11.id
-  name            = "health"
-}
-
-resource "azurerm_function_app_function" "res-16" {
-  config_json = jsonencode({
-    bindings = [{
-      authLevel = "anonymous"
-      direction = "in"
-      methods   = ["get"]
-      name      = "req"
-      route     = "api/spatial-query"
-      type      = "httpTrigger"
-      }, {
-      direction = "out"
-      name      = "res"
-      type      = "http"
-    }]
-  })
-  enabled         = true
-  function_app_id = azurerm_function_app_flex_consumption.res-11.id
-  name            = "spatial-query"
-}
-
-resource "azurerm_app_service_custom_hostname_binding" "res-17" {
-  app_service_name    = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
-  hostname            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01-gqergngzg3hwcdcw.uksouth-01.azurewebsites.net"
-  resource_group_name = azurerm_resource_group.res-0.name
-  depends_on = [
-    azurerm_function_app_flex_consumption.res-11,
-  ]
 }
 
 resource "azurerm_monitor_action_group" "res-18" {
@@ -223,6 +180,18 @@ resource "azurerm_monitor_action_group" "res-18" {
   }
 }
 
+resource "azurerm_log_analytics_workspace" "res-20" {
+  location            = var.region
+  name                = "${var.subscription_prefix}${var.environment_prefix}law-${local.location_prefix}-runtime-01"
+  resource_group_name = azurerm_resource_group.res-0.name
+  retention_in_days   = 30
+  sku                 = "PerGB2018"
+  tags = {
+    Environment = "Dev"
+    Product     = "Childcare Platform"
+  }
+}
+
 resource "azurerm_application_insights" "res-19" {
   application_type                     = "web"
   daily_data_cap_in_gb                 = 100
@@ -242,5 +211,5 @@ resource "azurerm_application_insights" "res-19" {
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
-  workspace_id = var.log_analytics_workspace_id
+  workspace_id = azurerm_log_analytics_workspace.res-20.id
 }

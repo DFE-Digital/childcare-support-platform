@@ -13,7 +13,8 @@ variable "region" {
   type        = string
 }
 
-variable "log_analytics_workspace_id" {
-  description = "ID of the (externally managed) Log Analytics workspace used by Application Insights. Not created by this configuration, so it must be supplied."
+variable "remote_virtual_network_id" {
+  description = "ID of a remote (hub) virtual network to peer the core vnet with. When null, no peering is created."
   type        = string
+  default     = null
 }

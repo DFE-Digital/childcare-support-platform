@@ -1,9 +1,10 @@
 module "core" {
   source = "./core"
 
-  subscription_prefix = var.subscription_prefix
-  environment_prefix  = var.environment_prefix
-  region              = var.region
+  subscription_prefix       = var.subscription_prefix
+  environment_prefix        = var.environment_prefix
+  region                    = var.region
+  remote_virtual_network_id = var.remote_virtual_network_id
 }
 
 module "edge" {
@@ -19,20 +20,17 @@ module "edge" {
   storage_account_name      = module.storage.storage_account_name
   storage_primary_web_host  = module.storage.primary_web_host
   storage_primary_blob_host = module.storage.primary_blob_host
-
-  application_insights_instrumentation_key = module.runtime.application_insights_instrumentation_key
 }
 
 module "runtime" {
   source = "./runtime"
 
-  subscription_prefix        = var.subscription_prefix
-  environment_prefix         = var.environment_prefix
-  region                     = var.region
-  api_management_api_id      = module.edge.api_management_api_id
-  azf_identity_id            = module.security.azf_identity_id
-  log_analytics_workspace_id = var.log_analytics_workspace_id
-  unique_suffix              = random_id.unique_suffix.hex
+  subscription_prefix   = var.subscription_prefix
+  environment_prefix    = var.environment_prefix
+  region                = var.region
+  api_management_api_id = module.edge.api_management_api_id
+  azf_identity_id       = module.security.azf_identity_id
+  unique_suffix         = random_id.unique_suffix.hex
 }
 
 module "security" {
