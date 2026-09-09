@@ -20,6 +20,7 @@ Please note that not all technical decisions are architectural decisions. An arc
 
 ## Summary of ADRs
 
-| ID     | Title                                                                                    |
-| ------ | ----------------------------------------------------------------------------------------- |
+| ID     | Title                                                                                         |
+| ------ | --------------------------------------------------------------------------------------------- |
 | ADR001 | [Azure API Boundary and APIM Approach](./ADR001%20-%20Azure-API-Boundary-and-API-Approach.md) |
+| ADR002 | [Build pipeline runners](./ADR002%20-%20Build%20pipeline%20runners.md)                        |
