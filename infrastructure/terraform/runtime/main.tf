@@ -123,7 +123,6 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   # deployment or GitHub Actions with an Entra/OIDC service principal), set this back
   # to false and remove zip_deploy_file.
   webdeploy_publish_basic_authentication_enabled = true
-  zip_deploy_file                                = data.archive_file.placeholder_handler.output_path
   identity {
     identity_ids = [var.azf_identity_id]
     type         = "UserAssigned"
