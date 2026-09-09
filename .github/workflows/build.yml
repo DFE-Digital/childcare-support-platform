@@ -1,8 +1,19 @@
 name: build
 
 on:
-  workflow_call:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_STORAGE_CONNECTION_STRING:
+        required: true
+      AZURE_SOURCE_DATA_CONTAINER_NAME:
+        required: true
 
 jobs:
   build:
@@ -23,18 +34,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Set environment config
-        id: config
-        run: |
-          echo "source_data=s288d01bc-uks-source-data-01" >> $GITHUB_OUTPUT
-
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data
 
           az storage copy \
             --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-            --source-container "${{ steps.config.outputs.source_data }}" \
+            --source-container "${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}" \
             --source-blob "app/" \
             --destination exported_data/ \
             --recursive
