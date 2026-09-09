@@ -6,6 +6,7 @@ name: Build Infrastructure
 # on to call Deploy Environment (i.e. main).
 
 on:
+  push:
   workflow_dispatch:
   workflow_call:
     inputs:
