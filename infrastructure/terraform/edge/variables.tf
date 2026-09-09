@@ -47,3 +47,8 @@ variable "region" {
   description = "Azure region for resources that follow the primary deployment region (e.g. \"uksouth\"). The ukwest API Management instance is not parameterised by this variable."
   type        = string
 }
+
+variable "function_app_default_hostname" {
+  description = "Real, Azure-assigned default hostname of the runtime module's function app, used by APIM's backend."
+  type        = string
+}

@@ -150,7 +150,35 @@ resource "azurerm_api_management_api_policy" "res-7" {
   api_management_name = "${var.subscription_prefix}${var.environment_prefix}apim-ukw-sis-management-01"
   api_name            = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
   resource_group_name = azurerm_resource_group.res-0.name
-  xml_content         = "<!--\r\n    - Policies are applied in the order they appear.\r\n    - Position <base/> inside a section to inherit policies from the outer scope.\r\n    - Comments within policies are not preserved.\r\n-->\r\n<!-- Add policies as children to the <inbound>, <outbound>, <backend>, and <on-error> elements -->\r\n<policies>\r\n\t<!-- Throttle, authorize, validate, cache, or transform the requests -->\r\n\t<inbound>\r\n\t\t<check-header name=\"X-Azure-FDID\" failed-check-httpcode=\"403\" failed-check-error-message=\"Invalid request.\" ignore-case=\"false\">\r\n\t\t\t<value>e6d21cd4-cfca-4957-9f37-4bd04b90b6d8</value>\r\n\t\t</check-header>\r\n\t\t<base />\r\n\t</inbound>\r\n\t<!-- Control if and how the requests are forwarded to services  -->\r\n\t<backend>\r\n\t\t<base />\r\n\t</backend>\r\n\t<!-- Customize the responses -->\r\n\t<outbound>\r\n\t\t<base />\r\n\t</outbound>\r\n\t<!-- Handle exceptions and customize error responses  -->\r\n\t<on-error>\r\n\t\t<base />\r\n\t</on-error>\r\n</policies>"
+  xml_content         = <<-XML
+    <!--
+        - Policies are applied in the order they appear.
+        - Position <base/> inside a section to inherit policies from the outer scope.
+        - Comments within policies are not preserved.
+    -->
+    <!-- Add policies as children to the <inbound>, <outbound>, <backend>, and <on-error> elements -->
+    <policies>
+    	<!-- Throttle, authorize, validate, cache, or transform the requests -->
+    	<inbound>
+    		<check-header name="X-Azure-FDID" failed-check-httpcode="403" failed-check-error-message="Invalid request." ignore-case="false">
+    			<value>${azurerm_cdn_frontdoor_profile.res-45.resource_guid}</value>
+    		</check-header>
+    		<base />
+    	</inbound>
+    	<!-- Control if and how the requests are forwarded to services  -->
+    	<backend>
+    		<base />
+    	</backend>
+    	<!-- Customize the responses -->
+    	<outbound>
+    		<base />
+    	</outbound>
+    	<!-- Handle exceptions and customize error responses  -->
+    	<on-error>
+    		<base />
+    	</on-error>
+    </policies>
+    XML
   depends_on = [
     azurerm_api_management_api.res-2,
   ]
@@ -163,7 +191,7 @@ resource "azurerm_api_management_backend" "res-8" {
   protocol            = "http"
   resource_group_name = azurerm_resource_group.res-0.name
   resource_id         = "https://management.azure.com/subscriptions/${data.azurerm_client_config.current.subscription_id}/resourceGroups/${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-runtime/providers/Microsoft.Web/sites/${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
-  url                 = "https://${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01-gqergngzg3hwcdcw.uksouth-01.azurewebsites.net"
+  url                 = "https://${var.function_app_default_hostname}"
   credentials {
     certificate = []
     header = {
