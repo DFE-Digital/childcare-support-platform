@@ -44,7 +44,7 @@ jobs:
           cp -r ./exported_data/app ./.docker-data/
 
       - name: Setup docker buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build bsil-test image
         run: |
