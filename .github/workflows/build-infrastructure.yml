@@ -6,8 +6,22 @@ name: Build Infrastructure
 # on to call Deploy Environment (i.e. main).
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      infra-directory:
+        required: true
+        type: string
+        default: "infrastructure"
+
+      terraform-version:
+        required: false
+        type: string
+        default: "1.9.8"
+
+      publish:
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       infra-directory:
