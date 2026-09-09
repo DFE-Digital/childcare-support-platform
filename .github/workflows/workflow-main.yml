@@ -31,6 +31,7 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      AZURE_SOURCE_DATA_CONTAINER_NAME: ${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}
 
   build-infra:
     name: Build Infrastructure
