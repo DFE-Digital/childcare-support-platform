@@ -68,6 +68,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     cargo build --release --target x86_64-unknown-linux-musl --bin sis-query && \
     cp target/x86_64-unknown-linux-musl/release/sis-query /usr/local/bin/sis-query-lambda
 
+
 # Test stage — gate production on tests passing
 FROM builder AS test
 COPY --from=sis-builder /usr/local/bin/sis-geometry /usr/local/bin/

@@ -28,7 +28,7 @@ async fn main() {
             lambda_http::run(app).await.expect("Lambda runtime error");
         }
         ApiType::Http => {
-            let port = std::env::var("SIS_PORT").unwrap_or_else(|_| "3001".into());
+            let port = std::env::var("FUNCTIONS_CUSTOMHANDLER_PORT").unwrap_or_else(|_| "3001".into());
             let addr = format!("0.0.0.0:{port}");
             let listener = tokio::net::TcpListener::bind(&addr)
                 .await
