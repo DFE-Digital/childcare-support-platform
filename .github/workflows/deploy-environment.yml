@@ -25,6 +25,10 @@ jobs:
       id-token: write
       contents: read
       actions: read
+
+    defaults:
+      run:
+        working-directory: ./infrastructure/terraform
     
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -33,8 +37,28 @@ jobs:
       ARM_USE_OIDC: true
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Download Infra Metadata
+      uses: actions/download-artifact@v8
+      with:
+        name: build-infra-metadata
+        path: .
+    
+    - name: Read Terraform Version
+      id: tf-version
+      working-directory: .
+      run: |
+        VERSION=$(jq -r .terraform build-infra-metadata.json)
+        echo "TF_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+    - name: Download Infra Package
+      uses: actions/download-artifact@v8
+      with:
+        name: infra-package
+        path: ./infrastructure
+
+    - name: Unzip Infra Package
+      run: unzip -o infra-package.zip
+      working-directory: ./infrastructure    
       
     - name: Azure Login (OIDC)
       uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca
@@ -64,6 +88,12 @@ jobs:
         echo "Resource Group: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}"
         echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
 
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+      with:
+        terraform_wrapper: false
+        terraform_version: ${{ env.TF_VERSION }}
+
     - name: Unlock Terraform State
       working-directory: ./infrastructure
       env:
@@ -74,7 +104,19 @@ jobs:
         chmod +x scripts/manage-storage-access.sh
         ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
 
-    - name: Test Lock Terraform State
+    - name: Terraform Init
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=${{ steps.bootstrap-tf.outputs.resourceGroupName }}" \
+          -backend-config="storage_account_name=${{ steps.bootstrap-tf.outputs.storageAccountName }}"
+
+    - name: Terraform Plan
+      run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars"
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve main.tfplan
+
+    - name: Lock Terraform State
       if: ${{ always() }}
       working-directory: ./infrastructure
       env:
@@ -86,6 +128,9 @@ jobs:
         ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
 
     # web app deploy steps TBC
+
+    # Publish deployment summary
+
 
     
 

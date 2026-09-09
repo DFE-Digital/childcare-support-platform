@@ -1,0 +1,171 @@
+name: Build Infrastructure
+
+# Reusable workflow: run on every push (PR + main) as a CI gate for the
+# Terraform. Only publishes the infra package + build metadata when
+# `publish: true`, which workflow-main should only pass on runs that go
+# on to call Deploy Environment (i.e. main).
+
+on:
+  workflow_call:
+    inputs:
+      infra-directory:
+        required: true
+        type: string
+        default: "infrastructure"
+
+      terraform-version:
+        required: false
+        type: string
+        default: "1.9.8"
+
+      publish:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  infrastructure:
+    name: CI checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Init summary state
+        run: |
+          echo "TF_FMT=unknown" >> $GITHUB_ENV
+          echo "TF_VALIDATE=unknown" >> $GITHUB_ENV
+          echo "PACKAGE=skipped" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_version: ${{ inputs.terraform-version }}
+
+      - name: Generate build metadata
+        env:
+          G_SHA: ${{ github.sha }}
+          G_REF: ${{ github.ref_name }}
+          G_RUN_ID: ${{ github.run_id }}
+        run: |
+          TERRAFORM_VERSION=$(terraform version -json | jq -r .terraform_version)
+
+          jq -n \
+            --arg commit "$G_SHA" \
+            --arg branch "$G_REF" \
+            --arg buildDate "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+            --arg terraform "$TERRAFORM_VERSION" \
+            --arg runId "$G_RUN_ID" \
+            '{commit: $commit, branch: $branch, buildDate: $buildDate, terraform: $terraform, runId: $runId}' \
+            > build-infra-metadata.json
+
+      - name: Terraform Init
+        run: terraform init -input=false -backend=false
+        working-directory: ${{ inputs.infra-directory }}/terraform
+
+      - name: Terraform Format check
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ${{ inputs.infra-directory }}/terraform
+
+      - name: Record fmt result
+        if: always()
+        env:
+          FMT_OUTCOME: ${{ steps.fmt.outcome }}
+        run: |
+          if [ "$FMT_OUTCOME" = "success" ]; then
+            echo "TF_FMT=passed" >> $GITHUB_ENV
+          else
+            echo "TF_FMT=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+        working-directory: ${{ inputs.infra-directory }}/terraform
+
+      - name: Record validate result
+        if: always()
+        env:
+          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}
+        run: |
+          if [ "$VALIDATE_OUTCOME" = "success" ]; then
+            echo "TF_VALIDATE=passed" >> $GITHUB_ENV
+          else
+            echo "TF_VALIDATE=failed" >> $GITHUB_ENV
+          fi
+
+      - name: Upload metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-infra-metadata
+          path: build-infra-metadata.json
+
+      # Deploy Environment expects this artifact under the name
+      # "infra-package", unzipped straight into ./infra — matches the
+      # `Download Infra Package` + `Unzip Infra Package` steps there.
+      - name: Create infrastructure package
+        if: inputs.publish
+        working-directory: ${{ inputs.infra-directory }}
+        run: |
+          zip -r infra-package.zip .
+
+      - name: Record package status
+        if: always()
+        env:
+          PUBLISH: ${{ inputs.publish }}
+        run: |
+          if [ "$PUBLISH" = "true" ]; then
+            echo "PACKAGE=created" >> $GITHUB_ENV
+          else
+            echo "PACKAGE=skipped" >> $GITHUB_ENV
+          fi
+
+      - name: Upload infra package
+        if: inputs.publish
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-package
+          path: ${{ inputs.infra-directory }}/infra-package.zip
+
+      - name: Add summary
+        if: always()
+        run: |
+          fmt_icon="❔"
+          validate_icon="❔"
+          package_icon="❔"
+
+          if [ "$TF_FMT" = "passed" ]; then fmt_icon="✅"
+          elif [ "$TF_FMT" = "failed" ]; then fmt_icon="❌"
+          fi
+
+          if [ "$TF_VALIDATE" = "passed" ]; then validate_icon="✅"
+          elif [ "$TF_VALIDATE" = "failed" ]; then validate_icon="❌"
+          fi
+
+          if [ "$PACKAGE" = "created" ]; then package_icon="📦"
+          else package_icon="⏭️"
+          fi
+
+          echo "## 🧱 Terraform CI Report Card" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "| Area | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          echo "| Terraform fmt | $fmt_icon | $TF_FMT |" >> $GITHUB_STEP_SUMMARY
+          echo "| Terraform validate | $validate_icon | $TF_VALIDATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Package | $package_icon | $PACKAGE |" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$TF_FMT" = "passed" ] && [ "$TF_VALIDATE" = "passed" ]; then
+            echo "### Overall: 🟢 Healthy" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Overall: 🟡 Needs attention" >> $GITHUB_STEP_SUMMARY
+          fi

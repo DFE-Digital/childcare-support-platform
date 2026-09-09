@@ -29,6 +29,17 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       publish: true
+
+  build-infra:
+    name: Build Infrastructure
+    permissions:
+      contents: read
+      checks: write
+      actions: read
+    uses: ./.github/workflows/build-infrastructure.yml
+    with:
+      infra-directory: infrastructure
+      publish: true
   
   deploy-dev:
     name: Deploy Development
@@ -36,7 +47,7 @@ jobs:
       id-token: write
       contents: read
       actions: read
-    needs: [build-SIS-SPA] 
+    needs: [build-SIS-SPA, build-infra] 
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: Dev
