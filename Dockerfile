@@ -34,7 +34,7 @@ ENV VITE_FEATURE_NO_ADDITIONAL_CHARGES=true
 RUN npm run build -w @bsil/calculator && npm run build -w @bsil/app
 
 # SIS (Spatial Index Service) build stage
-FROM rust:1.86-slim AS sis-builder
+FROM rust:1.98-slim AS sis-builder
 WORKDIR /app
 
 COPY packages/spatial-index-service/Cargo.toml packages/spatial-index-service/Cargo.lock packages/spatial-index-service/rust-toolchain.toml ./
@@ -51,7 +51,7 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
 
 # Lambda build stage — static musl binary for AWS Lambda (x86_64-unknown-linux-musl).
 # Only used by `make sis/lambda-bundle`; not referenced by the production build.
-FROM rust:1.86-slim AS lambda-builder
+FROM rust:1.98-slim AS lambda-builder
 WORKDIR /app
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
