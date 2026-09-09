@@ -85,7 +85,7 @@ ENV SIS_PREPROCESS_BIN=/usr/local/bin/sis-preprocess
 # RUN npm test -w @bsil/calculator
 
 # Production stage
-FROM python:3.12-slim AS production
+FROM python:3.14-slim AS production
 
 # Install nginx
 RUN apt-get update && \
