@@ -1,6 +1,7 @@
 name: Deploy Environment
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       environment:
@@ -59,7 +60,7 @@ jobs:
     - name: Unzip Infra Package
       run: unzip -o infra-package.zip
       working-directory: ./infrastructure    
-      
+
     - name: Azure Login (OIDC)
       uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca
       with:

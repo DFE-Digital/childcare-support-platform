@@ -6,12 +6,13 @@ name: Build Infrastructure
 # on to call Deploy Environment (i.e. main).
 
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       infra-directory:
         required: true
         type: string
-        default: "infrastructure"
+        default: "infra"
 
       terraform-version:
         required: false
