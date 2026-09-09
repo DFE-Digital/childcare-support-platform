@@ -1,0 +1,18 @@
+{
+  "resourceGroupName": { "value": "s288t01rg-uks-bsil-terraform" },
+  "location": { "value": "uksouth" },
+  "storageAccountName" : { "value" : "s288t01tfstatestorage"},
+  "workspaceName" : { "value" : "s288t01-uks-bsil-law-tf-state"},
+  "vnetName": { "value": "s288t01-uks-bsil-vnet-tf-state" },
+  "vnetAddressPrefix": { "value": "10.1.0.0/16" },
+  "subnetName": { "value": "s288t01-uks-bsil-snet-tf-state" },
+  "subnetAddressPrefix": { "value": "10.1.0.0/24" },
+  "tags": {
+    "value": {
+      "Environment": "Test",
+      "Source": "bicep",
+      "Product": "Childcare Platform",
+      "Service Offering": "Childcare Platform"
+    }
+  }
+}
