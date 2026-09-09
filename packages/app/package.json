@@ -14,7 +14,7 @@
   "dependencies": {
     "@bsil/calculator": "*",
     "bootstrap-icons": "^1.13.1",
-    "maplibre-gl": "^5.18.0",
+    "maplibre-gl": "^6.8.0",
     "pmtiles": "^4.4.0",
     "posthog-js": "^1.374.2",
     "react": "^19.2.0",
