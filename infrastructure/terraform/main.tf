@@ -11,7 +11,9 @@ terraform {
     }
   }
 
-  backend "azurerm" {}
+  backend "azurerm" {
+    use_oidc = true
+  }
 }
 
 module "core" {
