@@ -110,7 +110,9 @@ jobs:
         terraform init \
           -upgrade \
           -backend-config="resource_group_name=${{ steps.bootstrap-tf.outputs.resourceGroupName }}" \
-          -backend-config="storage_account_name=${{ steps.bootstrap-tf.outputs.storageAccountName }}"
+          -backend-config="storage_account_name=${{ steps.bootstrap-tf.outputs.storageAccountName }}" \
+          -backend-config="container_name=tfstate" \
+          -backend-config="key=terraform.tfstate"
 
     - name: Terraform Plan
       run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars"
