@@ -382,30 +382,32 @@ resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
 }
 
 resource "azurerm_cdn_frontdoor_rule" "res-55" {
-  behavior_on_match         = "Continue"
+  behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-54.id
   name                      = "MapApiRequestToApim"
   order                     = 100
   actions {
-    route_configuration_override_action {
-      cache_behavior                = "Disabled"
-      cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-50.id
-      compression_enabled           = false
-      forwarding_protocol           = "MatchRequest"
-      query_string_parameters       = []
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-50.id
+        forwarding_protocol           = "MatchRequest"
+      }
     }
-    url_rewrite_action {
-      destination             = "/${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01/api"
-      preserve_unmatched_path = true
-      source_pattern          = "/api"
+    url_rewrite {
+      destination_path                = "/${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01/api"
+      preserve_unmatched_path_enabled = true
+      source_pattern                  = "/api"
     }
   }
   conditions {
-    url_path_condition {
-      match_values     = ["/api/", "/health"]
-      negate_condition = false
-      operator         = "BeginsWith"
-      transforms       = []
+    request_path {
+      values     = ["/api/", "/health"]
+      operator   = "BeginsWith"
+      transforms = []
     }
   }
 }
@@ -416,30 +418,32 @@ resource "azurerm_cdn_frontdoor_rule_set" "res-56" {
 }
 
 resource "azurerm_cdn_frontdoor_rule" "res-57" {
-  behavior_on_match         = "Continue"
+  behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
   name                      = "MapDataRequestToRuntimeContainer"
   order                     = 100
   actions {
-    route_configuration_override_action {
-      cache_behavior                = "Disabled"
-      cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
-      compression_enabled           = false
-      forwarding_protocol           = "MatchRequest"
-      query_string_parameters       = []
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
+        forwarding_protocol           = "MatchRequest"
+      }
     }
-    url_rewrite_action {
-      destination             = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
-      preserve_unmatched_path = true
-      source_pattern          = "/data"
+    url_rewrite {
+      destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
+      preserve_unmatched_path_enabled = true
+      source_pattern                  = "/data"
     }
   }
   conditions {
-    url_path_condition {
-      match_values     = ["/data/"]
-      negate_condition = false
-      operator         = "BeginsWith"
-      transforms       = []
+    request_path {
+      values     = ["/data/"]
+      operator   = "BeginsWith"
+      transforms = []
     }
   }
 }
