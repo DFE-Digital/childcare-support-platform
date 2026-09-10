@@ -5,12 +5,12 @@ data "azurerm_resource_group" "res-0" {
 }
 
 data "azurerm_network_security_group" "res-1" {
-  name = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-nsg-01"
+  name                = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-nsg-01"
   resource_group_name = data.azurerm_resource_group.res-0.name
 }
 
 data "azurerm_virtual_network" "res-2" {
-  name = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
+  name                = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   resource_group_name = data.azurerm_resource_group.res-0.name
 }
 
@@ -31,11 +31,9 @@ data "azurerm_virtual_network" "res-2" {
 
 resource "azurerm_subnet" "res-3" {
   address_prefixes                              = [local.subnet_ranges[2]]
-    # "10.226.188.96/28"
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-backend"
   network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
-  private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   resource_group_name                           = data.azurerm_resource_group.res-0.name
   service_endpoint_policy_ids                   = []
@@ -59,8 +57,7 @@ resource "azurerm_subnet" "res-3" {
 # }
 
 resource "azurerm_subnet" "res-5" {
-  address_prefixes                              = [local.subnet_ranges[0]]
-    # "10.226.188.0/26"
+  address_prefixes = [local.subnet_ranges[0]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-containerApps"
   network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
@@ -81,8 +78,7 @@ resource "azurerm_subnet" "res-5" {
 # }
 
 resource "azurerm_subnet" "res-7" {
-  address_prefixes                              = [local.subnet_ranges[1]]
-    # "10.226.188.64/27"
+  address_prefixes = [local.subnet_ranges[1]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-frontend"
   network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
@@ -103,8 +99,7 @@ resource "azurerm_subnet" "res-7" {
 # }
 
 resource "azurerm_subnet" "res-9" {
-  address_prefixes                              = [local.subnet_ranges[3]]
-    # "10.226.188.112/28"
+  address_prefixes = [local.subnet_ranges[3]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-githubActionsRunner"
   network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
