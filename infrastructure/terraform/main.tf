@@ -33,7 +33,6 @@ module "edge" {
   environment_prefix        = var.environment_prefix
   region                    = var.region
   frontend_subnet_id        = module.core.frontend_subnet_id
-  apim_identity_id          = module.security.apim_identity_id
   frontdoor_identity_id     = module.security.frontdoor_identity_id
   storage_account_id        = module.storage.storage_account_id
   storage_account_name      = module.storage.storage_account_name
@@ -41,17 +40,17 @@ module "edge" {
   storage_primary_blob_host = module.storage.primary_blob_host
 
   function_app_default_hostname = module.runtime.function_app_default_hostname
+  function_app_id               = module.runtime.function_app_id
 }
 
 module "runtime" {
   source = "./runtime"
 
-  subscription_prefix   = var.subscription_prefix
-  environment_prefix    = var.environment_prefix
-  region                = var.region
-  api_management_api_id = module.edge.api_management_api_id
-  azf_identity_id       = module.security.azf_identity_id
-  unique_suffix         = random_id.unique_suffix.hex
+  subscription_prefix = var.subscription_prefix
+  environment_prefix  = var.environment_prefix
+  region              = var.region
+  azf_identity_id     = module.security.azf_identity_id
+  unique_suffix       = random_id.unique_suffix.hex
 }
 
 module "security" {

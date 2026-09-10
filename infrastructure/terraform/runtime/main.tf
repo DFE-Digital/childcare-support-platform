@@ -103,7 +103,7 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   location                           = var.region
   maximum_instance_count             = 100
   name                               = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
-  public_network_access_enabled      = true
+  public_network_access_enabled      = false
   resource_group_name                = azurerm_resource_group.res-0.name
   runtime_name                       = "custom"
   runtime_version                    = "1.0"
@@ -128,7 +128,6 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
     type         = "UserAssigned"
   }
   site_config {
-    api_management_api_id                   = var.api_management_api_id
     app_command_line                        = ""
     application_insights_connection_string  = azurerm_application_insights.res-19.connection_string
     application_insights_key                = azurerm_application_insights.res-19.instrumentation_key

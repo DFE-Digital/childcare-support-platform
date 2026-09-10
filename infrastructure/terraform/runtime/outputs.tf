@@ -9,3 +9,8 @@ output "function_app_default_hostname" {
   value       = azurerm_function_app_flex_consumption.res-11.default_hostname
   sensitive   = true
 }
+
+output "function_app_id" {
+  description = "ID of the function app (azurerm_function_app_flex_consumption.res-11), used by its private endpoint."
+  value       = azurerm_function_app_flex_consumption.res-11.id
+}

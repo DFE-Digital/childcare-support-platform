@@ -13,11 +13,6 @@ variable "frontend_subnet_id" {
   type        = string
 }
 
-variable "apim_identity_id" {
-  description = "ID of the security module's API Management user-assigned identity."
-  type        = string
-}
-
 variable "frontdoor_identity_id" {
   description = "ID of the security module's Front Door user-assigned identity."
   type        = string
@@ -44,11 +39,16 @@ variable "storage_primary_blob_host" {
 }
 
 variable "region" {
-  description = "Azure region for resources that follow the primary deployment region (e.g. \"uksouth\"). The ukwest API Management instance is not parameterised by this variable."
+  description = "Azure region for resources that follow the primary deployment region (e.g. \"uksouth\")."
   type        = string
 }
 
 variable "function_app_default_hostname" {
-  description = "Real, Azure-assigned default hostname of the runtime module's function app, used by APIM's backend."
+  description = "Real, Azure-assigned default hostname of the runtime module's function app, used by Front Door's origin for it."
+  type        = string
+}
+
+variable "function_app_id" {
+  description = "ID of the runtime module's function app, used by its private endpoint."
   type        = string
 }

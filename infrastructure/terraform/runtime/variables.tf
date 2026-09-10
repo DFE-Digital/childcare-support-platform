@@ -13,11 +13,6 @@ variable "region" {
   type        = string
 }
 
-variable "api_management_api_id" {
-  description = "ID of the edge module's spatial index service API within API Management, used to wire the function app to it."
-  type        = string
-}
-
 variable "azf_identity_id" {
   description = "ID of the security module's function app user-assigned identity."
   type        = string
