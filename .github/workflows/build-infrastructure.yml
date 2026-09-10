@@ -16,7 +16,7 @@ on:
       terraform-version:
         required: false
         type: string
-        default: "1.9.8"
+        default: "1.15.8"
 
       publish:
         required: false
@@ -32,7 +32,7 @@ on:
       terraform-version:
         required: false
         type: string
-        default: "1.9.8"
+        default: "1.15.8"
 
       publish:
         required: false
