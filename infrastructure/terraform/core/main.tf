@@ -34,6 +34,7 @@ resource "azurerm_subnet" "res-3" {
     # "10.226.188.96/28"
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-backend"
+  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   resource_group_name                           = data.azurerm_resource_group.res-0.name
@@ -52,16 +53,17 @@ resource "azurerm_subnet" "res-3" {
   ]
 }
 
-resource "azurerm_subnet_network_security_group_association" "res-4" {
-  network_security_group_id = data.azurerm_network_security_group.res-1.id
-  subnet_id                 = azurerm_subnet.res-3.id
-}
+# resource "azurerm_subnet_network_security_group_association" "res-4" {
+#   network_security_group_id = data.azurerm_network_security_group.res-1.id
+#   subnet_id                 = azurerm_subnet.res-3.id
+# }
 
 resource "azurerm_subnet" "res-5" {
   address_prefixes                              = [local.subnet_ranges[0]]
     # "10.226.188.0/26"
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-containerApps"
+  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   resource_group_name                           = data.azurerm_resource_group.res-0.name
@@ -73,16 +75,17 @@ resource "azurerm_subnet" "res-5" {
   ]
 }
 
-resource "azurerm_subnet_network_security_group_association" "res-6" {
-  network_security_group_id = data.azurerm_network_security_group.res-1.id
-  subnet_id                 = azurerm_subnet.res-5.id
-}
+# resource "azurerm_subnet_network_security_group_association" "res-6" {
+#   network_security_group_id = data.azurerm_network_security_group.res-1.id
+#   subnet_id                 = azurerm_subnet.res-5.id
+# }
 
 resource "azurerm_subnet" "res-7" {
   address_prefixes                              = [local.subnet_ranges[1]]
     # "10.226.188.64/27"
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-frontend"
+  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   resource_group_name                           = data.azurerm_resource_group.res-0.name
@@ -94,16 +97,17 @@ resource "azurerm_subnet" "res-7" {
   ]
 }
 
-resource "azurerm_subnet_network_security_group_association" "res-8" {
-  network_security_group_id = data.azurerm_network_security_group.res-1.id
-  subnet_id                 = azurerm_subnet.res-7.id
-}
+# resource "azurerm_subnet_network_security_group_association" "res-8" {
+#   network_security_group_id = data.azurerm_network_security_group.res-1.id
+#   subnet_id                 = azurerm_subnet.res-7.id
+# }
 
 resource "azurerm_subnet" "res-9" {
   address_prefixes                              = [local.subnet_ranges[3]]
     # "10.226.188.112/28"
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-githubActionsRunner"
+  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   resource_group_name                           = data.azurerm_resource_group.res-0.name
@@ -122,10 +126,10 @@ resource "azurerm_subnet" "res-9" {
   ]
 }
 
-resource "azurerm_subnet_network_security_group_association" "res-10" {
-  network_security_group_id = data.azurerm_network_security_group.res-1.id
-  subnet_id                 = azurerm_subnet.res-9.id
-}
+# resource "azurerm_subnet_network_security_group_association" "res-10" {
+#   network_security_group_id = data.azurerm_network_security_group.res-1.id
+#   subnet_id                 = azurerm_subnet.res-9.id
+# }
 
 resource "azurerm_virtual_network_peering" "res-11" {
   count                                  = var.remote_virtual_network_id != null ? 1 : 0
