@@ -38,6 +38,7 @@ resource "azurerm_cdn_frontdoor_route" "res-47" {
   cdn_frontdoor_custom_domain_ids = []
   cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.res-46.id
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.res-48.id
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.res-49.id]
   cdn_frontdoor_origin_path       = ""
   cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.res-54.id, azurerm_cdn_frontdoor_rule_set.res-56.id]
   enabled                         = true
