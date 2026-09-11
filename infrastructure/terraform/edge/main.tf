@@ -180,9 +180,9 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
       }
     }
     url_rewrite {
-      destination_path                = "/api/"
+      destination_path                = "/api"
       preserve_unmatched_path_enabled = true
-      source_pattern                  = "/"
+      source_pattern                  = "/api"
     }
   }
   conditions {

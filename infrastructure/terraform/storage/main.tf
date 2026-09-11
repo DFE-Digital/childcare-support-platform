@@ -62,24 +62,10 @@ resource "azurerm_storage_container" "res-3" {
   storage_account_id    = azurerm_storage_account.res-1.id
 }
 
-resource "azurerm_storage_container" "res-4" {
-  container_access_type = "private"
-  metadata              = {}
-  name                  = "insights-logs-frontdooraccesslog"
-  storage_account_id    = azurerm_storage_account.res-1.id
-}
-
 resource "azurerm_storage_container" "res-5" {
   container_access_type = "private"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-provider-data-01"
-  storage_account_id    = azurerm_storage_account.res-1.id
-}
-
-resource "azurerm_storage_container" "res-6" {
-  container_access_type = "private"
-  metadata              = {}
-  name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-runtime-01"
   storage_account_id    = azurerm_storage_account.res-1.id
 }
 
@@ -88,4 +74,9 @@ resource "azurerm_storage_container" "res-7" {
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01"
   storage_account_id    = azurerm_storage_account.res-1.id
+}
+
+resource "azurerm_storage_account_static_website" "staticsite" {
+  storage_account_id = azurerm_storage_account.example.id
+  index_document     = "index.html"
 }
