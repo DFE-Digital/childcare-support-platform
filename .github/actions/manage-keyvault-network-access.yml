@@ -1,0 +1,65 @@
+name: Manage Key Vault Network Access
+description: Manages network access to the Azure Key Vault
+inputs:
+  keyvault-name:
+    description: "Key Vault Name"
+    required: true
+  resource-group-name:
+    description: "Resource Group Name for the Key Vault"
+    required: true
+  github-runner-ip:
+    description: "IP address of the current GitHub runner"
+    required: true
+  enable-network-access:
+    description: "Enable or disable network access"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Enable Public Network Access to Key Vault
+      if: ${{ inputs.enable-network-access == 'true' }}
+      shell: bash
+      run: |
+        az keyvault update \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --name ${{ inputs.keyvault-name }} \
+          --public-network-access Enabled \
+          --default-action Deny > /dev/null
+
+    - name: Add Network Rule
+      if: ${{ inputs.enable-network-access == 'true' }}
+      shell: bash
+      run: |
+        az keyvault network-rule add \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --name ${{ inputs.keyvault-name }} \
+          --ip-address ${{ inputs.github-runner-ip }} > /dev/null
+
+    - name: Disable Public Network Access
+      if: ${{ inputs.enable-network-access == 'false' }}
+      shell: bash
+      run: |
+        if [ $? -ne 0 ]; then
+          echo "Disabling public network access due to workflow failure or cancellation."
+        fi
+        az keyvault update \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --name ${{ inputs.keyvault-name }} \
+          --public-network-access Disabled > /dev/null
+
+    - name: Remove Network Rule
+      if: ${{ inputs.enable-network-access == 'false' }}
+      shell: bash
+      run: |
+        if [ $? -ne 0 ]; then
+          echo "Removing network rule due to workflow failure or cancellation."
+        fi
+        az keyvault network-rule remove \
+          --resource-group ${{ inputs.resource-group-name }} \
+          --name ${{ inputs.keyvault-name }} \
+          --ip-address ${{ inputs.github-runner-ip }} > /dev/null
+
+    - name: Sleep for 30s
+      shell: bash
+      run: |
+        sleep 30

@@ -1,0 +1,110 @@
+name: Destroy Core Infra
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Destroy core infra:'
+        required: true
+        default: Dev
+        type: choice
+        options:
+          - Dev
+          - Test
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+run-name: "Destroy core infra: ${{ inputs.environment }}"
+  
+jobs:
+  destroy-core-infra:
+    name: "Destroy core infra: ${{ inputs.environment }}"
+    defaults:
+      run:
+        working-directory: terraform-core-infra
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      CORE_INFRA_RG_NAME: ${{ secrets.CORE_INFRA_RG_NAME }}
+      KEY_VAULT_NAME: ${{ secrets.KEY_VAULT_NAME }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.11.1"
+
+      - name: Verify Terraform Installation
+        run: |
+          echo "PATH: $PATH"
+          which terraform || echo "Terraform binary not found"
+          terraform -version || echo "Terraform version check failed"
+
+      - name: Echo GitHub Runner IP
+        run: |
+          GITHUB_RUNNER_IP=$(curl -s https://ifconfig.me)
+          echo "GITHUB_RUNNER_IP=$GITHUB_RUNNER_IP" >> $GITHUB_ENV
+          echo "GitHub Runner IP: $GITHUB_RUNNER_IP"
+
+      - name: Azure CLI Login
+        uses: azure/login@v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Enable Network Access for tfstate
+        uses: ./.github/actions/manage-storage-network-access
+        with:
+          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+          github-runner-ip: ${{ env.GITHUB_RUNNER_IP }}
+          enable-network-access: true    
+
+      - name: Enable Network Access for Key Vault
+        uses: ./.github/actions/manage-keyvault-network-access
+        with:
+          keyvault-name: ${{ secrets.KEY_VAULT_NAME }}
+          resource-group-name: ${{ secrets.CORE_INFRA_RG_NAME }}
+          github-runner-ip: ${{ env.GITHUB_RUNNER_IP }}
+          enable-network-access: true
+
+      - name: Terraform init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+            -backend-config="key=${{ secrets.CORE_INFRA_STATE_KEY }}"
+
+      - name: Terraform Destroy
+        id: destroy
+        run: |
+          terraform destroy \
+            -auto-approve -lock=false -var "resource_group_name=$CORE_INFRA_RG_NAME" \
+            -var-file="terraform.${{ inputs.environment }}.tfvars"
+
+      - name: Disable Network Access for tfstate 
+        uses: ./.github/actions/manage-storage-network-access
+        if: ${{ always() }}
+        with:
+          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+          github-runner-ip: ${{ env.GITHUB_RUNNER_IP }}
+          enable-network-access: false
+
+      - name: Check Network Rules for tfstate 
+        uses: ./.github/actions/check-storage-network-rules      
+        if: ${{ always() }}
+        id: network-rules        
+        with:
+          storage-account-name: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          resource-group-name: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
