@@ -56,7 +56,7 @@ resource "azurerm_linux_virtual_machine" "actions-runner" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = env.SSH_PUBLIC_KEY
+    public_key = var.ssh_public_key
   }
 
   source_image_reference {

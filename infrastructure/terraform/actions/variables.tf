@@ -22,3 +22,8 @@ variable "runners_subnet_id" {
   description = "ID of the core module's runners subnet, used by the virtual machines private endpoint"
   type        = string
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key to associate with the admin account for the actions runner VM"
+  type        = string
+}

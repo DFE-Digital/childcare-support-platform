@@ -23,3 +23,8 @@ variable "remote_virtual_network_id" {
   type        = string
   default     = null
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key to associate with the admin account for the actions runner VM"
+  type        = string
+}

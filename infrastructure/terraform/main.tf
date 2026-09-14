@@ -77,5 +77,6 @@ module "actions" {
   environment_prefix  = var.environment_prefix
   environment_tag     = var.environment_tag
   region              = var.region
+  ssh_public_key      = var.ssh_public_key
   runners_subnet_id   = module.core.runners_subnet_id
 }
