@@ -1,5 +1,7 @@
 {
-  "resourceGroupName": { "value": "s288t01rg-uks-bsil-terraform" },
+  "tfResourceGroupName": { "value": "s288t01rg-uks-bsil-terraform" },
+  "securityResourceGroupName": { "value": "s288t01rg-uks-security" },
+  "keyVaultName": { "value": "s288t01kv-uks-vault-01" },
   "location": { "value": "uksouth" },
   "storageAccountName" : { "value" : "s288t01tfstatestorage"},
   "workspaceName" : { "value" : "s288t01-uks-bsil-law-tf-state"},
