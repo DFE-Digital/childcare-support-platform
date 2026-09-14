@@ -84,7 +84,7 @@ jobs:
           region: uksouth
           template: ./infrastructure/bicep/main.bicep
           deploymentName: terraform-${{ inputs.environment }}
-          parameters: ./infrastructure/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }}
+          parameters: ./infrastructure/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }} tenantId=${{ secrets.AZURE_TENANT_ID }}
 
       - name: Confirm bootstrap output
         run: |
