@@ -128,8 +128,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve main.tfplan
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
-          TF_VAR_ssh_public_key: ${{ env.SSH_PUBLIC_KEY }}
+          TF_VAR_GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
 
       - name: Lock Terraform State
         if: ${{ always() }}
