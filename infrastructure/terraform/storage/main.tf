@@ -70,14 +70,14 @@ resource "azurerm_storage_container" "res-5" {
 }
 
 resource "azurerm_storage_container" "res-7" {
-  container_access_type = "blob"
+  container_access_type = "private"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01"
   storage_account_id    = azurerm_storage_account.res-1.id
 }
 
 resource "azurerm_storage_account_static_website" "staticsite" {
-  storage_account_id = azurerm_storage_account.example.id
+  storage_account_id = azurerm_storage_account.res-1.id
   index_document     = "index.html"
   error_404_document = "index.html"
 }
