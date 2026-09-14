@@ -123,6 +123,8 @@ jobs:
             -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
         run: |
           terraform plan -no-color -out=main.tfplan \
             -var-file="environments/${{ inputs.environment }}.tfvars" \
@@ -130,8 +132,6 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve main.tfplan
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
 
       - name: Lock Terraform State
         if: ${{ always() }}
