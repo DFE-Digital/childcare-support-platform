@@ -1,0 +1,41 @@
+#cloud-config
+
+package_update: true
+
+packages:
+  - git
+  - curl
+  - tar
+  - jq
+
+users:
+  - name: github-runner
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+runcmd:
+  - |
+    set -e
+
+    GITHUB_URL="{{GITHUB_URL}}"
+    GITHUB_TOKEN="{{GITHUB_TOKEN}}"
+    RUNNER_NAME="{{RUNNER_NAME}}"
+
+    mkdir -p /home/github-runner/actions-runner
+    cd /home/github-runner/actions-runner
+
+    curl -o actions-runner-linux-x64-2.337.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.337.0/actions-runner-linux-x64-2.337.0.tar.gz
+    echo "70920811a4f8ad4328818682bca5c6469c1c942fab52448868071d0063816613  actions-runner-linux-x64-2.337.0.tar.gz" | shasum -a 256 -c
+
+    tar xzf ./actions-runner-linux-x64-2.337.0.tar.gz
+
+    chown -R github-runner:github-runner /home/github-runner/actions-runner
+
+    sudo -u github-runner ./config.sh \
+      --url "$GITHUB_URL" \
+      --token "$GITHUB_TOKEN" \
+      --name "$RUNNER_NAME"
+
+    ./svc.sh install github-runner
+    ./svc.sh start

@@ -69,3 +69,13 @@ module "storage" {
   region              = var.region
   unique_suffix       = random_id.unique_suffix.hex
 }
+
+module "actions" {
+  source = "./actions"
+
+  subscription_prefix = var.subscription_prefix
+  environment_prefix  = var.environment_prefix
+  environment_tag     = var.environment_tag
+  region              = var.region
+  runners_subnet_id   = module.core.runners_subnet_id
+}
