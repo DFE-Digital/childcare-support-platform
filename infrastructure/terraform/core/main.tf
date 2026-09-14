@@ -109,13 +109,6 @@ resource "azurerm_subnet" "res-9" {
   resource_group_name                           = data.azurerm_resource_group.res-0.name
   service_endpoint_policy_ids                   = []
   virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
-  delegation {
-    name = "GitHub.Network/networkSettings"
-    service_delegation {
-      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
-      name    = "GitHub.Network/networkSettings"
-    }
-  }
   depends_on = [
     data.azurerm_virtual_network.res-2,
   ]
