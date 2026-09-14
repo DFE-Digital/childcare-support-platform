@@ -79,4 +79,5 @@ resource "azurerm_storage_container" "res-7" {
 resource "azurerm_storage_account_static_website" "staticsite" {
   storage_account_id = azurerm_storage_account.example.id
   index_document     = "index.html"
+  error_404_document = "index.html"
 }
