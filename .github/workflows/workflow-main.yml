@@ -42,15 +42,16 @@ jobs:
     with:
       infra-directory: infrastructure
       publish: true
-  
+
   deploy-dev:
     name: Deploy Development
     permissions:
       id-token: write
       contents: read
       actions: read
-    needs: [build-infra] 
-      # build-SIS-SPA, 
+    needs:
+      [build-infra]
+      # build-SIS-SPA,
     uses: ./.github/workflows/deploy-environment.yml
     with:
       environment: Test
@@ -58,5 +59,6 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-  
+      REPOSITORY_PAT: ${{ secrets.REPOSITORY_PAT }}
+
   # run tests ??? TBC
