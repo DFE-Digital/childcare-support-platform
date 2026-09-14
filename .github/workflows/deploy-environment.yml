@@ -123,12 +123,15 @@ jobs:
             -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
-        run: terraform plan -no-color -out=main.tfplan -var-file="environments/${{ inputs.environment }}.tfvars" -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+        run: |
+          terraform plan -no-color -out=main.tfplan \
+            -var-file="environments/${{ inputs.environment }}.tfvars" \
+            -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve main.tfplan
         env:
-          TF_VAR_GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
 
       - name: Lock Terraform State
         if: ${{ always() }}
