@@ -27,7 +27,7 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
     --ip-address "$WORKER_IP" > /dev/null
 
 elif [ "$ENABLE_ACCESS" = "false" ]; then
-  echo "Disabling access for $STORAGE_ACCOUNT_NAME..."
+  echo "Disabling access for $KEYVAULT_NAME..."
 
   az keyvault network-rule remove \
     --name "$KEYVAULT_NAME" \
