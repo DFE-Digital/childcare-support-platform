@@ -166,10 +166,23 @@ jobs:
 
       - name: Store private key in key vault
         run: |
+          # Grant access
+          az role assignment create \
+            --role "Key Vault Secrets User" \
+            --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ steps.tf-out.outputs.security_rg_name }}/providers/Microsoft.KeyVault/vaults/${{ steps.tf-out.outputs.keyvault_name }}
+
+          # Wait for a specific time (e.g., 1 min)
+          sleep 60 
+
           az keyvault secret set \
             --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
             --name "github-runner-ssh-private-key" \
             --file runner_key 
+
+          # Revoke access
+          az role assignment delete \
+            --role "Key Vault Secrets User" \
+            --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ steps.tf-out.outputs.security_rg_name }}/providers/Microsoft.KeyVault/vaults/${{ steps.tf-out.outputs.keyvault_name }}
 
       - name: Lock Keyvault
         if: ${{ always() }}
