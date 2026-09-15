@@ -35,8 +35,9 @@ runcmd:
     sudo -u github-runner ./config.sh \
       --url "$GITHUB_URL" \
       --token "$GITHUB_TOKEN" \
-      --name "$RUNNER_NAME"
+      --name "$RUNNER_NAME" \
+      --unattended \
+      --ephemeral
 
-    # ./svc.sh install github-runner
-    # ./svc.sh start
-    ./run.sh
+    ./svc.sh install github-runner
+    ./svc.sh start
