@@ -123,6 +123,7 @@ jobs:
             -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
+        id: tf-plan
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
         run: |
@@ -131,8 +132,14 @@ jobs:
             -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
 
       - name: Terraform Apply
-        id: tf-apply
         run: terraform apply -auto-approve main.tfplan
+
+      - name: Save Terraform outputs
+        id: tf-out
+        run: |
+          KEYVAULT_NAME=$(terraform output -raw keyvault_name)
+          echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
+
 
       - name: Lock Terraform State
         if: ${{ always() }}
@@ -148,7 +155,7 @@ jobs:
       - name: Store private key in key vault
         run: |
           az keyvault secret set \
-            --vault-name "${{ steps.tf-apply.outputs.keyvault_name }}" \
+            --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
             --name "github-runner-ssh-private-key" \
             --file runner_key 
 
