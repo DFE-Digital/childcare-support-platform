@@ -5,5 +5,5 @@ output "keyvault_name" {
 
 output "security_rg_name" {
   description = "The name of the security resource group"
-  value       = azurerm_resource_group.res-0.name
+  value       = module.security.security_rg_name
 }
