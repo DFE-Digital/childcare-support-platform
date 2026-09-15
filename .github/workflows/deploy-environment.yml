@@ -162,29 +162,17 @@ jobs:
         shell: bash
         run: |
           chmod +x scripts/manage-keyvault-access.sh
-          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "true"
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "true" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 
       - name: Store private key in key vault
         run: |
-          # Grant access
-          az role assignment create \
-            --role "Key Vault Secrets Officer" \
-            --assignee-object-id ${{ steps.get-sp-id.outputs.object_id }} \
-            --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ steps.tf-out.outputs.security_rg_name }}/providers/Microsoft.KeyVault/vaults/${{ steps.tf-out.outputs.keyvault_name }}
-
           # Wait for a specific time (e.g., 1 min)
           sleep 60 
 
           az keyvault secret set \
             --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
             --name "github-runner-ssh-private-key" \
-            --file runner_key 
-
-          # Revoke access
-          az role assignment delete \
-            --role "Key Vault Secrets Officer" \
-            --assignee-object-id ${{ steps.get-sp-id.outputs.object_id }} \
-            --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ steps.tf-out.outputs.security_rg_name }}/providers/Microsoft.KeyVault/vaults/${{ steps.tf-out.outputs.keyvault_name }}
+            --file runner_key > /dev/null
 
       - name: Lock Keyvault
         if: ${{ always() }}
@@ -195,7 +183,7 @@ jobs:
         shell: bash
         run: |
           chmod +x scripts/manage-keyvault-access.sh
-          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "false"
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "false" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 
       - name: Clean up local key files
         if: always()
