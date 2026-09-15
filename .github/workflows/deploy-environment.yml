@@ -138,8 +138,10 @@ jobs:
         id: tf-out
         run: |
           KEYVAULT_NAME=$(terraform output -raw keyvault_name)
-          echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
+          SECURITY_RG_NAME=$(terraform output -raw security_rg_name)
 
+          echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
+          echo "security_rg_name=$SECURITY_RG_NAME" >> $GITHUB_OUTPUT
 
       - name: Lock Terraform State
         if: ${{ always() }}
@@ -152,12 +154,33 @@ jobs:
           chmod +x scripts/manage-storage-access.sh
           ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
 
+      - name: Unlock Keyvault
+        working-directory: ./infrastructure
+        env:
+          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
+          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-keyvault-access.sh
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "true"
+
       - name: Store private key in key vault
         run: |
           az keyvault secret set \
             --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
             --name "github-runner-ssh-private-key" \
             --file runner_key 
+
+      - name: Lock Keyvault
+        if: ${{ always() }}
+        working-directory: ./infrastructure
+        env:
+          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
+          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-keyvault-access.sh
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "false"
 
       - name: Clean up local key files
         if: always()
