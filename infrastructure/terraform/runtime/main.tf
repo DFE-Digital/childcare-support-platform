@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-runtime"
   tags = {
-    Environment = "Dev"
+    Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
 }
@@ -32,7 +32,7 @@ resource "azurerm_storage_account" "res-2" {
   shared_access_key_enabled         = true
   table_encryption_key_type         = "Service"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -85,7 +85,7 @@ resource "azurerm_service_plan" "res-10" {
   resource_group_name             = azurerm_resource_group.res-0.name
   sku_name                        = "FC1"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -113,7 +113,7 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   storage_container_endpoint         = "https://${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}.blob.core.windows.net/${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
   storage_container_type             = "blobContainer"
   tags = {
-    Environment                              = "Dev"
+    Environment                              = var.environment_tag
     Product                                  = "Childcare Platform"
     "Service Offering"                       = ""
     "hidden-link: /app-insights-resource-id" = azurerm_application_insights.res-19.id
@@ -162,7 +162,7 @@ resource "azurerm_monitor_action_group" "res-18" {
   resource_group_name = azurerm_resource_group.res-0.name
   short_name          = "SmartDetect"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -185,7 +185,7 @@ resource "azurerm_log_analytics_workspace" "res-20" {
   retention_in_days   = 30
   sku                 = "PerGB2018"
   tags = {
-    Environment = "Dev"
+    Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
 }
@@ -205,7 +205,7 @@ resource "azurerm_application_insights" "res-19" {
   retention_in_days                    = 90
   sampling_percentage                  = 0
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }

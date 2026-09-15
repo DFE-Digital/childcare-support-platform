@@ -31,6 +31,7 @@ module "edge" {
 
   subscription_prefix       = var.subscription_prefix
   environment_prefix        = var.environment_prefix
+  environment_tag           = var.environment_tag
   region                    = var.region
   frontend_subnet_id        = module.core.frontend_subnet_id
   frontdoor_identity_id     = module.security.frontdoor_identity_id
@@ -48,6 +49,7 @@ module "runtime" {
 
   subscription_prefix = var.subscription_prefix
   environment_prefix  = var.environment_prefix
+  environment_tag     = var.environment_tag
   region              = var.region
   azf_identity_id     = module.security.azf_identity_id
   unique_suffix       = random_id.unique_suffix.hex
@@ -58,6 +60,7 @@ module "security" {
 
   subscription_prefix = var.subscription_prefix
   environment_prefix  = var.environment_prefix
+  environment_tag     = var.environment_tag
   region              = var.region
 }
 
@@ -66,6 +69,7 @@ module "storage" {
 
   subscription_prefix = var.subscription_prefix
   environment_prefix  = var.environment_prefix
+  environment_tag     = var.environment_tag
   region              = var.region
   unique_suffix       = random_id.unique_suffix.hex
 }

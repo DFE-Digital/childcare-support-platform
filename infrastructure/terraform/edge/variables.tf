@@ -8,6 +8,11 @@ variable "environment_prefix" {
   type        = string
 }
 
+variable "environment_tag" {
+  description = "Environment name for the required tag"
+  type        = string
+}
+
 variable "frontend_subnet_id" {
   description = "ID of the core module's frontend subnet, used by the storage private endpoint."
   type        = string

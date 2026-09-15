@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-storage"
   tags = {
-    Environment = "Dev"
+    Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
 }
@@ -32,7 +32,7 @@ resource "azurerm_storage_account" "res-1" {
   shared_access_key_enabled         = true
   table_encryption_key_type         = "Service"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "res-0" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
   tags = {
-    Environment = "Dev"
+    Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
 }
@@ -13,7 +13,7 @@ resource "azurerm_cdn_frontdoor_profile" "res-45" {
   response_timeout_seconds = 60
   sku_name                 = "Premium_AzureFrontDoor"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -28,7 +28,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
   enabled                  = true
   name                     = "bsil-frontend"
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -237,7 +237,7 @@ resource "azurerm_private_endpoint" "res-58" {
   resource_group_name           = azurerm_resource_group.res-0.name
   subnet_id                     = var.frontend_subnet_id
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
@@ -256,7 +256,7 @@ resource "azurerm_private_endpoint" "function_app" {
   resource_group_name           = azurerm_resource_group.res-0.name
   subnet_id                     = var.frontend_subnet_id
   tags = {
-    Environment        = "Dev"
+    Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
