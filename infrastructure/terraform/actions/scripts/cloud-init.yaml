@@ -37,5 +37,6 @@ runcmd:
       --token "$GITHUB_TOKEN" \
       --name "$RUNNER_NAME"
 
-    ./svc.sh install github-runner
-    ./svc.sh start
+    # ./svc.sh install github-runner
+    # ./svc.sh start
+    ./run.sh
