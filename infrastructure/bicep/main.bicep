@@ -1,8 +1,6 @@
 targetScope = 'subscription'
 
-param tfResourceGroupName string
-param securityResourceGroupName string
-param keyVaultName string
+param resourceGroupName string
 param location string
 param storageAccountName string
 param tags object = {}
@@ -13,28 +11,20 @@ param vnetAddressPrefix string
 param subnetName string
 param subnetAddressPrefix string
 param workflowPrincipalId string
-param tenantId string
 
-output tfResourceGroupName string = tfResourceGroupName
+output resourceGroupName string = resourceGroupName
 output storageAccountName string = storageAccountName
-output keyVaultName string = keyVaultName
 
-resource tfRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: tfResourceGroupName
-  location: location
-  tags: tags
-}
-
-resource secRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: securityResourceGroupName
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: resourceGroupName
   location: location
   tags: tags
 }
 
 module network './network.bicep' = {
   name: 'networkDeployment'
-  scope: resourceGroup(tfResourceGroupName)
-  dependsOn: [tfRg]
+  scope: resourceGroup(resourceGroupName)
+  dependsOn: [ rg ]
   params: {
     vnetName: vnetName
     vnetAddressPrefix: vnetAddressPrefix
@@ -47,8 +37,8 @@ module network './network.bicep' = {
 
 module storage './storage.bicep' = {
   name: 'storageDeployment'
-  scope: resourceGroup(tfResourceGroupName)
-  dependsOn: [tfRg]
+  scope: resourceGroup(resourceGroupName)
+  dependsOn: [ rg ]
   params: {
     storageAccountName: storageAccountName
     location: location
@@ -58,17 +48,5 @@ module storage './storage.bicep' = {
     subnetId: network.outputs.subnetId
     privateDnsZoneId: network.outputs.privateDnsZoneId
     workflowPrincipalId: workflowPrincipalId
-  }
-}
-
-module security './security.bicep' = {
-  name: 'securityDeployment'
-  scope: resourceGroup(securityResourceGroupName)
-  dependsOn: [secRg]
-  params: {
-    keyVaultName: keyVaultName
-    location: location
-    tags: tags
-    tenantId: tenantId
   }
 }
