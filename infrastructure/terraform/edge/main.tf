@@ -162,9 +162,6 @@ resource "azurerm_cdn_frontdoor_origin" "res-53" {
     request_message        = "The request is from Front Door to the storage account for runtime data"
     target_type            = "blob"
   }
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
