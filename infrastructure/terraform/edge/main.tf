@@ -156,6 +156,15 @@ resource "azurerm_cdn_frontdoor_origin" "res-53" {
   origin_host_header             = var.storage_primary_blob_host
   priority                       = 1
   weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = var.storage_account_id
+    request_message        = "The request is from Front Door to the storage account for runtime data"
+    target_type            = "blob"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
