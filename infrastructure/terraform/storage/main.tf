@@ -25,7 +25,7 @@ resource "azurerm_storage_account" "res-1" {
   min_tls_version                   = "TLS1_2"
   name                              = "cccepfdatastore${var.environment_prefix}${var.unique_suffix}"
   nfsv3_enabled                     = false
-  public_network_access_enabled     = true
+  public_network_access_enabled     = false
   queue_encryption_key_type         = "Service"
   resource_group_name               = azurerm_resource_group.res-0.name
   sftp_enabled                      = false
