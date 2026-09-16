@@ -1,22 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "azurerm"
-      version = "5.4.0"
-    }
-
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
-  }
-
-  backend "azurerm" {
-    use_oidc         = true
-    use_azuread_auth = true
-  }
-}
-
 module "core" {
   source = "./core"
 
