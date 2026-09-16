@@ -26,7 +26,7 @@ resource "azurerm_cdn_frontdoor_profile" "res-45" {
 resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
   enabled                  = true
-  name                     = "bsil-frontend"
+  name                     = "bsil-frontend${var.unique_suffix}"
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"

@@ -20,6 +20,7 @@ module "edge" {
   storage_account_name      = module.storage.storage_account_name
   storage_primary_web_host  = module.storage.primary_web_host
   storage_primary_blob_host = module.storage.primary_blob_host
+  unique_suffix             = random_id.unique_suffix.hex
 
   function_app_default_hostname = module.runtime.function_app_default_hostname
   function_app_id               = module.runtime.function_app_id

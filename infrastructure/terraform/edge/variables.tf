@@ -57,3 +57,8 @@ variable "function_app_id" {
   description = "ID of the runtime module's function app, used by its private endpoint."
   type        = string
 }
+
+variable "unique_suffix" {
+  description = "Random 4-hex-digit suffix used to keep the globally-unique storage account name unique across deployments."
+  type        = string
+}
