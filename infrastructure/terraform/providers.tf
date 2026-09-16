@@ -17,6 +17,10 @@ terraform {
   }
 }
 
+provider "azurerm" {
+  features {}
+}
+
 resource "azurerm_resource_provider_registration" "cdn-reg" {
   name = "Microsoft.Cdn"
 }
