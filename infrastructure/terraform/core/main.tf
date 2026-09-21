@@ -1,42 +1,32 @@
 data "azurerm_subscription" "current" {}
 
-data "azurerm_resource_group" "res-0" {
+data "azurerm_resource_group" "core" {
   name = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-core"
 }
 
-data "azurerm_network_security_group" "res-1" {
+data "azurerm_network_security_group" "core-nsg" {
   name                = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-nsg-01"
-  resource_group_name = data.azurerm_resource_group.res-0.name
+  resource_group_name = data.azurerm_resource_group.core.name
 }
 
-data "azurerm_virtual_network" "res-2" {
+data "azurerm_virtual_network" "core-vnet" {
   name                = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
-  resource_group_name = data.azurerm_resource_group.res-0.name
+  resource_group_name = data.azurerm_resource_group.core.name
 }
 
-// starting address range
-// azurerm_virtual_network.res-2.address_space
-// 10.226.188.0/25
+moved {
+  from = azurerm_subnet.res-3
+  to   = azurerm_subnet.backend
+}
 
-// cidrsubnet
-// cidrsubnets
-// -> cidrsubnets(azurerm_virtual_network.res-2.address_space, 1, 2, 3, 3)
-// > ["starting.../26". "starting.../27", starting.../28, starting.../28]
-// subnet_spaces
-
-// subnet_spaces[0]
-// subnet_spaces[1]
-// subnet_spaces[2]
-// subnet_spaces[3]
-
-resource "azurerm_subnet" "res-3" {
+resource "azurerm_subnet" "backend" {
   address_prefixes                              = [local.subnet_ranges[2]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-backend"
-  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
+  network_security_group_id_wo                  = data.azurerm_network_security_group.core-nsg.id
   network_security_group_id_wo_version          = 1
   private_link_service_network_policies_enabled = true
-  resource_group_name                           = data.azurerm_resource_group.res-0.name
+  resource_group_name                           = data.azurerm_resource_group.core.name
   service_endpoint_policy_ids                   = []
   virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   delegation {
@@ -47,79 +37,74 @@ resource "azurerm_subnet" "res-3" {
     }
   }
   depends_on = [
-    data.azurerm_virtual_network.res-2,
+    data.azurerm_virtual_network.core-vnet,
   ]
 }
 
-# resource "azurerm_subnet_network_security_group_association" "res-4" {
-#   network_security_group_id = data.azurerm_network_security_group.res-1.id
-#   subnet_id                 = azurerm_subnet.res-3.id
-# }
+moved {
+  from = azurerm_subnet.res-5
+  to   = azurerm_subnet.container-apps
+}
 
-resource "azurerm_subnet" "res-5" {
+resource "azurerm_subnet" "container-apps" {
   address_prefixes                              = [local.subnet_ranges[0]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-containerApps"
-  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
+  network_security_group_id_wo                  = data.azurerm_network_security_group.core-nsg.id
   network_security_group_id_wo_version          = 1
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
-  resource_group_name                           = data.azurerm_resource_group.res-0.name
+  resource_group_name                           = data.azurerm_resource_group.core.name
   service_endpoint_policy_ids                   = []
   virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   depends_on = [
-    data.azurerm_virtual_network.res-2,
+    data.azurerm_virtual_network.core-vnet,
   ]
 }
 
-# resource "azurerm_subnet_network_security_group_association" "res-6" {
-#   network_security_group_id = data.azurerm_network_security_group.res-1.id
-#   subnet_id                 = azurerm_subnet.res-5.id
-# }
+moved {
+  from = azurerm_subnet.res-7
+  to   = azurerm_subnet.frontend
+}
 
-resource "azurerm_subnet" "res-7" {
+resource "azurerm_subnet" "frontend" {
   address_prefixes                              = [local.subnet_ranges[1]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-frontend"
-  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
+  network_security_group_id_wo                  = data.azurerm_network_security_group.core-nsg.id
   network_security_group_id_wo_version          = 1
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
-  resource_group_name                           = data.azurerm_resource_group.res-0.name
+  resource_group_name                           = data.azurerm_resource_group.core.name
   service_endpoint_policy_ids                   = []
   virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   depends_on = [
-    data.azurerm_virtual_network.res-2,
+    data.azurerm_virtual_network.core-vnet,
   ]
 }
 
-# resource "azurerm_subnet_network_security_group_association" "res-8" {
-#   network_security_group_id = data.azurerm_network_security_group.res-1.id
-#   subnet_id                 = azurerm_subnet.res-7.id
-# }
+moved {
+  from = azurerm_subnet.res-9
+  to   = azurerm_subnet.actions-runner
+}
 
-resource "azurerm_subnet" "res-9" {
+resource "azurerm_subnet" "actions-runner" {
   address_prefixes                              = [local.subnet_ranges[3]]
   default_outbound_access_enabled               = false
   name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-githubActionsRunner"
-  network_security_group_id_wo                  = data.azurerm_network_security_group.res-1.id
+  network_security_group_id_wo                  = data.azurerm_network_security_group.core-nsg.id
   network_security_group_id_wo_version          = 1
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
-  resource_group_name                           = data.azurerm_resource_group.res-0.name
+  resource_group_name                           = data.azurerm_resource_group.core.name
   service_endpoint_policy_ids                   = []
   virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   depends_on = [
-    data.azurerm_virtual_network.res-2,
+    data.azurerm_virtual_network.core-vnet,
   ]
 }
 
-# resource "azurerm_subnet_network_security_group_association" "res-10" {
-#   network_security_group_id = data.azurerm_network_security_group.res-1.id
-#   subnet_id                 = azurerm_subnet.res-9.id
-# }
-
-resource "azurerm_virtual_network_peering" "res-11" {
+resource "azurerm_virtual_network_peering" "hub-peering" {
   count                                  = var.remote_virtual_network_id != null ? 1 : 0
   allow_forwarded_traffic                = false
   allow_gateway_transit                  = false
@@ -130,10 +115,10 @@ resource "azurerm_virtual_network_peering" "res-11" {
   peer_complete_virtual_networks_enabled = true
   remote_subnet_names                    = []
   remote_virtual_network_id              = var.remote_virtual_network_id
-  resource_group_name                    = data.azurerm_resource_group.res-0.name
+  resource_group_name                    = data.azurerm_resource_group.core.name
   use_remote_gateways                    = true
   virtual_network_name                   = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
   depends_on = [
-    data.azurerm_virtual_network.res-2,
+    data.azurerm_virtual_network.core-vnet,
   ]
 }
