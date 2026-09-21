@@ -1,0 +1,112 @@
+name: deploy-application
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy application to environment:"
+        required: true
+        default: Dev
+        type: choice
+        options:
+          - Dev
+          - Test
+          - Prod
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+jobs:
+  build-SIS-SPA:
+    name: Build Spacial Index service + SPA
+    permissions:
+      contents: read
+      id-token: write
+    uses: ./.github/workflows/build-spa-sis.yml
+    with:
+      environment: ${{ inputs.environment || 'Dev' }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      AZURE_SOURCE_DATA_CONTAINER_NAME: ${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}
+
+  build-infra:
+    name: Build Infrastructure
+    permissions:
+      contents: read
+      actions: read
+    uses: ./.github/workflows/build-infrastructure.yml
+    with:
+      infra-directory: infrastructure
+      publish: true
+
+  provision-environment:
+    name: Provision Environment - "${{ inputs.environment || 'Dev' }}"
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+    needs:
+      [build-infra, build-SIS-SPA]
+    uses: ./.github/workflows/provision-environment.yml
+    with:
+      environment: ${{ inputs.environment || 'Dev' }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      REPOSITORY_PAT: ${{ secrets.REPOSITORY_PAT }}
+
+  create-release:
+    name: Create Release
+    needs: [provision-environment]
+    if: inputs.environment == 'Prod'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # needed to see all tags when finding the latest
+ 
+      - name: Determine next version
+        id: version
+        run: |
+          LATEST_TAG=$(git tag --list 'v*' --sort=-v:refname | head -n1)
+          if [ -z "$LATEST_TAG" ]; then
+            NEW_TAG="v0.1.0"
+          else
+            VERSION="${LATEST_TAG#v}"
+            MAJOR=$(echo "$VERSION" | cut -d. -f1)
+            MINOR=$(echo "$VERSION" | cut -d. -f2)
+            PATCH=$(echo "$VERSION" | cut -d. -f3)
+            NEW_TAG="v${MAJOR}.${MINOR}.$((PATCH + 1))"
+          fi
+          echo "new_tag=$NEW_TAG" >> "$GITHUB_OUTPUT"
+          echo "Next version: $NEW_TAG"
+ 
+      - name: Create and push version tag
+        env:
+          NEW_TAG: ${{ steps.version.outputs.new_tag }}
+        run: |
+          git tag -a "$NEW_TAG" -m "Release $NEW_TAG"
+          git push origin "$NEW_TAG"
+ 
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEW_TAG: ${{ steps.version.outputs.new_tag }}
+        run: |
+          gh release create "$NEW_TAG" \
+            --title "$NEW_TAG" \
+            --generate-notes \
+            --target "${{ github.sha }}"
