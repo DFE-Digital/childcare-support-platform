@@ -1,4 +1,9 @@
-resource "azurerm_resource_group" "res-0" {
+moved {
+  from = azurerm_resource_group.res-0
+  to   = azurerm_resource_group.runtime
+}
+
+resource "azurerm_resource_group" "runtime" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-runtime"
   tags = {
@@ -7,7 +12,12 @@ resource "azurerm_resource_group" "res-0" {
   }
 }
 
-resource "azurerm_storage_account" "res-2" {
+moved {
+  from = azurerm_storage_account.res-2
+  to   = azurerm_storage_account.storage
+}
+
+resource "azurerm_storage_account" "storage" {
   access_tier                       = "Hot"
   account_kind                      = "StorageV2"
   account_replication_type          = "LRS"
@@ -27,7 +37,7 @@ resource "azurerm_storage_account" "res-2" {
   nfsv3_enabled                     = false
   public_network_access_enabled     = true
   queue_encryption_key_type         = "Service"
-  resource_group_name               = azurerm_resource_group.res-0.name
+  resource_group_name               = azurerm_resource_group.runtime.name
   sftp_enabled                      = false
   shared_access_key_enabled         = true
   table_encryption_key_type         = "Service"
@@ -54,35 +64,55 @@ resource "azurerm_storage_account" "res-2" {
   }
 }
 
-resource "azurerm_storage_container" "res-4" {
+moved {
+  from = azurerm_storage_container.res-4
+  to   = azurerm_storage_container.webjobs-hosts
+}
+
+resource "azurerm_storage_container" "webjobs-hosts" {
   container_access_type = "private"
   metadata              = {}
   name                  = "azure-webjobs-hosts"
-  storage_account_id    = azurerm_storage_account.res-2.id
+  storage_account_id    = azurerm_storage_account.storage.id
 }
 
-resource "azurerm_storage_container" "res-5" {
+moved {
+  from = azurerm_storage_container.res-5
+  to   = azurerm_storage_container.webjobs-secrets
+}
+
+resource "azurerm_storage_container" "webjobs-secrets" {
   container_access_type = "private"
   metadata              = {}
   name                  = "azure-webjobs-secrets"
-  storage_account_id    = azurerm_storage_account.res-2.id
+  storage_account_id    = azurerm_storage_account.storage.id
 }
 
-resource "azurerm_storage_container" "res-6" {
+moved {
+  from = azurerm_storage_container.res-6
+  to   = azurerm_storage_container.runtime-storage
+}
+
+resource "azurerm_storage_container" "runtime-storage" {
   container_access_type = "private"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
-  storage_account_id    = azurerm_storage_account.res-2.id
+  storage_account_id    = azurerm_storage_account.storage.id
 }
 
-resource "azurerm_service_plan" "res-10" {
+moved {
+  from = azurerm_service_plan.res-10
+  to   = azurerm_service_plan.service-plan
+}
+
+resource "azurerm_service_plan" "service-plan" {
   location                        = var.region
   maximum_elastic_worker_count    = 1
   name                            = "ASP-${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime-${var.unique_suffix}"
   os_type                         = "Linux"
   per_site_scaling_enabled        = false
   premium_plan_auto_scale_enabled = false
-  resource_group_name             = azurerm_resource_group.res-0.name
+  resource_group_name             = azurerm_resource_group.runtime.name
   sku_name                        = "FC1"
   tags = {
     Environment        = var.environment_tag
@@ -92,7 +122,12 @@ resource "azurerm_service_plan" "res-10" {
   zone_balancing_enabled = false
 }
 
-resource "azurerm_function_app_flex_consumption" "res-11" {
+moved {
+  from = azurerm_function_app_flex_consumption.res-11
+  to   = azurerm_function_app_flex_consumption.consumption-plan
+}
+
+resource "azurerm_function_app_flex_consumption" "consumption-plan" {
   app_settings                       = {}
   client_certificate_enabled         = false
   client_certificate_exclusion_paths = ""
@@ -104,11 +139,11 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   maximum_instance_count             = 100
   name                               = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
   public_network_access_enabled      = false
-  resource_group_name                = azurerm_resource_group.res-0.name
+  resource_group_name                = azurerm_resource_group.runtime.name
   runtime_name                       = "custom"
   runtime_version                    = "1.0"
-  service_plan_id                    = azurerm_service_plan.res-10.id
-  storage_access_key                 = azurerm_storage_account.res-2.primary_access_key
+  service_plan_id                    = azurerm_service_plan.service-plan.id
+  storage_access_key                 = azurerm_storage_account.storage.primary_access_key
   storage_authentication_type        = "StorageAccountConnectionString"
   storage_container_endpoint         = "https://${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}.blob.core.windows.net/${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
   storage_container_type             = "blobContainer"
@@ -116,7 +151,7 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
     Environment                              = var.environment_tag
     Product                                  = "Childcare Platform"
     "Service Offering"                       = ""
-    "hidden-link: /app-insights-resource-id" = azurerm_application_insights.res-19.id
+    "hidden-link: /app-insights-resource-id" = azurerm_application_insights.runtime-insights.id
   }
   # TODO: basic auth is only enabled to allow zip_deploy_file below to publish the
   # placeholder handler. Once real code deployment moves to CI/CD (e.g. az functionapp
@@ -129,8 +164,8 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   }
   site_config {
     app_command_line                        = ""
-    application_insights_connection_string  = azurerm_application_insights.res-19.connection_string
-    application_insights_key                = azurerm_application_insights.res-19.instrumentation_key
+    application_insights_connection_string  = azurerm_application_insights.runtime-insights.connection_string
+    application_insights_key                = azurerm_application_insights.runtime-insights.instrumentation_key
     container_registry_use_managed_identity = false
     default_documents                       = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php"]
     elastic_instance_minimum                = 0
@@ -155,11 +190,16 @@ resource "azurerm_function_app_flex_consumption" "res-11" {
   }
 }
 
-resource "azurerm_monitor_action_group" "res-18" {
+moved {
+  from = azurerm_monitor_action_group.res-18
+  to   = azurerm_monitor_action_group.insights-smart-detection
+}
+
+resource "azurerm_monitor_action_group" "insights-smart-detection" {
   enabled             = true
   location            = "global"
   name                = "Application Insights Smart Detection"
-  resource_group_name = azurerm_resource_group.res-0.name
+  resource_group_name = azurerm_resource_group.runtime.name
   short_name          = "SmartDetect"
   tags = {
     Environment        = var.environment_tag
@@ -178,10 +218,15 @@ resource "azurerm_monitor_action_group" "res-18" {
   }
 }
 
-resource "azurerm_log_analytics_workspace" "res-20" {
+moved {
+  from = azurerm_log_analytics_workspace.res-20
+  to   = azurerm_log_analytics_workspace.runtime-logs
+}
+
+resource "azurerm_log_analytics_workspace" "runtime-logs" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}law-${local.location_prefix}-runtime-01"
-  resource_group_name = azurerm_resource_group.res-0.name
+  resource_group_name = azurerm_resource_group.runtime.name
   retention_in_days   = 30
   sku                 = "PerGB2018"
   tags = {
@@ -190,7 +235,12 @@ resource "azurerm_log_analytics_workspace" "res-20" {
   }
 }
 
-resource "azurerm_application_insights" "res-19" {
+moved {
+  from = azurerm_application_insights.res-19
+  to   = azurerm_application_insights.runtime-insights
+}
+
+resource "azurerm_application_insights" "runtime-insights" {
   application_type                     = "web"
   daily_data_cap_in_gb                 = 100
   daily_data_cap_notifications_enabled = true
@@ -201,7 +251,7 @@ resource "azurerm_application_insights" "res-19" {
   local_authentication_enabled         = true
   location                             = var.region
   name                                 = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
-  resource_group_name                  = azurerm_resource_group.res-0.name
+  resource_group_name                  = azurerm_resource_group.runtime.name
   retention_in_days                    = 90
   sampling_percentage                  = 0
   tags = {
@@ -209,5 +259,5 @@ resource "azurerm_application_insights" "res-19" {
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
-  workspace_id = azurerm_log_analytics_workspace.res-20.id
+  workspace_id = azurerm_log_analytics_workspace.runtime-logs.id
 }
