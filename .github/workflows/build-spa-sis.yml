@@ -1,8 +1,14 @@
-name: build
+name: build Single page app + Spatial Index Service
 
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "Dev"
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true

@@ -1,4 +1,4 @@
-name: Deploy Environment
+name: Provision Environment
 
 on:
   workflow_dispatch:
