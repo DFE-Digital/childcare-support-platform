@@ -1,4 +1,9 @@
-resource "azurerm_resource_group" "res-0" {
+moved {
+  from = azurerm_resource_group.res-0
+  to   = azurerm_resource_group.edge
+}
+
+resource "azurerm_resource_group" "edge" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
   tags = {
@@ -7,9 +12,14 @@ resource "azurerm_resource_group" "res-0" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_profile" "res-45" {
+moved {
+  from = azurerm_cdn_frontdoor_profile.res-45
+  to   = azurerm_cdn_frontdoor_profile.frontdoor
+}
+
+resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
   name                     = "${var.subscription_prefix}${var.environment_prefix}afd-${local.location_prefix}-frontdoor-01"
-  resource_group_name      = azurerm_resource_group.res-0.name
+  resource_group_name      = azurerm_resource_group.edge.name
   response_timeout_seconds = 60
   sku_name                 = "Premium_AzureFrontDoor"
   tags = {
@@ -23,8 +33,13 @@ resource "azurerm_cdn_frontdoor_profile" "res-45" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_endpoint.res-46
+  to   = azurerm_cdn_frontdoor_endpoint.endpoint
+}
+
+resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   enabled                  = true
   name                     = "bsil-frontend${var.unique_suffix}"
   tags = {
@@ -34,13 +49,18 @@ resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_route" "res-47" {
+moved {
+  from = azurerm_cdn_frontdoor_route.res-47
+  to   = azurerm_cdn_frontdoor_route.handler
+}
+
+resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_custom_domain_ids = []
-  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.res-46.id
-  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.res-48.id
-  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.res-49.id]
+  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.endpoint.id
+  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.static-site.id
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.static-site.id]
   cdn_frontdoor_origin_path       = ""
-  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.res-54.id, azurerm_cdn_frontdoor_rule_set.res-56.id]
+  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id, azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id]
   enabled                         = true
   forwarding_protocol             = "MatchRequest"
   https_redirect_enabled          = true
@@ -50,8 +70,13 @@ resource "azurerm_cdn_frontdoor_route" "res-47" {
   supported_protocols             = ["Http", "Https"]
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_origin_group.res-48
+  to   = azurerm_cdn_frontdoor_origin_group.static-site
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "default-origin-group-5b5349a1"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
@@ -68,8 +93,13 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-49" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-48.id
+moved {
+  from = azurerm_cdn_frontdoor_origin.res-49
+  to   = azurerm_cdn_frontdoor_origin.static-site
+}
+
+resource "azurerm_cdn_frontdoor_origin" "static-site" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
   certificate_name_check_enabled = true
   enabled                        = true
   host_name                      = var.storage_primary_web_host
@@ -87,8 +117,13 @@ resource "azurerm_cdn_frontdoor_origin" "res-49" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_origin_group.res-50
+  to   = azurerm_cdn_frontdoor_origin_group.azf-sis
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
@@ -105,8 +140,13 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-51" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-50.id
+moved {
+  from = azurerm_cdn_frontdoor_origin.res-51
+  to   = azurerm_cdn_frontdoor_origin.azf-sis
+}
+
+resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.azf-sis.id
   certificate_name_check_enabled = true
   enabled                        = true
   host_name                      = var.function_app_default_hostname
@@ -127,8 +167,13 @@ resource "azurerm_cdn_frontdoor_origin" "res-51" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_origin_group.res-52
+  to   = azurerm_cdn_frontdoor_origin_group.runtime-data
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-runtime-data-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
@@ -145,8 +190,13 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-53" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-52.id
+moved {
+  from = azurerm_cdn_frontdoor_origin.res-53
+  to   = azurerm_cdn_frontdoor_origin.runtime-data
+}
+
+resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
   certificate_name_check_enabled = true
   enabled                        = true
   host_name                      = var.storage_primary_blob_host
@@ -167,14 +217,24 @@ resource "azurerm_cdn_frontdoor_origin" "res-53" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_rule_set.res-54
+  to   = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapApiRequestToFunctionApp"
 }
 
-resource "azurerm_cdn_frontdoor_rule" "res-55" {
+moved {
+  from = azurerm_cdn_frontdoor_rule.res-55
+  to   = azurerm_cdn_frontdoor_rule.api-to-function-app
+}
+
+resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
   behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-54.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
   name                      = "MapApiRequestToFunctionApp"
   order                     = 100
   actions {
@@ -184,7 +244,7 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
         compression_enabled = false
       }
       origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-50.id
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.azf-sis.id
         forwarding_protocol           = "MatchRequest"
       }
     }
@@ -203,14 +263,24 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "res-56" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+moved {
+  from = azurerm_cdn_frontdoor_rule_set.res-56
+  to   = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-resource "azurerm_cdn_frontdoor_rule" "res-57" {
+moved {
+  from = azurerm_cdn_frontdoor_rule.res-57
+  to   = azurerm_cdn_frontdoor_rule.data-to-runtime
+}
+
+resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
   behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
   name                      = "MapDataRequestToRuntimeContainer"
   order                     = 100
   actions {
@@ -220,7 +290,7 @@ resource "azurerm_cdn_frontdoor_rule" "res-57" {
         compression_enabled = false
       }
       origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.runtime-data.id
         forwarding_protocol           = "MatchRequest"
       }
     }
@@ -239,11 +309,16 @@ resource "azurerm_cdn_frontdoor_rule" "res-57" {
   }
 }
 
-resource "azurerm_private_endpoint" "res-58" {
+moved {
+  from = azurerm_private_endpoint.res-58
+  to   = azurerm_private_endpoint.storage
+}
+
+resource "azurerm_private_endpoint" "storage" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
-  resource_group_name           = azurerm_resource_group.res-0.name
+  resource_group_name           = azurerm_resource_group.edge.name
   subnet_id                     = var.frontend_subnet_id
   tags = {
     Environment        = var.environment_tag
@@ -262,7 +337,7 @@ resource "azurerm_private_endpoint" "function_app" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-function-endpoint-01"
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
-  resource_group_name           = azurerm_resource_group.res-0.name
+  resource_group_name           = azurerm_resource_group.edge.name
   subnet_id                     = var.frontend_subnet_id
   tags = {
     Environment        = var.environment_tag
