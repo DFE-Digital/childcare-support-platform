@@ -208,36 +208,36 @@ resource "azurerm_cdn_frontdoor_rule_set" "res-56" {
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-# resource "azurerm_cdn_frontdoor_rule" "res-57" {
-#   behaviour_on_match        = "Continue"
-#   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
-#   name                      = "MapDataRequestToRuntimeContainer"
-#   order                     = 100
-#   actions {
-#     route_configuration_override {
-#       caching {
-#         behaviour           = "Disabled"
-#         compression_enabled = false
-#       }
-#       origin_group {
-#         cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
-#         forwarding_protocol           = "MatchRequest"
-#       }
-#     }
-#     url_rewrite {
-#       destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
-#       preserve_unmatched_path_enabled = true
-#       source_pattern                  = "/data"
-#     }
-#   }
-#   conditions {
-#     request_path {
-#       values     = ["/data/"]
-#       operator   = "BeginsWith"
-#       transforms = []
-#     }
-#   }
-# }
+resource "azurerm_cdn_frontdoor_rule" "res-57" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
+  name                      = "MapDataRequestToRuntimeContainer"
+  order                     = 100
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
+      preserve_unmatched_path_enabled = true
+      source_pattern                  = "/data"
+    }
+  }
+  conditions {
+    request_path {
+      values     = ["/data/"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+}
 
 resource "azurerm_private_endpoint" "res-58" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"

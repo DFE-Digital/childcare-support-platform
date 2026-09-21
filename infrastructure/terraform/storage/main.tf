@@ -25,7 +25,7 @@ resource "azurerm_storage_account" "res-1" {
   min_tls_version                   = "TLS1_2"
   name                              = "cccepfdatastore${var.environment_prefix}${var.unique_suffix}"
   nfsv3_enabled                     = false
-  public_network_access_enabled     = true
+  public_network_access_enabled     = false
   queue_encryption_key_type         = "Service"
   resource_group_name               = azurerm_resource_group.res-0.name
   sftp_enabled                      = false
@@ -70,7 +70,7 @@ resource "azurerm_storage_container" "res-5" {
 }
 
 resource "azurerm_storage_container" "res-7" {
-  container_access_type = "private"
+  container_access_type = "blob"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01"
   storage_account_id    = azurerm_storage_account.res-1.id
