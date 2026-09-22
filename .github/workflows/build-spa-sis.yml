@@ -1,4 +1,4 @@
-name: build Single page app + Spatial Index Service
+name: Build Single page app + Spatial Index Service
 
 on:
   workflow_dispatch:
