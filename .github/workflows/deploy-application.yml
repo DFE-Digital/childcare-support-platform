@@ -1,4 +1,4 @@
-name: deploy-application
+name: Deploy Application Pipeline
 
 on:
   workflow_dispatch:
