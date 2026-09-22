@@ -1,7 +1,7 @@
-moved {
-  from = azurerm_resource_group.res-0
-  to   = azurerm_resource_group.storage
-}
+# moved {
+#   from = azurerm_resource_group.res-0
+#   to   = azurerm_resource_group.storage
+# }
 
 resource "azurerm_resource_group" "storage" {
   location = var.region
@@ -12,10 +12,10 @@ resource "azurerm_resource_group" "storage" {
   }
 }
 
-moved {
-  from = azurerm_storage_account.res-1
-  to   = azurerm_storage_account.site-data
-}
+# moved {
+#   from = azurerm_storage_account.res-1
+#   to   = azurerm_storage_account.site-data
+# }
 
 resource "azurerm_storage_account" "site-data" {
   access_tier                       = "Hot"
@@ -65,10 +65,10 @@ resource "azurerm_storage_account" "site-data" {
   }
 }
 
-moved {
-  from = azurerm_storage_container.res-3
-  to   = azurerm_storage_container.web-container
-}
+# moved {
+#   from = azurerm_storage_container.res-3
+#   to   = azurerm_storage_container.web-container
+# }
 
 resource "azurerm_storage_container" "web-container" {
   container_access_type = "private"
@@ -77,10 +77,10 @@ resource "azurerm_storage_container" "web-container" {
   storage_account_id    = azurerm_storage_account.site-data.id
 }
 
-moved {
-  from = azurerm_storage_container.res-5
-  to   = azurerm_storage_container.provider-container
-}
+# moved {
+#   from = azurerm_storage_container.res-5
+#   to   = azurerm_storage_container.provider-container
+# }
 
 resource "azurerm_storage_container" "provider-container" {
   container_access_type = "private"
@@ -89,10 +89,10 @@ resource "azurerm_storage_container" "provider-container" {
   storage_account_id    = azurerm_storage_account.site-data.id
 }
 
-moved {
-  from = azurerm_storage_container.res-7
-  to   = azurerm_storage_container.source-data-container
-}
+# moved {
+#   from = azurerm_storage_container.res-7
+#   to   = azurerm_storage_container.source-data-container
+# }
 
 resource "azurerm_storage_container" "source-data-container" {
   container_access_type = "blob"

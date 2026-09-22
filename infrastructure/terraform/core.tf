@@ -14,10 +14,10 @@ data "azurerm_virtual_network" "core-vnet" {
   resource_group_name = data.azurerm_resource_group.core.name
 }
 
-moved {
-  from = azurerm_subnet.res-3
-  to   = azurerm_subnet.backend
-}
+# moved {
+#   from = azurerm_subnet.res-3
+#   to   = azurerm_subnet.backend
+# }
 
 resource "azurerm_subnet" "backend" {
   address_prefixes                              = [local.subnet_ranges[2]]
@@ -41,10 +41,10 @@ resource "azurerm_subnet" "backend" {
   ]
 }
 
-moved {
-  from = azurerm_subnet.res-5
-  to   = azurerm_subnet.container-apps
-}
+# moved {
+#   from = azurerm_subnet.res-5
+#   to   = azurerm_subnet.container-apps
+# }
 
 resource "azurerm_subnet" "container-apps" {
   address_prefixes                              = [local.subnet_ranges[0]]
@@ -62,10 +62,10 @@ resource "azurerm_subnet" "container-apps" {
   ]
 }
 
-moved {
-  from = azurerm_subnet.res-7
-  to   = azurerm_subnet.frontend
-}
+# moved {
+#   from = azurerm_subnet.res-7
+#   to   = azurerm_subnet.frontend
+# }
 
 resource "azurerm_subnet" "frontend" {
   address_prefixes                              = [local.subnet_ranges[1]]
@@ -83,10 +83,10 @@ resource "azurerm_subnet" "frontend" {
   ]
 }
 
-moved {
-  from = azurerm_subnet.res-9
-  to   = azurerm_subnet.actions-runner
-}
+# moved {
+#   from = azurerm_subnet.res-9
+#   to   = azurerm_subnet.actions-runner
+# }
 
 resource "azurerm_subnet" "actions-runner" {
   address_prefixes                              = [local.subnet_ranges[3]]
