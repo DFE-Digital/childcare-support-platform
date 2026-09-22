@@ -28,7 +28,7 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
     "Service Offering" = ""
   }
   identity {
-    identity_ids = [var.frontdoor_identity_id]
+    identity_ids = [azurerm_user_assigned_identity.frontdoor-identity.id]
     type         = "UserAssigned"
   }
 }
@@ -41,7 +41,7 @@ moved {
 resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   enabled                  = true
-  name                     = "bsil-frontend${var.unique_suffix}"
+  name                     = "bsil-frontend${random_id.unique_suffix.hex}"
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -102,17 +102,17 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.storage_primary_web_host
+  host_name                      = azurerm_storage_account.site-data.primary_web_host
   http_port                      = 80
   https_port                     = 443
   name                           = "staticweb"
-  origin_host_header             = var.storage_primary_web_host
+  origin_host_header             = azurerm_storage_account.site-data.primary_web_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.storage_account_id
-    request_message        = "The request is from storage account ${var.storage_account_name}"
+    private_link_target_id = azurerm_storage_account.site-data.id
+    request_message        = "The request is from storage account ${azurerm_storage_account.site-data.name}"
     target_type            = "web"
   }
 }
@@ -149,16 +149,16 @@ resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.azf-sis.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.function_app_default_hostname
+  host_name                      = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
   http_port                      = 80
   https_port                     = 443
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-azf-sis-01"
-  origin_host_header             = var.function_app_default_hostname
+  origin_host_header             = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.function_app_id
+    private_link_target_id = azurerm_function_app_flex_consumption.consumption-plan.id
     request_message        = "The request is from Front Door to the spatial index service function app"
     target_type            = "sites"
   }
@@ -199,16 +199,16 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.storage_primary_blob_host
+  host_name                      = azurerm_storage_account.site-data.primary_blob_host
   http_port                      = 80
   https_port                     = 443
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
-  origin_host_header             = var.storage_primary_blob_host
+  origin_host_header             = azurerm_storage_account.site-data.primary_blob_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.storage_account_id
+    private_link_target_id = azurerm_storage_account.site-data.id
     request_message        = "The request is from Front Door to the storage account for runtime data"
     target_type            = "blob"
   }
@@ -319,7 +319,7 @@ resource "azurerm_private_endpoint" "storage" {
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
   resource_group_name           = azurerm_resource_group.edge.name
-  subnet_id                     = var.frontend_subnet_id
+  subnet_id                     = azurerm_subnet.frontend.id
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -328,7 +328,7 @@ resource "azurerm_private_endpoint" "storage" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
-    private_connection_resource_id = var.storage_account_id
+    private_connection_resource_id = azurerm_storage_account.site-data.id
     subresource_names              = ["blob"]
   }
 }
@@ -338,7 +338,7 @@ resource "azurerm_private_endpoint" "function_app" {
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
   resource_group_name           = azurerm_resource_group.edge.name
-  subnet_id                     = var.frontend_subnet_id
+  subnet_id                     = azurerm_subnet.frontend.id
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -347,7 +347,7 @@ resource "azurerm_private_endpoint" "function_app" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
-    private_connection_resource_id = var.function_app_id
+    private_connection_resource_id = azurerm_function_app_flex_consumption.consumption-plan.id
     subresource_names              = ["sites"]
   }
 }

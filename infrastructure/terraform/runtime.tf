@@ -33,7 +33,7 @@ resource "azurerm_storage_account" "storage" {
   local_user_enabled                = true
   location                          = var.region
   min_tls_version                   = "TLS1_2"
-  name                              = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
+  name                              = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}"
   nfsv3_enabled                     = false
   public_network_access_enabled     = true
   queue_encryption_key_type         = "Service"
@@ -96,7 +96,7 @@ moved {
 resource "azurerm_storage_container" "runtime-storage" {
   container_access_type = "private"
   metadata              = {}
-  name                  = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
+  name                  = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}"
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
@@ -108,7 +108,7 @@ moved {
 resource "azurerm_service_plan" "service-plan" {
   location                        = var.region
   maximum_elastic_worker_count    = 1
-  name                            = "ASP-${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime-${var.unique_suffix}"
+  name                            = "ASP-${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime-${random_id.unique_suffix.hex}"
   os_type                         = "Linux"
   per_site_scaling_enabled        = false
   premium_plan_auto_scale_enabled = false
@@ -145,7 +145,7 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
   service_plan_id                    = azurerm_service_plan.service-plan.id
   storage_access_key                 = azurerm_storage_account.storage.primary_access_key
   storage_authentication_type        = "StorageAccountConnectionString"
-  storage_container_endpoint         = "https://${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}.blob.core.windows.net/${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${var.unique_suffix}"
+  storage_container_endpoint         = "https://${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}.blob.core.windows.net/${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}"
   storage_container_type             = "blobContainer"
   tags = {
     Environment                              = var.environment_tag
@@ -159,7 +159,7 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
   # to false and remove zip_deploy_file.
   webdeploy_publish_basic_authentication_enabled = true
   identity {
-    identity_ids = [var.azf_identity_id]
+    identity_ids = [azurerm_user_assigned_identity.azf-identity.id]
     type         = "UserAssigned"
   }
   site_config {
