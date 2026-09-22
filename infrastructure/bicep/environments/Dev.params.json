@@ -11,8 +11,8 @@
     "value": {
       "Environment": "Dev",
       "Source": "bicep",
-      "Product": "Childcare Support Platform",
-      "Service Offering": "Provide parents with childcare providers"
+      "Product": "Childcare Platform",
+      "Service Offering": "Childcare Platform"
     }
   }
 }

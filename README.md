@@ -16,8 +16,10 @@ Key root-level files: `Makefile`, `Dockerfile`, `docker-compose.yml`, `prisma/sc
 
 ## Prerequisites
 
+*If using [mise](https://mise.jdx.dev/) (recommended) simply run `mise install` (Docker must be installed separately)*
+
 - **Node.js** (version in `.nvmrc`, currently 24.x) via nvm
-- **Docker** + Docker Compose
 - **Rust** 1.86+ (for `sis/build` and `sis/test` only — deployment uses Docker)
 - **Python 3.11+** and **uv** (for the data pipeline)
-- **AWS CLI** (for S3 data and deployment)
+
+- **Docker** + Docker Compose

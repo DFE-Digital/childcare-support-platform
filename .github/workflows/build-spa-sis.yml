@@ -1,7 +1,25 @@
-name: build
+name: build Single page app + Spatial Index Service
 
 on:
+  workflow_dispatch:
   workflow_call:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "Dev"
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      AZURE_STORAGE_CONNECTION_STRING:
+        required: true
+      AZURE_SOURCE_DATA_CONTAINER_NAME:
+        required: true
 
 jobs:
   build:
@@ -22,18 +40,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Set environment config
-        id: config
-        run: |
-          echo "source_data=s288d01stc-ukw-sourcedata" >> $GITHUB_OUTPUT
-
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data
 
           az storage copy \
             --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-            --source-container "${{ steps.config.outputs.source_data }}" \
+            --source-container "${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}" \
             --source-blob "app/" \
             --destination exported_data/ \
             --recursive
@@ -73,6 +86,8 @@ jobs:
       - name: Prepare filesystem
         run: |
           mkdir -p packages/spatial-index-service/target/sis-bundle
+          mkdir -p packages/spatial-index-service/target/sis-bundle/spatial-query
+          mkdir -p packages/spatial-index-service/target/sis-bundle/health
           docker rm bsil-lambda-extract 2>/dev/null || true
 
       - name: Build spatial index service image
@@ -92,10 +107,18 @@ jobs:
           docker cp bsil-lambda-extract:/usr/local/bin/sis-query-lambda \
             packages/spatial-index-service/target/sis-bundle/handler
           docker rm bsil-lambda-extract
+
+          cp packages/spatial-index-service/host.json \
+            packages/spatial-index-service/target/sis-bundle/host.json
+          cp packages/spatial-index-service/spatial-query/function.json \
+            packages/spatial-index-service/target/sis-bundle/spatial-query/function.json
+          cp packages/spatial-index-service/health/function.json \
+            packages/spatial-index-service/target/sis-bundle/health/function.json
           cp exported_data/app/spatial_index.sis \
             packages/spatial-index-service/target/sis-bundle/spatial_index.sis
+
           cd packages/spatial-index-service/target/sis-bundle && \
-            zip -j ../sis-bundle.zip handler spatial_index.sis
+            zip -r ../sis-bundle.zip handler start.sh spatial_index.sis host.json spatial-query/ health/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
@@ -115,8 +138,7 @@ jobs:
         # Bundle everything except the index.html file into a zip
         run: |
           cd packages/app/dist
-          zip dist.zip * -x index.html
-
+          zip -r dist.zip * -x index.html
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v7

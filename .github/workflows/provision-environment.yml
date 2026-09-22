@@ -1,0 +1,193 @@
+name: Provision Environment
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "Dev"
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+      REPOSITORY_PAT:
+        required: true
+
+jobs:
+  deploy:
+    name: "Provision & deploy environment"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+
+    defaults:
+      run:
+        working-directory: ./infrastructure/terraform
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+
+    steps:
+      - name: Download Infra Metadata
+        uses: actions/download-artifact@v8
+        with:
+          name: build-infra-metadata
+          path: .
+
+      - name: Read Terraform Version
+        id: tf-version
+        working-directory: .
+        run: |
+          VERSION=$(jq -r .terraform build-infra-metadata.json)
+          echo "TF_VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Download Infra Package
+        uses: actions/download-artifact@v8
+        with:
+          name: infra-package
+          path: ./infrastructure
+
+      - name: Unzip Infra Package
+        run: unzip -o infra-package.zip
+        working-directory: ./infrastructure
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@f5d393ae46f8fde4be8b75f32e3fc50e654ad0ca
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Workflow Service Principal Object ID
+        id: get-sp-id
+        run: |
+          SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
+          echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Bootstrap Terraform
+        id: bootstrap-tf
+        uses: azure/arm-deploy@v2
+        with:
+          scope: subscription
+          region: uksouth
+          template: ./infrastructure/bicep/main.bicep
+          deploymentName: terraform-${{ inputs.environment }}
+          parameters: ./infrastructure/bicep/environments/${{ inputs.environment }}.params.json workflowPrincipalId=${{ steps.get-sp-id.outputs.object_id }}
+
+      - name: Confirm bootstrap output
+        run: |
+          echo "Resource Group: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}"
+          echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
+
+      - name: Generate SSH Keypair
+        run: |
+          ssh-keygen -t ed25519 -f runner_key -N "" -C "github-runner-vm"
+          echo "SSH_PUBLIC_KEY=$(cat runner_key.pub)" >> "$GITHUB_ENV"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_wrapper: false
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Unlock Terraform State
+        working-directory: ./infrastructure
+        env:
+          ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
+          RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -upgrade \
+            -backend-config="resource_group_name=${{ steps.bootstrap-tf.outputs.resourceGroupName }}" \
+            -backend-config="storage_account_name=${{ steps.bootstrap-tf.outputs.storageAccountName }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
+
+      - name: Terraform Plan
+        id: tf-plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
+        run: |
+          terraform plan -no-color -out=main.tfplan \
+            -var-file="environments/${{ inputs.environment }}.tfvars" \
+            -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve main.tfplan
+
+      - name: Save Terraform outputs
+        id: tf-out
+        run: |
+          KEYVAULT_NAME=$(terraform output -raw keyvault_name)
+          SECURITY_RG_NAME=$(terraform output -raw security_rg_name)
+
+          echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
+          echo "security_rg_name=$SECURITY_RG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        working-directory: ./infrastructure
+        env:
+          ACC_NAME: ${{ steps.bootstrap-tf.outputs.storageAccountName }}
+          RG_NAME: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
+
+      - name: Unlock Keyvault
+        working-directory: ./infrastructure
+        env:
+          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
+          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-keyvault-access.sh
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "true" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: Store private key in key vault
+        run: |
+          # Wait for a specific time (e.g., 1 min)
+          sleep 60 
+
+          az keyvault secret set \
+            --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
+            --name "github-runner-ssh-private-key" \
+            --file runner_key > /dev/null
+
+      - name: Lock Keyvault
+        if: ${{ always() }}
+        working-directory: ./infrastructure
+        env:
+          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
+          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-keyvault-access.sh
+          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "false" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: Clean up local key files
+        if: always()
+        run: |
+          rm -f runner_key runner_key.pub
+
+    # Web app deploy steps TBC
+    # Publish deployment summary

@@ -143,16 +143,16 @@ testdata/
 
 ## Environment variables
 
-| Variable               | Default             | Description                                                           |
-| ---------------------- | ------------------- | --------------------------------------------------------------------- |
-| `SIS_API_TYPE`         | `http`              | API mode (`http` or `lambda`)                                         |
-| `SIS_BBOX_INFLATION`   | `1`                 | Viewport inflation factor (float; `1` = 50% per side)                 |
-| `SIS_RESULT_LIMIT`     | `500`               | Max providers per population (point and bbox independently) per query |
-| `SIS_FILEPATH`         | `spatial_index.sis` | Path to the `.sis` file                                               |
-| `SIS_SCHEMA_JSON_PATH` | `sis_schema.json`   | Output path for schema JSON (preprocess only)                         |
-| `SIS_CORS_ORIGIN`      | `*`                 | CORS allowed origin(s) — `*`, single, or comma-separated list         |
-| `SIS_PORT`             | `3001`              | HTTP listen port (query server only)                                  |
-| `RUST_LOG`             | `info`              | Log level filter (standard `tracing` env filter)                      |
+| Variable                       | Default             | Description                                                           |
+| ------------------------------ | ------------------- | --------------------------------------------------------------------- |
+| `SIS_API_TYPE`                 | `http`              | API mode (`http` or `lambda`)                                         |
+| `SIS_BBOX_INFLATION`           | `1`                 | Viewport inflation factor (float; `1` = 50% per side)                 |
+| `SIS_RESULT_LIMIT`             | `500`               | Max providers per population (point and bbox independently) per query |
+| `SIS_FILEPATH`                 | `spatial_index.sis` | Path to the `.sis` file                                               |
+| `SIS_SCHEMA_JSON_PATH`         | `sis_schema.json`   | Output path for schema JSON (preprocess only)                         |
+| `SIS_CORS_ORIGIN`              | `*`                 | CORS allowed origin(s) — `*`, single, or comma-separated list         |
+| `FUNCTIONS_CUSTOMHANDLER_PORT` | `3001`              | When running locally: this is the port that the Query API will run against. When running on Azure: this is how the Azure Function will run against the API |
+| `RUST_LOG`                     | `info`              | Log level filter (standard `tracing` env filter)                      |
 
 **WARNING:** environment for `sis-preprocess` and `sis-query` **must match** because the former writes some into `sis_schema.json` which is
 then read statically from the frontend into the client browser. At runtime the browser and `sis-query` both need to have the same values.
@@ -179,7 +179,7 @@ This produces two files:
 ```sh
 SIS_FILEPATH=output/spatial_index.sis \
 SIS_API_TYPE=http \
-SIS_PORT=3001 \
+FUNCTIONS_CUSTOMHANDLER_PORT=3001 \
   sis-query
 ```
 
@@ -319,6 +319,8 @@ The root `Dockerfile` includes a Rust build stage (`sis-builder`) that compiles 
 ## Lambda
 
 The query server supports AWS Lambda deployment via `SIS_API_TYPE=lambda`. The same Router, handlers, and middleware serve both HTTP and Lambda modes — `lambda_http::run(app)` wraps the Axum Router as a Lambda handler.
+
+**WARNING: The Lambda function is deprecated as this service is now aimed towards Azure deployment instead**
 
 ### Prerequisites
 

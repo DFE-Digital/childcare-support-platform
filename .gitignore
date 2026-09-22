@@ -64,7 +64,7 @@ terraform/bootstrap/terraform.tfstate.backup
 # Custom terraform chart path
 .charts
 
-.vscode
+
 act.secret
 testing.sh
 
