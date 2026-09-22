@@ -21,7 +21,7 @@
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "prisma": "^6.5.0",
-    "tsx": "^4.19.0",
+    "tsx": "^4.23.11",
     "zod": "^3.25.0"
   }
 }
