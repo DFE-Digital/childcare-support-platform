@@ -59,9 +59,4 @@ resource "azurerm_monitor_diagnostic_setting" "function-log-settings" {
   enabled_metric {
     category = "AllMetrics"
   }
-
-  tags = {
-    Environment = var.environment_tag
-    Product     = "Childcare Platform"
-  }
 }
