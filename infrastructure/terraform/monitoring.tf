@@ -43,6 +43,6 @@ resource "azurerm_application_insights" "application-insights" {
   application_type    = "other"
   tags = {
     Environment = var.environment_tag
-    Product = "Childcare Platform"
+    Product     = "Childcare Platform"
   }
 }
