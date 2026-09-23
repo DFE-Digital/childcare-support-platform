@@ -133,6 +133,34 @@ resource "azurerm_monitor_metric_alert" "availability-alert" {
   }
 }
 
+resource "azurerm_monitor_metric_alert" "function-cpu-usage-alert" {
+  name                = "function-cpu-usage-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_function_app_flex_consumption.consumption-plan.id]
+  description         = "Alert if CPU usage exceeds the config threshold"
+  severity            = 0
+  frequency           = "PT1M"
+  window_size         = "PT1H"
+  enabled             = true
+  tags = {
+    Environment = var.environment_tag
+    Product     = "Childcare Platform"
+  }
+
+  criteria {
+    metric_namespace = "Microsoft.Web/serverfarms"
+    metric_name      = "CpuPercentage"
+    aggregation      = "Average"
+    operator         = "GreaterThan"
+    // TODO: Figure this out
+    threshold = 90
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
 // Copied over from the DfE Care Leavers project
 // Source: https://github.com/DFE-Digital/care-leavers/blob/main/src/infrastructure/terraform/budget-alerts.tf
 // These values below need to be updated to be inline with our projects desired budget :)

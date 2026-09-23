@@ -153,10 +153,6 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
     "Service Offering"                       = ""
     "hidden-link: /app-insights-resource-id" = azurerm_application_insights.application-insights.id
   }
-  # TODO: basic auth is only enabled to allow zip_deploy_file below to publish the
-  # placeholder handler. Once real code deployment moves to CI/CD (e.g. az functionapp
-  # deployment or GitHub Actions with an Entra/OIDC service principal), set this back
-  # to false and remove zip_deploy_file.
   webdeploy_publish_basic_authentication_enabled = true
   identity {
     identity_ids = [azurerm_user_assigned_identity.azf-identity.id]
