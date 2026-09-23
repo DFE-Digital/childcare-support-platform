@@ -148,7 +148,7 @@ resource "azurerm_monitor_metric_alert" "function-cpu-usage-alert" {
   }
 
   criteria {
-    metric_namespace = "Microsoft.Web/serverfarms"
+    metric_namespace = "Microsoft.Web/sites"
     metric_name      = "CpuPercentage"
     aggregation      = "Average"
     operator         = "GreaterThan"
