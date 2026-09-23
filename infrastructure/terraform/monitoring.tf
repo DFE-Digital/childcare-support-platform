@@ -105,6 +105,34 @@ resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings
   }
 }
 
+resource "azurerm_monitor_metric_alert" "availability-alert" {
+  name                = "availability-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
+  description         = "Alert if availability is below configured threshold"
+  severity            = 0
+  frequency           = "PT1M"
+  window_size         = "PT1H"
+  enabled             = true
+  tags = {
+    Environment = var.environment_tag
+    Product     = "Childcare Platform"
+  }
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "availabilityResults/availabilityPercentage"
+    aggregation      = "Average"
+    operator         = "LessThan"
+    // TODO: Figure this out
+    threshold = 90
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
 // Copied over from the DfE Care Leavers project
 // Source: https://github.com/DFE-Digital/care-leavers/blob/main/src/infrastructure/terraform/budget-alerts.tf
 // These values below need to be updated to be inline with our projects desired budget :)
