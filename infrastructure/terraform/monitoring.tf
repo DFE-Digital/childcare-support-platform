@@ -60,3 +60,17 @@ resource "azurerm_monitor_diagnostic_setting" "function-log-settings" {
     category = "AllMetrics"
   }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "frontdoor-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-frontdoor-log-settings-01"
+  target_resource_id         = azurerm_cdn_frontdoor_profile.frontdoor.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
