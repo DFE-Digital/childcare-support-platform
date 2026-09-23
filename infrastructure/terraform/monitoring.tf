@@ -74,3 +74,17 @@ resource "azurerm_monitor_diagnostic_setting" "frontdoor-log-settings" {
     category = "AllMetrics"
   }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-app-insights-log-settings-01"
+  target_resource_id         = azurerm_application_insights.application-insights.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+}
