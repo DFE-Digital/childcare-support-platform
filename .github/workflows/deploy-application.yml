@@ -65,6 +65,7 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       REPOSITORY_PAT: ${{ secrets.REPOSITORY_PAT }}
+      SUPPORT_ALERT_EMAIL: ${{ secrets.SUPPORT_ALERT_EMAIL }}
 
   create-release:
     name: Create Release
