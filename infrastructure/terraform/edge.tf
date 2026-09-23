@@ -129,9 +129,9 @@ resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
   session_affinity_enabled                                  = false
   health_probe {
     interval_in_seconds = 100
-    path                = "/"
+    path                = "/health"
     protocol            = "Http"
-    request_type        = "HEAD"
+    request_type        = "GET"
   }
   load_balancing {
     additional_latency_in_milliseconds = 50
