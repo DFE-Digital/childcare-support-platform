@@ -151,7 +151,7 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
     Environment                              = var.environment_tag
     Product                                  = "Childcare Platform"
     "Service Offering"                       = ""
-    "hidden-link: /app-insights-resource-id" = azurerm_application_insights.runtime-insights.id
+    "hidden-link: /app-insights-resource-id" = azurerm_application_insights.application-insights.id
   }
   # TODO: basic auth is only enabled to allow zip_deploy_file below to publish the
   # placeholder handler. Once real code deployment moves to CI/CD (e.g. az functionapp
@@ -164,8 +164,8 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
   }
   site_config {
     app_command_line                        = ""
-    application_insights_connection_string  = azurerm_application_insights.runtime-insights.connection_string
-    application_insights_key                = azurerm_application_insights.runtime-insights.instrumentation_key
+    application_insights_connection_string  = azurerm_application_insights.application-insights.connection_string
+    application_insights_key                = azurerm_application_insights.application-insights.instrumentation_key
     container_registry_use_managed_identity = false
     default_documents                       = ["Default.htm", "Default.html", "Default.asp", "index.htm", "index.html", "iisstart.htm", "default.aspx", "index.php"]
     elastic_instance_minimum                = 0
@@ -216,48 +216,4 @@ resource "azurerm_monitor_action_group" "insights-smart-detection" {
     role_id                 = "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
     use_common_alert_schema = true
   }
-}
-
-# moved {
-#   from = azurerm_log_analytics_workspace.res-20
-#   to   = azurerm_log_analytics_workspace.runtime-logs
-# }
-
-resource "azurerm_log_analytics_workspace" "runtime-logs" {
-  location            = var.region
-  name                = "${var.subscription_prefix}${var.environment_prefix}law-${local.location_prefix}-runtime-01"
-  resource_group_name = azurerm_resource_group.runtime.name
-  retention_in_days   = 30
-  sku                 = "PerGB2018"
-  tags = {
-    Environment = var.environment_tag
-    Product     = "Childcare Platform"
-  }
-}
-
-# moved {
-#   from = azurerm_application_insights.res-19
-#   to   = azurerm_application_insights.runtime-insights
-# }
-
-resource "azurerm_application_insights" "runtime-insights" {
-  application_type                     = "web"
-  daily_data_cap_in_gb                 = 100
-  daily_data_cap_notifications_enabled = true
-  force_customer_storage_for_profiler  = false
-  internet_ingestion_enabled           = true
-  internet_query_enabled               = true
-  ip_masking_enabled                   = true
-  local_authentication_enabled         = true
-  location                             = var.region
-  name                                 = "${var.subscription_prefix}${var.environment_prefix}azf-${local.location_prefix}-spatial-index-service-01"
-  resource_group_name                  = azurerm_resource_group.runtime.name
-  retention_in_days                    = 90
-  sampling_percentage                  = 0
-  tags = {
-    Environment        = var.environment_tag
-    Product            = "Childcare Platform"
-    "Service Offering" = ""
-  }
-  workspace_id = azurerm_log_analytics_workspace.runtime-logs.id
 }
