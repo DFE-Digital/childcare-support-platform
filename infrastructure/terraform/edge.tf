@@ -261,6 +261,7 @@ resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
       transforms = []
     }
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
 }
 
 # moved {
@@ -307,6 +308,7 @@ resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
       transforms = []
     }
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
 }
 
 # moved {
