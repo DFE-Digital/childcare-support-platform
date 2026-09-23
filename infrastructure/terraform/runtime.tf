@@ -189,31 +189,3 @@ resource "azurerm_function_app_flex_consumption" "consumption-plan" {
     }
   }
 }
-
-# moved {
-#   from = azurerm_monitor_action_group.res-18
-#   to   = azurerm_monitor_action_group.insights-smart-detection
-# }
-
-resource "azurerm_monitor_action_group" "insights-smart-detection" {
-  enabled             = true
-  location            = "global"
-  name                = "Application Insights Smart Detection"
-  resource_group_name = azurerm_resource_group.runtime.name
-  short_name          = "SmartDetect"
-  tags = {
-    Environment        = var.environment_tag
-    Product            = "Childcare Platform"
-    "Service Offering" = ""
-  }
-  arm_role_receiver {
-    name                    = "Monitoring Contributor"
-    role_id                 = "749f88d5-cbae-40b8-bcfc-e573ddc772fa"
-    use_common_alert_schema = true
-  }
-  arm_role_receiver {
-    name                    = "Monitoring Reader"
-    role_id                 = "43d0d8ad-25c7-4714-9337-8ba259a9fe05"
-    use_common_alert_schema = true
-  }
-}

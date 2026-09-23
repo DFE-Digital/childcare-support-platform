@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "monitoring" {
 }
 
 resource "azurerm_monitor_action_group" "service-support-action" {
-  name                = "Service Support"
+  name                = "Service support group"
   resource_group_name = azurerm_resource_group.monitoring.name
   short_name          = "Support"
 
@@ -17,6 +17,22 @@ resource "azurerm_monitor_action_group" "service-support-action" {
     email_address           = var.support_alert_email
     use_common_alert_schema = true
   }
+  tags = {
+    Environment = var.environment_tag
+    Product     = "Childcare Platform"
+  }
+}
+
+resource "azurerm_monitor_action_group" "budget-alert-action-group" {
+  name                = "Budget alert group"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  short_name          = "BudgetAlert"
+
+  email_receiver {
+    name          = "ChildcareSupportPlatform-BudgetAlertEmail"
+    email_address = var.support_alert_email
+  }
+
   tags = {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
@@ -86,5 +102,52 @@ resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings
 
   enabled_metric {
     category = "AllMetrics"
+  }
+}
+
+// Copied over from the DfE Care Leavers project
+// Source: https://github.com/DFE-Digital/care-leavers/blob/main/src/infrastructure/terraform/budget-alerts.tf
+// These values below need to be updated to be inline with our projects desired budget :)
+locals {
+  environment_subscription_budgets = {
+    d01 = 100
+    t01 = 50
+    p01 = 300
+  }
+}
+
+resource "azurerm_consumption_budget_subscription" "subscription-budget" {
+  name            = "${var.subscription_prefix}${var.environment_prefix}cbs-${local.location_prefix}-subscription-budget-01"
+  subscription_id = data.azurerm_subscription.current.id
+  amount          = local.environment_subscription_budgets[var.environment_prefix]
+  time_grain      = "Monthly"
+
+  time_period {
+    # Start date must be the first of a month, end date defaults to +10 years when not specified
+    start_date = "2026-06-01T00:00:00Z"
+  }
+
+  notification {
+    enabled        = true
+    threshold      = 80.0
+    operator       = "GreaterThan"
+    threshold_type = "Actual"
+    contact_groups = [azurerm_monitor_action_group.budget-alert-action-group.id]
+  }
+
+  notification {
+    enabled        = true
+    threshold      = 100.0
+    operator       = "GreaterThan"
+    threshold_type = "Forecasted"
+    contact_groups = [azurerm_monitor_action_group.budget-alert-action-group.id]
+  }
+
+  notification {
+    enabled        = true
+    threshold      = 110.0
+    operator       = "GreaterThan"
+    threshold_type = "Forecasted"
+    contact_groups = [azurerm_monitor_action_group.budget-alert-action-group.id]
   }
 }

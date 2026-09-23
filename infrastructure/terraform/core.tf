@@ -1,5 +1,3 @@
-data "azurerm_subscription" "current" {}
-
 data "azurerm_resource_group" "core" {
   name = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-core"
 }
