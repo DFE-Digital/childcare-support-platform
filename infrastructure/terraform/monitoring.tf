@@ -124,7 +124,7 @@ resource "azurerm_consumption_budget_subscription" "subscription-budget" {
 
   time_period {
     # Start date must be the first of a month, end date defaults to +10 years when not specified
-    start_date = "2026-06-01T00:00:00Z"
+    start_date = "2026-09-01T00:00:00Z"
   }
 
   notification {
