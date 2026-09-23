@@ -46,3 +46,22 @@ resource "azurerm_application_insights" "application-insights" {
     Product     = "Childcare Platform"
   }
 }
+
+resource "azurerm_monitor_diagnostic_setting" "function-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-function-log-settings-01"
+  target_resource_id         = azurerm_function_app_flex_consumption.consumption-plan.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_log {
+    category = "FunctionAppLogs"
+  }
+
+  enabled_metric {
+    category = "AllMetrics"
+  }
+
+  tags = {
+    Environment = var.environment_tag
+    Product     = "Childcare Platform"
+  }
+}
