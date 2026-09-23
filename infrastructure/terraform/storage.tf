@@ -70,12 +70,12 @@ resource "azurerm_storage_account" "site-data" {
 #   to   = azurerm_storage_container.web-container
 # }
 
-resource "azurerm_storage_container" "web-container" {
-  container_access_type = "private"
-  metadata              = {}
-  name                  = "$web"
-  storage_account_id    = azurerm_storage_account.site-data.id
-}
+# resource "azurerm_storage_container" "web-container" {
+#   container_access_type = "private"
+#   metadata              = {}
+#   name                  = "$web"
+#   storage_account_id    = azurerm_storage_account.site-data.id
+# }
 
 # moved {
 #   from = azurerm_storage_container.res-5
