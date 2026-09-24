@@ -16,6 +16,11 @@ data "cloudinit_config" "vm-init" {
   }
 }
 
+moved {
+  from = module.actions.azurerm_resource_group.runner-group
+  to   = azurerm_resource_group.runner-group
+}
+
 resource "azurerm_resource_group" "runner-group" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-actions-runners"
@@ -23,6 +28,11 @@ resource "azurerm_resource_group" "runner-group" {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
+}
+
+moved {
+  from = module.actions.azurerm_network_interface.actions-nic
+  to   = azurerm_network_interface.actions-nic
 }
 
 resource "azurerm_network_interface" "actions-nic" {
@@ -35,6 +45,11 @@ resource "azurerm_network_interface" "actions-nic" {
     subnet_id                     = azurerm_subnet.actions-runner.id
     private_ip_address_allocation = "Dynamic"
   }
+}
+
+moved {
+  from = module.actions.azurerm_linux_virtual_machine.actions-runner
+  to   = azurerm_linux_virtual_machine.actions-runner
 }
 
 resource "azurerm_linux_virtual_machine" "actions-runner" {

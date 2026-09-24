@@ -21,10 +21,10 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    use_oidc         = true
-    use_azuread_auth = true
-  }
+  # backend "azurerm" {
+  #   use_oidc         = true
+  #   use_azuread_auth = true
+  # }
 }
 
 provider "github" {

@@ -19,3 +19,7 @@ module "security" {
 module "storage" {
   source = "./storage"
 }
+
+module "actions" {
+  source = "./actions"
+}
