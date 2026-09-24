@@ -52,7 +52,6 @@ import {
 
 resource "azurerm_resource_provider_registration" "compute-reg" {
   name = "Microsoft.Compute"
-
 }
 
 import {
@@ -72,5 +71,3 @@ import {
 resource "azurerm_resource_provider_registration" "kv-reg" {
   name = "Microsoft.KeyVault"
 }
-
-
