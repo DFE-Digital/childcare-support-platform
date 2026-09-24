@@ -1,5 +1,5 @@
 moved {
-  from = azurerm_resource_group.res-0
+  from = module.storage.azurerm_resource_group.res-0
   to   = azurerm_resource_group.storage
 }
 
@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "storage" {
 }
 
 moved {
-  from = azurerm_storage_account.res-1
+  from = module.storage.azurerm_storage_account.res-1
   to   = azurerm_storage_account.site-data
 }
 
@@ -69,7 +69,7 @@ resource "azurerm_storage_account" "site-data" {
 
 
 moved {
-  from = azurerm_storage_container.res-5
+  from = module.storage.azurerm_storage_container.res-5
   to   = azurerm_storage_container.provider-container
 }
 
@@ -81,7 +81,7 @@ resource "azurerm_storage_container" "provider-container" {
 }
 
 moved {
-  from = azurerm_storage_container.res-7
+  from = module.storage.azurerm_storage_container.res-7
   to   = azurerm_storage_container.source-data-container
 }
 

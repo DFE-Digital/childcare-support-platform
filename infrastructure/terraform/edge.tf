@@ -1,5 +1,5 @@
 moved {
-  from = azurerm_resource_group.res-0
+  from = module.edge.azurerm_resource_group.res-0
   to   = azurerm_resource_group.edge
 }
 
@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "edge" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_profile.res-45
+  from = module.edge.azurerm_cdn_frontdoor_profile.res-45
   to   = azurerm_cdn_frontdoor_profile.frontdoor
 }
 
@@ -34,7 +34,7 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_endpoint.res-46
+  from = module.edge.azurerm_cdn_frontdoor_endpoint.res-46
   to   = azurerm_cdn_frontdoor_endpoint.endpoint
 }
 
@@ -50,7 +50,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_route.res-47
+  from = module.edge.azurerm_cdn_frontdoor_route.res-47
   to   = azurerm_cdn_frontdoor_route.handler
 }
 
@@ -71,7 +71,7 @@ resource "azurerm_cdn_frontdoor_route" "handler" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-48
+  from = module.edge.azurerm_cdn_frontdoor_origin_group.res-48
   to   = azurerm_cdn_frontdoor_origin_group.static-site
 }
 
@@ -94,7 +94,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin.res-49
+  from = module.edge.azurerm_cdn_frontdoor_origin.res-49
   to   = azurerm_cdn_frontdoor_origin.static-site
 }
 
@@ -118,7 +118,7 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-50
+  from = module.edge.azurerm_cdn_frontdoor_origin_group.res-50
   to   = azurerm_cdn_frontdoor_origin_group.azf-sis
 }
 
@@ -141,7 +141,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin.res-51
+  from = module.edge.azurerm_cdn_frontdoor_origin.res-51
   to   = azurerm_cdn_frontdoor_origin.azf-sis
 }
 
@@ -168,7 +168,7 @@ resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-52
+  from = module.edge.azurerm_cdn_frontdoor_origin_group.res-52
   to   = azurerm_cdn_frontdoor_origin_group.runtime-data
 }
 
@@ -218,7 +218,7 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_rule_set.res-54
+  from = module.edge.azurerm_cdn_frontdoor_rule_set.res-54
   to   = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set
 }
 
@@ -228,7 +228,7 @@ resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_rule.res-55
+  from = module.edge.azurerm_cdn_frontdoor_rule.res-55
   to   = azurerm_cdn_frontdoor_rule.api-to-function-app
 }
 
@@ -265,7 +265,7 @@ resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_rule_set.res-56
+  from = module.edge.azurerm_cdn_frontdoor_rule_set.res-56
   to   = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set
 }
 
@@ -275,7 +275,7 @@ resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_rule.res-57
+  from = module.edge.azurerm_cdn_frontdoor_rule.res-57
   to   = azurerm_cdn_frontdoor_rule.data-to-runtime
 }
 
@@ -312,7 +312,7 @@ resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
 }
 
 moved {
-  from = azurerm_private_endpoint.res-58
+  from = module.edge.azurerm_private_endpoint.res-58
   to   = azurerm_private_endpoint.storage
 }
 
