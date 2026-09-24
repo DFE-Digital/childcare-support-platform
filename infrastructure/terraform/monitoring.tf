@@ -40,13 +40,13 @@ resource "azurerm_monitor_action_group" "budget-alert-action-group" {
 }
 
 resource "azurerm_log_analytics_workspace" "application-logs" {
-  location                   = var.region
-  name                       = "${var.subscription_prefix}${var.environment_prefix}law-${local.location_prefix}-app-logs-01"
-  resource_group_name        = azurerm_resource_group.monitoring.name
-  retention_in_days          = 30
-  sku                        = "PerGB2018"
-  internet_ingestion_enabled = "Disabled"
-  internet_query_enabled     = "Disabled"
+  location                       = var.region
+  name                           = "${var.subscription_prefix}${var.environment_prefix}law-${local.location_prefix}-app-logs-01"
+  resource_group_name            = azurerm_resource_group.monitoring.name
+  retention_in_days              = 30
+  sku                            = "PerGB2018"
+  internet_ingestion_access_type = "Disabled"
+  internet_query_access_type     = "Disabled"
 
   tags = {
     Environment = var.environment_tag
