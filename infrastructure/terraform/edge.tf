@@ -27,10 +27,10 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
-  identity {
-    identity_ids = [azurerm_user_assigned_identity.frontdoor-identity.id]
-    type         = "UserAssigned"
-  }
+  # identity {
+  #   identity_ids = [azurerm_user_assigned_identity.frontdoor-identity.id]
+  #   type         = "UserAssigned"
+  # }
 }
 
 moved {
