@@ -191,7 +191,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
 }
 
 moved {
-  from = azurerm_cdn_frontdoor_origin.res-53
+  from = module.edge.azurerm_cdn_frontdoor_origin.res-53
   to   = azurerm_cdn_frontdoor_origin.runtime-data
 }
 
