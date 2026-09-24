@@ -1,5 +1,5 @@
 moved {
-  from  = azurerm_resource_group.res-0
+  from = azurerm_resource_group.res-0
   to   = azurerm_resource_group.runtime
 }
 
@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "runtime" {
 }
 
 moved {
-  from  = azurerm_storage_account.res-2
+  from = azurerm_storage_account.res-2
   to   = azurerm_storage_account.storage
 }
 
@@ -65,7 +65,7 @@ resource "azurerm_storage_account" "storage" {
 }
 
 moved {
-  from  = azurerm_storage_container.res-4
+  from = azurerm_storage_container.res-4
   to   = azurerm_storage_container.webjobs-hosts
 }
 
@@ -77,7 +77,7 @@ resource "azurerm_storage_container" "webjobs-hosts" {
 }
 
 moved {
-  from  = azurerm_storage_container.res-5
+  from = azurerm_storage_container.res-5
   to   = azurerm_storage_container.webjobs-secrets
 }
 
@@ -89,7 +89,7 @@ resource "azurerm_storage_container" "webjobs-secrets" {
 }
 
 moved {
-  from  = azurerm_storage_container.res-6
+  from = azurerm_storage_container.res-6
   to   = azurerm_storage_container.runtime-storage
 }
 
@@ -101,7 +101,7 @@ resource "azurerm_storage_container" "runtime-storage" {
 }
 
 moved {
-  from  = azurerm_service_plan.res-10
+  from = azurerm_service_plan.res-10
   to   = azurerm_service_plan.service-plan
 }
 
@@ -123,7 +123,7 @@ resource "azurerm_service_plan" "service-plan" {
 }
 
 moved {
-  from  = azurerm_function_app_flex_consumption.res-11
+  from = azurerm_function_app_flex_consumption.res-11
   to   = azurerm_function_app_flex_consumption.consumption-plan
 }
 

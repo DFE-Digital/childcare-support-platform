@@ -13,7 +13,7 @@ data "azurerm_virtual_network" "core-vnet" {
 }
 
 moved {
-  from  = azurerm_subnet.res-3
+  from = azurerm_subnet.res-3
   to   = azurerm_subnet.backend
 }
 
@@ -40,7 +40,7 @@ resource "azurerm_subnet" "backend" {
 }
 
 moved {
-  from  = azurerm_subnet.res-5
+  from = azurerm_subnet.res-5
   to   = azurerm_subnet.container-apps
 }
 
@@ -61,7 +61,7 @@ resource "azurerm_subnet" "container-apps" {
 }
 
 moved {
-  from  = azurerm_subnet.res-7
+  from = azurerm_subnet.res-7
   to   = azurerm_subnet.frontend
 }
 
@@ -82,7 +82,7 @@ resource "azurerm_subnet" "frontend" {
 }
 
 moved {
-  from  = azurerm_subnet.res-9
+  from = azurerm_subnet.res-9
   to   = azurerm_subnet.actions-runner
 }
 
