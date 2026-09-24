@@ -227,42 +227,42 @@ resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
   name                     = "MapApiRequestToFunctionApp"
 }
 
-moved {
-  from = module.edge.azurerm_cdn_frontdoor_rule.res-55
-  to   = azurerm_cdn_frontdoor_rule.api-to-function-app
-}
+# moved {
+#   from = module.edge.azurerm_cdn_frontdoor_rule.res-55
+#   to   = azurerm_cdn_frontdoor_rule.api-to-function-app
+# }
 
-resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
-  behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
-  name                      = "MapApiRequestToFunctionApp"
-  order                     = 100
-  actions {
-    route_configuration_override {
-      caching {
-        behaviour           = "Disabled"
-        compression_enabled = false
-      }
-      origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.azf-sis.id
-        forwarding_protocol           = "MatchRequest"
-      }
-    }
-    url_rewrite {
-      destination_path                = "/api"
-      preserve_unmatched_path_enabled = true
-      source_pattern                  = "/api"
-    }
-  }
-  conditions {
-    request_path {
-      values     = ["/api/", "/health"]
-      operator   = "BeginsWith"
-      transforms = []
-    }
-  }
-  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
-}
+# resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
+#   behaviour_on_match        = "Continue"
+#   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
+#   name                      = "MapApiRequestToFunctionApp"
+#   order                     = 100
+#   actions {
+#     route_configuration_override {
+#       caching {
+#         behaviour           = "Disabled"
+#         compression_enabled = false
+#       }
+#       origin_group {
+#         cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.azf-sis.id
+#         forwarding_protocol           = "MatchRequest"
+#       }
+#     }
+#     url_rewrite {
+#       destination_path                = "/api"
+#       preserve_unmatched_path_enabled = true
+#       source_pattern                  = "/api"
+#     }
+#   }
+#   conditions {
+#     request_path {
+#       values     = ["/api/", "/health"]
+#       operator   = "BeginsWith"
+#       transforms = []
+#     }
+#   }
+#   depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
+# }
 
 moved {
   from = module.edge.azurerm_cdn_frontdoor_rule_set.res-56
@@ -274,42 +274,42 @@ resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-moved {
-  from = module.edge.azurerm_cdn_frontdoor_rule.res-57
-  to   = azurerm_cdn_frontdoor_rule.data-to-runtime
-}
+# moved {
+#   from = module.edge.azurerm_cdn_frontdoor_rule.res-57
+#   to   = azurerm_cdn_frontdoor_rule.data-to-runtime
+# }
 
-resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
-  behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
-  name                      = "MapDataRequestToRuntimeContainer"
-  order                     = 100
-  actions {
-    route_configuration_override {
-      caching {
-        behaviour           = "Disabled"
-        compression_enabled = false
-      }
-      origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.runtime-data.id
-        forwarding_protocol           = "MatchRequest"
-      }
-    }
-    url_rewrite {
-      destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
-      preserve_unmatched_path_enabled = true
-      source_pattern                  = "/data"
-    }
-  }
-  conditions {
-    request_path {
-      values     = ["/data/"]
-      operator   = "BeginsWith"
-      transforms = []
-    }
-  }
-  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
-}
+# resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
+#   behaviour_on_match        = "Continue"
+#   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+#   name                      = "MapDataRequestToRuntimeContainer"
+#   order                     = 100
+#   actions {
+#     route_configuration_override {
+#       caching {
+#         behaviour           = "Disabled"
+#         compression_enabled = false
+#       }
+#       origin_group {
+#         cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.runtime-data.id
+#         forwarding_protocol           = "MatchRequest"
+#       }
+#     }
+#     url_rewrite {
+#       destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
+#       preserve_unmatched_path_enabled = true
+#       source_pattern                  = "/data"
+#     }
+#   }
+#   conditions {
+#     request_path {
+#       values     = ["/data/"]
+#       operator   = "BeginsWith"
+#       transforms = []
+#     }
+#   }
+#   depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
+# }
 
 moved {
   from = module.edge.azurerm_private_endpoint.res-58
