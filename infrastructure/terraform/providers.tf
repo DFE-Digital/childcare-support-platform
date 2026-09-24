@@ -21,10 +21,10 @@ terraform {
     }
   }
 
-  # backend "azurerm" {
-  #   use_oidc         = true
-  #   use_azuread_auth = true
-  # }
+  backend "azurerm" {
+    use_oidc         = true
+    use_azuread_auth = true
+  }
 }
 
 provider "github" {
@@ -34,6 +34,11 @@ provider "github" {
 
 provider "azurerm" {
   features {}
+}
+
+import {
+  to = azurerm_resource_provider_registration.cdn-reg
+  id = "Microsoft.Cdn"
 }
 
 resource "azurerm_resource_provider_registration" "cdn-reg" {
