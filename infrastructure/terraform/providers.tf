@@ -38,7 +38,7 @@ provider "azurerm" {
 
 import {
   to = azurerm_resource_provider_registration.cdn-reg
-  id = "/subscriptions/${data.azurerm_subscription.current.id}/providers/Microsoft.Cdn"
+  id = "${data.azurerm_subscription.current.id}/providers/Microsoft.Cdn"
 }
 
 resource "azurerm_resource_provider_registration" "cdn-reg" {
@@ -47,16 +47,17 @@ resource "azurerm_resource_provider_registration" "cdn-reg" {
 
 import {
   to = azurerm_resource_provider_registration.compute-reg
-  id = "/subscriptions/${data.azurerm_subscription.current.id}/providers/Microsoft.Compute"
+  id = "${data.azurerm_subscription.current.id}/providers/Microsoft.Compute"
 }
 
 resource "azurerm_resource_provider_registration" "compute-reg" {
   name = "Microsoft.Compute"
+
 }
 
 import {
   to = azurerm_resource_provider_registration.web-reg
-  id = "/subscriptions/${data.azurerm_subscription.current.id}/providers/Microsoft.Web"
+  id = "${data.azurerm_subscription.current.id}/providers/Microsoft.Web"
 }
 
 resource "azurerm_resource_provider_registration" "web-reg" {
@@ -65,7 +66,7 @@ resource "azurerm_resource_provider_registration" "web-reg" {
 
 import {
   to = azurerm_resource_provider_registration.kv-reg
-  id = "/subscriptions/${data.azurerm_subscription.current.id}/providers/Microsoft.KeyVault"
+  id = "${data.azurerm_subscription.current.id}/providers/Microsoft.KeyVault"
 }
 
 resource "azurerm_resource_provider_registration" "kv-reg" {
