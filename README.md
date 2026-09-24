@@ -23,3 +23,11 @@ Key root-level files: `Makefile`, `Dockerfile`, `docker-compose.yml`, `prisma/sc
 - **Python 3.11+** and **uv** (for the data pipeline)
 
 - **Docker** + Docker Compose
+
+It is also recommended to run:
+
+```
+ln ./scripts/run-tf-checks.sh .git/hooks/pre-commit
+```
+
+This will enable a pre-commit hook which runs a terraform fmt and terraform validate against any commit containing terraform changes
