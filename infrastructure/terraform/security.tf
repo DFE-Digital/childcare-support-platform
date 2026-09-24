@@ -1,8 +1,3 @@
-moved {
-  from = module.security.azurerm_resource_group.res-0
-  to   = azurerm_resource_group.security
-}
-
 resource "azurerm_resource_group" "security" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-security"
@@ -10,11 +5,6 @@ resource "azurerm_resource_group" "security" {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
-}
-
-moved {
-  from = module.security.azurerm_key_vault.res-1
-  to   = azurerm_key_vault.key-vault
 }
 
 resource "azurerm_key_vault" "key-vault" {
@@ -44,11 +34,6 @@ resource "azurerm_key_vault" "key-vault" {
   }
 }
 
-moved {
-  from = module.security.azurerm_user_assigned_identity.res-3
-  to   = azurerm_user_assigned_identity.azf-identity
-}
-
 resource "azurerm_user_assigned_identity" "azf-identity" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-azf-identity-01"
@@ -57,11 +42,6 @@ resource "azurerm_user_assigned_identity" "azf-identity" {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
-}
-
-moved {
-  from = module.security.azurerm_user_assigned_identity.res-4
-  to   = azurerm_user_assigned_identity.frontdoor-identity
 }
 
 resource "azurerm_user_assigned_identity" "frontdoor-identity" {

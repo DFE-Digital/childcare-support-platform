@@ -1,8 +1,3 @@
-moved {
-  from = module.runtime.azurerm_resource_group.res-0
-  to   = azurerm_resource_group.runtime
-}
-
 resource "azurerm_resource_group" "runtime" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-runtime"
@@ -10,11 +5,6 @@ resource "azurerm_resource_group" "runtime" {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
-}
-
-moved {
-  from = module.runtime.azurerm_storage_account.res-2
-  to   = azurerm_storage_account.storage
 }
 
 resource "azurerm_storage_account" "storage" {
@@ -64,21 +54,11 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
-moved {
-  from = module.runtime.azurerm_storage_container.res-4
-  to   = azurerm_storage_container.webjobs-hosts
-}
-
 resource "azurerm_storage_container" "webjobs-hosts" {
   container_access_type = "private"
   metadata              = {}
   name                  = "azure-webjobs-hosts"
   storage_account_id    = azurerm_storage_account.storage.id
-}
-
-moved {
-  from = module.runtime.azurerm_storage_container.res-5
-  to   = azurerm_storage_container.webjobs-secrets
 }
 
 resource "azurerm_storage_container" "webjobs-secrets" {
@@ -88,21 +68,11 @@ resource "azurerm_storage_container" "webjobs-secrets" {
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
-moved {
-  from = module.runtime.azurerm_storage_container.res-6
-  to   = azurerm_storage_container.runtime-storage
-}
-
 resource "azurerm_storage_container" "runtime-storage" {
   container_access_type = "private"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}"
   storage_account_id    = azurerm_storage_account.storage.id
-}
-
-moved {
-  from = module.runtime.azurerm_service_plan.res-10
-  to   = azurerm_service_plan.service-plan
 }
 
 resource "azurerm_service_plan" "service-plan" {
@@ -120,11 +90,6 @@ resource "azurerm_service_plan" "service-plan" {
     "Service Offering" = ""
   }
   zone_balancing_enabled = false
-}
-
-moved {
-  from = module.runtime.azurerm_function_app_flex_consumption.res-11
-  to   = azurerm_function_app_flex_consumption.consumption-plan
 }
 
 resource "azurerm_function_app_flex_consumption" "consumption-plan" {
