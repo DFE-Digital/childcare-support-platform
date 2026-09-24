@@ -95,7 +95,7 @@ resource "azurerm_monitor_diagnostic_setting" "frontdoor-log-settings" {
 
 import {
   to = azurerm_monitor_diagnostic_setting.application-insights-log-settings
-  id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${azurerm_resource_group.monitoring.name}/providers/microsoft.insights/components/${azurerm_application_insights.application-insights.id}/providers/microsoft.insights/diagnosticSettings/s288${var.environment_prefix}ds-uks-app-insights-log-settings-01"
+  id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${azurerm_resource_group.monitoring.name}/providers/Microsoft.Insights/components/${azurerm_application_insights.application-insights.name}|${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-app-insights-log-settings-01"
 }
 
 resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings" {
