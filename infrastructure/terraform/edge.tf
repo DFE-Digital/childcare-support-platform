@@ -1,7 +1,7 @@
-moved {
-  from = azurerm_resource_group.res-0
-  to   = azurerm_resource_group.edge
-}
+# moved {
+#   from = azurerm_resource_group.res-0
+#   to   = azurerm_resource_group.edge
+# }
 
 resource "azurerm_resource_group" "edge" {
   location = var.region
@@ -12,10 +12,10 @@ resource "azurerm_resource_group" "edge" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_profile.res-45
-  to   = azurerm_cdn_frontdoor_profile.frontdoor
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_profile.res-45
+#   to   = azurerm_cdn_frontdoor_profile.frontdoor
+# }
 
 resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
   name                     = "${var.subscription_prefix}${var.environment_prefix}afd-${local.location_prefix}-frontdoor-01"
@@ -33,10 +33,10 @@ resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_endpoint.res-46
-  to   = azurerm_cdn_frontdoor_endpoint.endpoint
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_endpoint.res-46
+#   to   = azurerm_cdn_frontdoor_endpoint.endpoint
+# }
 
 resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
@@ -49,10 +49,10 @@ resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_route.res-47
-  to   = azurerm_cdn_frontdoor_route.handler
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_route.res-47
+#   to   = azurerm_cdn_frontdoor_route.handler
+# }
 
 resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_custom_domain_ids = []
@@ -70,10 +70,10 @@ resource "azurerm_cdn_frontdoor_route" "handler" {
   supported_protocols             = ["Http", "Https"]
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-48
-  to   = azurerm_cdn_frontdoor_origin_group.static-site
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin_group.res-48
+#   to   = azurerm_cdn_frontdoor_origin_group.static-site
+# }
 
 resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
@@ -93,10 +93,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin.res-49
-  to   = azurerm_cdn_frontdoor_origin.static-site
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin.res-49
+#   to   = azurerm_cdn_frontdoor_origin.static-site
+# }
 
 resource "azurerm_cdn_frontdoor_origin" "static-site" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
@@ -117,10 +117,10 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-50
-  to   = azurerm_cdn_frontdoor_origin_group.azf-sis
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin_group.res-50
+#   to   = azurerm_cdn_frontdoor_origin_group.azf-sis
+# }
 
 resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
@@ -140,10 +140,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin.res-51
-  to   = azurerm_cdn_frontdoor_origin.azf-sis
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin.res-51
+#   to   = azurerm_cdn_frontdoor_origin.azf-sis
+# }
 
 resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.azf-sis.id
@@ -167,10 +167,10 @@ resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin_group.res-52
-  to   = azurerm_cdn_frontdoor_origin_group.runtime-data
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin_group.res-52
+#   to   = azurerm_cdn_frontdoor_origin_group.runtime-data
+# }
 
 resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
@@ -190,10 +190,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_origin.res-53
-  to   = azurerm_cdn_frontdoor_origin.runtime-data
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_origin.res-53
+#   to   = azurerm_cdn_frontdoor_origin.runtime-data
+# }
 
 resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
@@ -217,20 +217,20 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   }
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_rule_set.res-54
-  to   = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_rule_set.res-54
+#   to   = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set
+# }
 
 resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapApiRequestToFunctionApp"
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_rule.res-55
-  to   = azurerm_cdn_frontdoor_rule.api-to-function-app
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_rule.res-55
+#   to   = azurerm_cdn_frontdoor_rule.api-to-function-app
+# }
 
 resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
   behaviour_on_match        = "Continue"
@@ -264,20 +264,20 @@ resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
   depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_rule_set.res-56
-  to   = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_rule_set.res-56
+#   to   = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set
+# }
 
 resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-moved {
-  from = azurerm_cdn_frontdoor_rule.res-57
-  to   = azurerm_cdn_frontdoor_rule.data-to-runtime
-}
+# moved {
+#   from = azurerm_cdn_frontdoor_rule.res-57
+#   to   = azurerm_cdn_frontdoor_rule.data-to-runtime
+# }
 
 resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
   behaviour_on_match        = "Continue"
@@ -311,10 +311,10 @@ resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
   depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
 }
 
-moved {
-  from = azurerm_private_endpoint.res-58
-  to   = azurerm_private_endpoint.storage
-}
+# moved {
+#   from = azurerm_private_endpoint.res-58
+#   to   = azurerm_private_endpoint.storage
+# }
 
 resource "azurerm_private_endpoint" "storage" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
