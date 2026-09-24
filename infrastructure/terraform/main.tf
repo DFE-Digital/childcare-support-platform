@@ -15,3 +15,7 @@ module "runtime" {
 module "security" {
   source = "./security"
 }
+
+module "storage" {
+  source = "./storage"
+}
