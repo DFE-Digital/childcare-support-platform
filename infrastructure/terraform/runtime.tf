@@ -1,7 +1,7 @@
-# moved {
-#   from = azurerm_resource_group.res-0
-#   to   = azurerm_resource_group.runtime
-# }
+moved {
+  from = azurerm_resource_group.res-0
+  to   = azurerm_resource_group.runtime
+}
 
 resource "azurerm_resource_group" "runtime" {
   location = var.region
@@ -12,10 +12,10 @@ resource "azurerm_resource_group" "runtime" {
   }
 }
 
-# moved {
-#   from = azurerm_storage_account.res-2
-#   to   = azurerm_storage_account.storage
-# }
+moved {
+  from = azurerm_storage_account.res-2
+  to   = azurerm_storage_account.storage
+}
 
 resource "azurerm_storage_account" "storage" {
   access_tier                       = "Hot"
@@ -64,10 +64,10 @@ resource "azurerm_storage_account" "storage" {
   }
 }
 
-# moved {
-#   from = azurerm_storage_container.res-4
-#   to   = azurerm_storage_container.webjobs-hosts
-# }
+moved {
+  from = azurerm_storage_container.res-4
+  to   = azurerm_storage_container.webjobs-hosts
+}
 
 resource "azurerm_storage_container" "webjobs-hosts" {
   container_access_type = "private"
@@ -76,10 +76,10 @@ resource "azurerm_storage_container" "webjobs-hosts" {
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
-# moved {
-#   from = azurerm_storage_container.res-5
-#   to   = azurerm_storage_container.webjobs-secrets
-# }
+moved {
+  from = azurerm_storage_container.res-5
+  to   = azurerm_storage_container.webjobs-secrets
+}
 
 resource "azurerm_storage_container" "webjobs-secrets" {
   container_access_type = "private"
@@ -88,10 +88,10 @@ resource "azurerm_storage_container" "webjobs-secrets" {
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
-# moved {
-#   from = azurerm_storage_container.res-6
-#   to   = azurerm_storage_container.runtime-storage
-# }
+moved {
+  from = azurerm_storage_container.res-6
+  to   = azurerm_storage_container.runtime-storage
+}
 
 resource "azurerm_storage_container" "runtime-storage" {
   container_access_type = "private"
@@ -100,10 +100,10 @@ resource "azurerm_storage_container" "runtime-storage" {
   storage_account_id    = azurerm_storage_account.storage.id
 }
 
-# moved {
-#   from = azurerm_service_plan.res-10
-#   to   = azurerm_service_plan.service-plan
-# }
+moved {
+  from = azurerm_service_plan.res-10
+  to   = azurerm_service_plan.service-plan
+}
 
 resource "azurerm_service_plan" "service-plan" {
   location                        = var.region
@@ -122,10 +122,10 @@ resource "azurerm_service_plan" "service-plan" {
   zone_balancing_enabled = false
 }
 
-# moved {
-#   from = azurerm_function_app_flex_consumption.res-11
-#   to   = azurerm_function_app_flex_consumption.consumption-plan
-# }
+moved {
+  from = azurerm_function_app_flex_consumption.res-11
+  to   = azurerm_function_app_flex_consumption.consumption-plan
+}
 
 resource "azurerm_function_app_flex_consumption" "consumption-plan" {
   app_settings                       = {}
