@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "res-0" {
+resource "azurerm_resource_group" "edge" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
   tags = {
@@ -7,9 +7,9 @@ resource "azurerm_resource_group" "res-0" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_profile" "res-45" {
+resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
   name                     = "${var.subscription_prefix}${var.environment_prefix}afd-${local.location_prefix}-frontdoor-01"
-  resource_group_name      = azurerm_resource_group.res-0.name
+  resource_group_name      = azurerm_resource_group.edge.name
   response_timeout_seconds = 60
   sku_name                 = "Premium_AzureFrontDoor"
   tags = {
@@ -18,15 +18,15 @@ resource "azurerm_cdn_frontdoor_profile" "res-45" {
     "Service Offering" = ""
   }
   identity {
-    identity_ids = [var.frontdoor_identity_id]
+    identity_ids = [azurerm_user_assigned_identity.frontdoor-identity.id]
     type         = "UserAssigned"
   }
 }
 
-resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   enabled                  = true
-  name                     = "bsil-frontend${var.unique_suffix}"
+  name                     = "bsil-frontend${random_id.unique_suffix.hex}"
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -34,13 +34,13 @@ resource "azurerm_cdn_frontdoor_endpoint" "res-46" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_route" "res-47" {
+resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_custom_domain_ids = []
-  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.res-46.id
-  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.res-48.id
-  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.res-49.id]
+  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.endpoint.id
+  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.static-site.id
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.static-site.id]
   cdn_frontdoor_origin_path       = ""
-  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.res-54.id, azurerm_cdn_frontdoor_rule_set.res-56.id]
+  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id, azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id]
   enabled                         = true
   forwarding_protocol             = "MatchRequest"
   https_redirect_enabled          = true
@@ -50,8 +50,8 @@ resource "azurerm_cdn_frontdoor_route" "res-47" {
   supported_protocols             = ["Http", "Https"]
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "default-origin-group-5b5349a1"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
@@ -68,35 +68,35 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-48" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-49" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-48.id
+resource "azurerm_cdn_frontdoor_origin" "static-site" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.storage_primary_web_host
+  host_name                      = azurerm_storage_account.site-data.primary_web_host
   http_port                      = 80
   https_port                     = 443
   name                           = "staticweb"
-  origin_host_header             = var.storage_primary_web_host
+  origin_host_header             = azurerm_storage_account.site-data.primary_web_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.storage_account_id
-    request_message        = "The request is from storage account ${var.storage_account_name}"
+    private_link_target_id = azurerm_storage_account.site-data.id
+    request_message        = "The request is from storage account ${azurerm_storage_account.site-data.name}"
     target_type            = "web"
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
   health_probe {
     interval_in_seconds = 100
-    path                = "/"
+    path                = "/health"
     protocol            = "Http"
-    request_type        = "HEAD"
+    request_type        = "GET"
   }
   load_balancing {
     additional_latency_in_milliseconds = 50
@@ -105,20 +105,20 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-50" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-51" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-50.id
+resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.azf-sis.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.function_app_default_hostname
+  host_name                      = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
   http_port                      = 80
   https_port                     = 443
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-azf-sis-01"
-  origin_host_header             = var.function_app_default_hostname
+  origin_host_header             = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.function_app_id
+    private_link_target_id = azurerm_function_app_flex_consumption.consumption-plan.id
     request_message        = "The request is from Front Door to the spatial index service function app"
     target_type            = "sites"
   }
@@ -127,8 +127,8 @@ resource "azurerm_cdn_frontdoor_origin" "res-51" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
-  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-runtime-data-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
@@ -145,20 +145,20 @@ resource "azurerm_cdn_frontdoor_origin_group" "res-52" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_origin" "res-53" {
-  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.res-52.id
+resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = var.storage_primary_blob_host
+  host_name                      = azurerm_storage_account.site-data.primary_blob_host
   http_port                      = 80
   https_port                     = 443
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
-  origin_host_header             = var.storage_primary_blob_host
+  origin_host_header             = azurerm_storage_account.site-data.primary_blob_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = var.storage_account_id
+    private_link_target_id = azurerm_storage_account.site-data.id
     request_message        = "The request is from Front Door to the storage account for runtime data"
     target_type            = "blob"
   }
@@ -167,14 +167,14 @@ resource "azurerm_cdn_frontdoor_origin" "res-53" {
   }
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "res-54" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapApiRequestToFunctionApp"
 }
 
-resource "azurerm_cdn_frontdoor_rule" "res-55" {
+resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
   behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-54.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
   name                      = "MapApiRequestToFunctionApp"
   order                     = 100
   actions {
@@ -184,7 +184,7 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
         compression_enabled = false
       }
       origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-50.id
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.azf-sis.id
         forwarding_protocol           = "MatchRequest"
       }
     }
@@ -201,16 +201,18 @@ resource "azurerm_cdn_frontdoor_rule" "res-55" {
       transforms = []
     }
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
 }
 
-resource "azurerm_cdn_frontdoor_rule_set" "res-56" {
-  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.res-45.id
+resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-resource "azurerm_cdn_frontdoor_rule" "res-57" {
+
+resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
   behaviour_on_match        = "Continue"
-  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.res-56.id
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
   name                      = "MapDataRequestToRuntimeContainer"
   order                     = 100
   actions {
@@ -220,7 +222,7 @@ resource "azurerm_cdn_frontdoor_rule" "res-57" {
         compression_enabled = false
       }
       origin_group {
-        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.res-52.id
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.runtime-data.id
         forwarding_protocol           = "MatchRequest"
       }
     }
@@ -237,14 +239,15 @@ resource "azurerm_cdn_frontdoor_rule" "res-57" {
       transforms = []
     }
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
 }
 
-resource "azurerm_private_endpoint" "res-58" {
+resource "azurerm_private_endpoint" "storage" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
-  resource_group_name           = azurerm_resource_group.res-0.name
-  subnet_id                     = var.frontend_subnet_id
+  resource_group_name           = azurerm_resource_group.edge.name
+  subnet_id                     = azurerm_subnet.frontend.id
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -253,7 +256,7 @@ resource "azurerm_private_endpoint" "res-58" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
-    private_connection_resource_id = var.storage_account_id
+    private_connection_resource_id = azurerm_storage_account.site-data.id
     subresource_names              = ["blob"]
   }
 }
@@ -262,8 +265,8 @@ resource "azurerm_private_endpoint" "function_app" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-function-endpoint-01"
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
-  resource_group_name           = azurerm_resource_group.res-0.name
-  subnet_id                     = var.frontend_subnet_id
+  resource_group_name           = azurerm_resource_group.edge.name
+  subnet_id                     = azurerm_subnet.frontend.id
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
@@ -272,7 +275,7 @@ resource "azurerm_private_endpoint" "function_app" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
-    private_connection_resource_id = var.function_app_id
+    private_connection_resource_id = azurerm_function_app_flex_consumption.consumption-plan.id
     subresource_names              = ["sites"]
   }
 }

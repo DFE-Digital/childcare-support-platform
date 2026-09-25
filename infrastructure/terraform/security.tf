@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "res-0" {
+resource "azurerm_resource_group" "security" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-security"
   tags = {
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "res-0" {
   }
 }
 
-resource "azurerm_key_vault" "res-1" {
+resource "azurerm_key_vault" "key-vault" {
   access_policy                   = []
   enabled_for_deployment          = false
   enabled_for_disk_encryption     = false
@@ -17,7 +17,7 @@ resource "azurerm_key_vault" "res-1" {
   public_network_access_enabled   = false
   purge_protection_enabled        = true
   rbac_authorization_enabled      = true
-  resource_group_name             = azurerm_resource_group.res-0.name
+  resource_group_name             = azurerm_resource_group.security.name
   sku_name                        = "standard"
   soft_delete_retention_days      = 90
   tags = {
@@ -34,20 +34,20 @@ resource "azurerm_key_vault" "res-1" {
   }
 }
 
-resource "azurerm_user_assigned_identity" "res-3" {
+resource "azurerm_user_assigned_identity" "azf-identity" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-azf-identity-01"
-  resource_group_name = azurerm_resource_group.res-0.name
+  resource_group_name = azurerm_resource_group.security.name
   tags = {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
   }
 }
 
-resource "azurerm_user_assigned_identity" "res-4" {
+resource "azurerm_user_assigned_identity" "frontdoor-identity" {
   location            = var.region
   name                = "${var.subscription_prefix}${var.environment_prefix}mi-${local.location_prefix}-frontdoor-identity-01"
-  resource_group_name = azurerm_resource_group.res-0.name
+  resource_group_name = azurerm_resource_group.security.name
   tags = {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
