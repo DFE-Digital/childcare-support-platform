@@ -23,6 +23,7 @@ permissions:
   actions: read
 
 jobs:
+  # This is is disabled until we get our self-hosted runners working.
   # build-SIS-SPA:
   #   name: Build Spacial Index service + SPA
   #   permissions:
