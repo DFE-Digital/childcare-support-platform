@@ -117,7 +117,7 @@ jobs:
           fi
 
       - name: Upload metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-infra-metadata
           path: build-infra-metadata.json
@@ -144,7 +144,7 @@ jobs:
 
       - name: Upload infra package
         if: inputs.publish
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: infra-package
           path: ${{ inputs.infra-directory }}/infra-package.zip
