@@ -93,6 +93,11 @@ jobs:
           fi
           echo "new_tag=$NEW_TAG" >> "$GITHUB_OUTPUT"
           echo "Next version: $NEW_TAG"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
  
       - name: Create and push version tag
         env:
