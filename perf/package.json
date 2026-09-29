@@ -1,0 +1,15 @@
+{
+  "name": "perf",
+  "module": "index.js",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "^1.4.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/k6": "^2.2.1"
+  }
+}
