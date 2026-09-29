@@ -109,3 +109,6 @@ packages/app/public/data/providers/
 packages/app/public/data/inward/
 packages/app/public/data/outward.json
 packages/app/public/data/sis_schema.json
+
+# Performance testing metrics
+perf/metrics/
