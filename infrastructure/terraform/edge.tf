@@ -55,12 +55,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
   name                                                      = "default-origin-group-5b5349a1"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
-  health_probe {
-    interval_in_seconds = 100
-    path                = "/"
-    protocol            = "Https"
-    request_type        = "HEAD"
-  }
   load_balancing {
     additional_latency_in_milliseconds = 50
     sample_size                        = 4
@@ -92,12 +86,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
-  health_probe {
-    interval_in_seconds = 100
-    path                = "/health"
-    protocol            = "Http"
-    request_type        = "GET"
-  }
   load_balancing {
     additional_latency_in_milliseconds = 50
     sample_size                        = 4
@@ -132,12 +120,6 @@ resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-runtime-data-01"
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
   session_affinity_enabled                                  = false
-  health_probe {
-    interval_in_seconds = 100
-    path                = "/"
-    protocol            = "Http"
-    request_type        = "HEAD"
-  }
   load_balancing {
     additional_latency_in_milliseconds = 50
     sample_size                        = 4
