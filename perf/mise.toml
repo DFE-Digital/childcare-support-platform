@@ -1,0 +1,5 @@
+[tools]
+k6 = "latest"
+
+[env]
+MISE_ENV_FILE=".env"
