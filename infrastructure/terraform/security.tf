@@ -25,7 +25,8 @@ resource "azurerm_key_vault" "key-vault" {
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
-  tenant_id = "fad277c9-c60a-4da1-b5f3-b3b8b34a82f9"
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
   network_acls {
     bypass                     = "None"
     default_action             = "Deny"
