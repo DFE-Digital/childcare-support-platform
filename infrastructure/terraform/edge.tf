@@ -34,6 +34,37 @@ resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
   }
 }
 
+resource "azurerm_cdn_frontdoor_firewall_policy" "waf" {
+  name                = "${var.subscription_prefix}${var.environment_prefix}waf${local.location_prefix}01"
+  resource_group_name = azurerm_resource_group.edge.name
+  sku_name            = azurerm_cdn_frontdoor_profile.frontdoor.sku_name
+  enabled             = true
+  mode                = "Prevention"
+
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Block"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "security-policy" {
+  name                     = "DefaultSecurityPolicy"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf.id
+      association {
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.endpoint.id
+        }
+        patterns_to_match = ["/*"]
+      }
+    }
+  }
+}
+
 resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_custom_domain_ids = []
   cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.endpoint.id
