@@ -25,7 +25,7 @@ resource "azurerm_storage_account" "storage" {
   min_tls_version                   = "TLS1_2"
   name                              = "${var.subscription_prefix}${var.environment_prefix}rg${local.location_prefix}runtime${random_id.unique_suffix.hex}"
   nfsv3_enabled                     = false
-  public_network_access_enabled     = false
+  public_network_access_enabled     = true
   queue_encryption_key_type         = "Service"
   resource_group_name               = azurerm_resource_group.runtime.name
   sftp_enabled                      = false
@@ -42,8 +42,8 @@ resource "azurerm_storage_account" "storage" {
     versioning_enabled       = false
   }
   network_rules {
-    bypass                     = ["AzureServices"]
-    default_action             = "Deny"
+    bypass                     = ["None"]
+    default_action             = "Allow"
     ip_rules                   = []
     virtual_network_subnet_ids = []
   }
