@@ -111,4 +111,4 @@ packages/app/public/data/outward.json
 packages/app/public/data/sis_schema.json
 
 # Performance testing metrics
-perf/metrics/
+perf/metrics/*
