@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "actions-nic" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = var.runners_subnet_id
+    subnet_id                     = azurerm_subnet.actions-runner.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine" "actions-runner" {
   }
 
   os_disk {
-    caching = "ReadWrite"
+    caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 

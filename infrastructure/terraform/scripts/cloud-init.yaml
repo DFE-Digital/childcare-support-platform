@@ -6,7 +6,6 @@ packages:
   - git
   - curl
   - tar
-  - jq
 
 users:
   - name: github-runner

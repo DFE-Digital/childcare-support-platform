@@ -23,20 +23,21 @@ permissions:
   actions: read
 
 jobs:
-  build-SIS-SPA:
-    name: Build Spacial Index service + SPA
-    permissions:
-      contents: read
-      id-token: write
-    uses: ./.github/workflows/build-spa-sis.yml
-    with:
-      environment: ${{ inputs.environment || 'Dev' }}
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-      AZURE_SOURCE_DATA_CONTAINER_NAME: ${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}
+  # This is is disabled until we get our self-hosted runners working.
+  # build-SIS-SPA:
+  #   name: Build Spacial Index service + SPA
+  #   permissions:
+  #     contents: read
+  #     id-token: write
+  #   uses: ./.github/workflows/build-spa-sis.yml
+  #   with:
+  #     environment: ${{ inputs.environment || 'Dev' }}
+  #   secrets:
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+  #     AZURE_SOURCE_DATA_CONTAINER_NAME: ${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}
 
   build-infra:
     name: Build Infrastructure
@@ -55,7 +56,8 @@ jobs:
       contents: read
       actions: read
     needs:
-      [build-infra, build-SIS-SPA]
+      - build-infra
+      # - build-SIS-SPA
     uses: ./.github/workflows/provision-environment.yml
     with:
       environment: ${{ inputs.environment || 'Dev' }}
@@ -64,6 +66,7 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       REPOSITORY_PAT: ${{ secrets.REPOSITORY_PAT }}
+      SUPPORT_ALERT_EMAIL: ${{ secrets.SUPPORT_ALERT_EMAIL }}
 
   create-release:
     name: Create Release
