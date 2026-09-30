@@ -31,7 +31,7 @@ Before running a script, ensure that you have a `.env`. An example .env has been
 
 | Name        | Description                                                                                            | Example                         |
 | ----------- | ------------------------------------------------------------------------------------------------------ | ------------------------------- |
-| BASE_URL    | The user-facing endpoint that the site is hosted on.                                                   | https://my-childcare-site.co.uk |
+| BASE_URL    | The development or test version of your site that you wish to run the tests against.                   | https://my-childcare-site.co.uk |
 | K6_VUS      | The number of "virtual-users" that the script is using.                                                | 50                              |
 | K6_DURATION | How long the test suite should run for. See the k6 docs for how this can work alongside other options. | 15m                             |
 
