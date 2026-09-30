@@ -203,7 +203,7 @@ resource "azurerm_cdn_frontdoor_origin" "posthog-ingest" {
 
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-ingest-01"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-ingest[0].id
-  enabled                        = var.environment_tag == "Prod"
+  enabled                        = local.posthog_proxy_enabled
   host_name                      = "eu.i.posthog.com"
   origin_host_header             = "eu.i.posthog.com"
   http_port                      = 80
@@ -236,7 +236,7 @@ resource "azurerm_cdn_frontdoor_origin" "posthog-assets" {
 
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-assets-01"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-assets[0].id
-  enabled                        = var.environment_tag == "Prod"
+  enabled                        = local.posthog_proxy_enabled
   host_name                      = "eu-assets.i.posthog.com"
   origin_host_header             = "eu-assets.i.posthog.com"
   http_port                      = 80
