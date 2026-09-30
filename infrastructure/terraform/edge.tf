@@ -1,3 +1,7 @@
+locals {
+  posthog_proxy_enabled = var.environment_tag == "Prod"
+}
+
 resource "azurerm_resource_group" "edge" {
   location = var.region
   name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
@@ -71,14 +75,24 @@ resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.static-site.id
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.static-site.id]
   cdn_frontdoor_origin_path       = ""
-  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id, azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id]
-  enabled                         = true
-  forwarding_protocol             = "MatchRequest"
-  https_redirect_enabled          = true
-  link_to_default_domain          = true
-  name                            = "default-route"
-  patterns_to_match               = ["/*"]
-  supported_protocols             = ["Http", "Https"]
+  cdn_frontdoor_rule_set_ids = concat(
+    [
+
+      azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id,
+      azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+    ],
+    local.posthog_proxy_enabled ? [
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id,
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id,
+    ] : []
+  )
+  enabled                = true
+  forwarding_protocol    = "MatchRequest"
+  https_redirect_enabled = true
+  link_to_default_domain = true
+  name                   = "default-route"
+  patterns_to_match      = ["/*"]
+  supported_protocols    = ["Http", "Https"]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
@@ -180,6 +194,72 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   }
 }
 
+resource "azurerm_cdn_frontdoor_origin_group" "posthog-ingest" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-posthog-ingest-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "posthog-ingest" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-ingest-01"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-ingest[0].id
+  enabled                        = local.posthog_proxy_enabled
+  host_name                      = "eu.i.posthog.com"
+  origin_host_header             = "eu.i.posthog.com"
+  http_port                      = 80
+  https_port                     = 443
+  priority                       = 1
+  weight                         = 1000
+  certificate_name_check_enabled = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "posthog-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-posthog-assets-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "posthog-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-assets-01"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-assets[0].id
+  enabled                        = local.posthog_proxy_enabled
+  host_name                      = "eu-assets.i.posthog.com"
+  origin_host_header             = "eu-assets.i.posthog.com"
+  http_port                      = 80
+  https_port                     = 443
+  priority                       = 1
+  weight                         = 1000
+  certificate_name_check_enabled = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                     = "MapApiRequestToFunctionApp"
@@ -189,7 +269,7 @@ resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
   behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
   name                      = "MapApiRequestToFunctionApp"
-  order                     = 100
+  order                     = 1
   actions {
     route_configuration_override {
       caching {
@@ -222,12 +302,11 @@ resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
   name                     = "MapDataRequestToRuntimeContainer"
 }
 
-
 resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
   behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
   name                      = "MapDataRequestToRuntimeContainer"
-  order                     = 100
+  order                     = 1
   actions {
     route_configuration_override {
       caching {
@@ -253,6 +332,100 @@ resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
     }
   }
   depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "posthog-rewrite" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "RedirectIngestToPosthog"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id
+  name                      = "RedirectIngestToPosthog"
+  order                     = 4
+
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.posthog-ingest[0].id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      source_pattern                  = "/ingest"
+      destination_path                = "/"
+      preserve_unmatched_path_enabled = true
+    }
+  }
+
+  conditions {
+    request_path {
+      values     = ["/ingest/"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.posthog-ingest[0],
+    azurerm_cdn_frontdoor_origin.posthog-ingest[0]
+  ]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "posthog-rewrite-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "RedirectIngestAssetsToPosthog"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id
+  name                      = "RedirectIngestAssetsToPosthog"
+  order                     = 3
+
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.posthog-assets[0].id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      source_pattern                  = "/ingest"
+      destination_path                = "/"
+      preserve_unmatched_path_enabled = true
+    }
+  }
+
+  conditions {
+    request_path {
+      values     = ["/ingest/static"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.posthog-assets[0],
+    azurerm_cdn_frontdoor_origin.posthog-assets[0]
+  ]
 }
 
 resource "azurerm_private_endpoint" "storage" {
