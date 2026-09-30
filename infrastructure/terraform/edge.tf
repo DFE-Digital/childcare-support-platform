@@ -75,14 +75,24 @@ resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.static-site.id
   cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.static-site.id]
   cdn_frontdoor_origin_path       = ""
-  cdn_frontdoor_rule_set_ids      = [azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id, azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id]
-  enabled                         = true
-  forwarding_protocol             = "MatchRequest"
-  https_redirect_enabled          = true
-  link_to_default_domain          = true
-  name                            = "default-route"
-  patterns_to_match               = ["/*"]
-  supported_protocols             = ["Http", "Https"]
+  cdn_frontdoor_rule_set_ids = concat(
+    [
+
+      azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id,
+      azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+    ],
+    local.posthog_proxy_enabled ? [
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id,
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id,
+    ] : []
+  )
+  enabled                = true
+  forwarding_protocol    = "MatchRequest"
+  https_redirect_enabled = true
+  link_to_default_domain = true
+  name                   = "default-route"
+  patterns_to_match      = ["/*"]
+  supported_protocols    = ["Http", "Https"]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
