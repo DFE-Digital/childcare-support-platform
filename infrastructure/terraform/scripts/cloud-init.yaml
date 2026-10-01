@@ -17,9 +17,9 @@ runcmd:
   - |
     set -e
 
-    GITHUB_URL="{{GITHUB_URL}}"
-    GITHUB_TOKEN="{{GITHUB_TOKEN}}"
-    RUNNER_NAME="{{RUNNER_NAME}}"
+    GITHUB_URL="${GITHUB_URL}"
+    GITHUB_TOKEN="${GITHUB_TOKEN}"
+    RUNNER_NAME="${RUNNER_NAME}"
 
     mkdir -p /home/github-runner/actions-runner
     cd /home/github-runner/actions-runner
