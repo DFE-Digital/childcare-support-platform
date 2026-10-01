@@ -1,10 +1,5 @@
 name: Build Infrastructure
 
-# Reusable workflow: run on every push (PR + main) as a CI gate for the
-# Terraform. Only publishes the infra package + build metadata when
-# `publish: true`, which workflow-main should only pass on runs that go
-# on to call Deploy Environment (i.e. main).
-
 on:
   workflow_dispatch:
     inputs:

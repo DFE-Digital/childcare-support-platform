@@ -1,0 +1,467 @@
+locals {
+  posthog_proxy_enabled = var.environment_tag == "Prod"
+}
+
+resource "azurerm_resource_group" "edge" {
+  location = var.region
+  name     = "${var.subscription_prefix}${var.environment_prefix}rg-${local.location_prefix}-edge"
+  tags = {
+    Environment = var.environment_tag
+    Product     = "Childcare Platform"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_profile" "frontdoor" {
+  name                     = "${var.subscription_prefix}${var.environment_prefix}afd-${local.location_prefix}-frontdoor-01"
+  resource_group_name      = azurerm_resource_group.edge.name
+  response_timeout_seconds = 60
+  sku_name                 = "Premium_AzureFrontDoor"
+  tags = {
+    Environment        = var.environment_tag
+    Product            = "Childcare Platform"
+    "Service Offering" = ""
+  }
+  identity {
+    identity_ids = [azurerm_user_assigned_identity.frontdoor-identity.id]
+    type         = "UserAssigned"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  enabled                  = true
+  name                     = "bsil-frontend${random_id.unique_suffix.hex}"
+  tags = {
+    Environment        = var.environment_tag
+    Product            = "Childcare Platform"
+    "Service Offering" = ""
+  }
+}
+
+resource "azurerm_cdn_frontdoor_firewall_policy" "waf" {
+  name                = "${var.subscription_prefix}${var.environment_prefix}waf${local.location_prefix}01"
+  resource_group_name = azurerm_resource_group.edge.name
+  sku_name            = azurerm_cdn_frontdoor_profile.frontdoor.sku_name
+  enabled             = true
+  mode                = "Prevention"
+
+  managed_rule {
+    type    = "Microsoft_DefaultRuleSet"
+    version = "2.1"
+    action  = "Block"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "security-policy" {
+  name                     = "DefaultSecurityPolicy"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf.id
+      association {
+        domain {
+          cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.endpoint.id
+        }
+        patterns_to_match = ["/*"]
+      }
+    }
+  }
+}
+
+resource "azurerm_cdn_frontdoor_route" "handler" {
+  cdn_frontdoor_custom_domain_ids = []
+  cdn_frontdoor_endpoint_id       = azurerm_cdn_frontdoor_endpoint.endpoint.id
+  cdn_frontdoor_origin_group_id   = azurerm_cdn_frontdoor_origin_group.static-site.id
+  cdn_frontdoor_origin_ids        = [azurerm_cdn_frontdoor_origin.static-site.id]
+  cdn_frontdoor_origin_path       = ""
+  cdn_frontdoor_rule_set_ids = concat(
+    [
+
+      azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id,
+      azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+    ],
+    local.posthog_proxy_enabled ? [
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id,
+      azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id,
+    ] : []
+  )
+  enabled                = true
+  forwarding_protocol    = "MatchRequest"
+  https_redirect_enabled = true
+  link_to_default_domain = true
+  name                   = "default-route"
+  patterns_to_match      = ["/*"]
+  supported_protocols    = ["Http", "Https"]
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "static-site" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "default-origin-group-5b5349a1"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "static-site" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
+  certificate_name_check_enabled = true
+  enabled                        = true
+  host_name                      = azurerm_storage_account.site-data.primary_web_host
+  http_port                      = 80
+  https_port                     = 443
+  name                           = "staticweb"
+  origin_host_header             = azurerm_storage_account.site-data.primary_web_host
+  priority                       = 1
+  weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = azurerm_storage_account.site-data.id
+    request_message        = "The request is from storage account ${azurerm_storage_account.site-data.name}"
+    target_type            = "web"
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.azf-sis.id
+  certificate_name_check_enabled = true
+  enabled                        = true
+  host_name                      = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
+  http_port                      = 80
+  https_port                     = 443
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-azf-sis-01"
+  origin_host_header             = azurerm_function_app_flex_consumption.consumption-plan.default_hostname
+  priority                       = 1
+  weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = azurerm_function_app_flex_consumption.consumption-plan.id
+    request_message        = "The request is from Front Door to the spatial index service function app"
+    target_type            = "sites"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-runtime-data-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
+  certificate_name_check_enabled = true
+  enabled                        = true
+  host_name                      = azurerm_storage_account.site-data.primary_blob_host
+  http_port                      = 80
+  https_port                     = 443
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
+  origin_host_header             = azurerm_storage_account.site-data.primary_blob_host
+  priority                       = 1
+  weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = azurerm_storage_account.site-data.id
+    request_message        = "The request is from Front Door to the storage account for runtime data"
+    target_type            = "blob"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "posthog-ingest" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-posthog-ingest-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "posthog-ingest" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-ingest-01"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-ingest[0].id
+  enabled                        = local.posthog_proxy_enabled
+  host_name                      = "eu.i.posthog.com"
+  origin_host_header             = "eu.i.posthog.com"
+  http_port                      = 80
+  https_port                     = 443
+  priority                       = 1
+  weight                         = 1000
+  certificate_name_check_enabled = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin_group" "posthog-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-posthog-assets-01"
+  restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 0
+  session_affinity_enabled                                  = false
+  load_balancing {
+    additional_latency_in_milliseconds = 50
+    sample_size                        = 4
+    successful_samples_required        = 3
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "posthog-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-posthog-assets-01"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.posthog-assets[0].id
+  enabled                        = local.posthog_proxy_enabled
+  host_name                      = "eu-assets.i.posthog.com"
+  origin_host_header             = "eu-assets.i.posthog.com"
+  http_port                      = 80
+  https_port                     = 443
+  priority                       = 1
+  weight                         = 1000
+  certificate_name_check_enabled = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "MapApiRequestToFunctionApp"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id
+  name                      = "MapApiRequestToFunctionApp"
+  order                     = 1
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.azf-sis.id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      destination_path                = "/api"
+      preserve_unmatched_path_enabled = true
+      source_pattern                  = "/api"
+    }
+  }
+  conditions {
+    request_path {
+      values     = ["/api/", "/health"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "MapDataRequestToRuntimeContainer"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+  name                      = "MapDataRequestToRuntimeContainer"
+  order                     = 1
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.runtime-data.id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      destination_path                = "/${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01/app"
+      preserve_unmatched_path_enabled = true
+      source_pattern                  = "/data"
+    }
+  }
+  conditions {
+    request_path {
+      values     = ["/data/"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "posthog-rewrite" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "RedirectIngestToPosthog"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id
+  name                      = "RedirectIngestToPosthog"
+  order                     = 4
+
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.posthog-ingest[0].id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      source_pattern                  = "/ingest"
+      destination_path                = "/"
+      preserve_unmatched_path_enabled = true
+    }
+  }
+
+  conditions {
+    request_path {
+      values     = ["/ingest/"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.posthog-ingest[0],
+    azurerm_cdn_frontdoor_origin.posthog-ingest[0]
+  ]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "posthog-rewrite-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "RedirectIngestAssetsToPosthog"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite-assets" {
+  count = local.posthog_proxy_enabled ? 1 : 0
+
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id
+  name                      = "RedirectIngestAssetsToPosthog"
+  order                     = 3
+
+  actions {
+    route_configuration_override {
+      caching {
+        behaviour           = "Disabled"
+        compression_enabled = false
+      }
+      origin_group {
+        cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.posthog-assets[0].id
+        forwarding_protocol           = "MatchRequest"
+      }
+    }
+    url_rewrite {
+      source_pattern                  = "/ingest"
+      destination_path                = "/"
+      preserve_unmatched_path_enabled = true
+    }
+  }
+
+  conditions {
+    request_path {
+      values     = ["/ingest/static"]
+      operator   = "BeginsWith"
+      transforms = []
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.posthog-assets[0],
+    azurerm_cdn_frontdoor_origin.posthog-assets[0]
+  ]
+}
+
+resource "azurerm_private_endpoint" "storage" {
+  custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
+  location                      = var.region
+  name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
+  resource_group_name           = azurerm_resource_group.edge.name
+  subnet_id                     = azurerm_subnet.frontend.id
+  tags = {
+    Environment        = var.environment_tag
+    Product            = "Childcare Platform"
+    "Service Offering" = ""
+  }
+  private_service_connection {
+    is_manual_connection           = false
+    name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
+    private_connection_resource_id = azurerm_storage_account.site-data.id
+    subresource_names              = ["blob"]
+  }
+}
+
+resource "azurerm_private_endpoint" "function_app" {
+  custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-function-endpoint-01"
+  location                      = var.region
+  name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
+  resource_group_name           = azurerm_resource_group.edge.name
+  subnet_id                     = azurerm_subnet.frontend.id
+  tags = {
+    Environment        = var.environment_tag
+    Product            = "Childcare Platform"
+    "Service Offering" = ""
+  }
+  private_service_connection {
+    is_manual_connection           = false
+    name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-function-endpoint-01"
+    private_connection_resource_id = azurerm_function_app_flex_consumption.consumption-plan.id
+    subresource_names              = ["sites"]
+  }
+}

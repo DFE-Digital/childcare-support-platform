@@ -18,6 +18,8 @@ on:
         required: true
       REPOSITORY_PAT:
         required: true
+      SUPPORT_ALERT_EMAIL:
+        required: true
 
 jobs:
   deploy:
@@ -128,7 +130,8 @@ jobs:
         run: |
           terraform plan -no-color -out=main.tfplan \
             -var-file="environments/${{ inputs.environment }}.tfvars" \
-            -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}"
+            -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}" \
+            -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve main.tfplan
