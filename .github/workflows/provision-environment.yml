@@ -42,9 +42,9 @@ jobs:
       ARM_USE_OIDC: true
 
     outputs:
-      STORAGE_GROUP_NAME: ${{ steps.tf-out.outputs.STORAGE_GROUP_NAME }}
-      STORAGE_ACCOUNT_NAME: ${{ steps.tf-out.outputs.STORAGE_ACCOUNT_NAME }}
-      STORAGE_CONTAINER_NAME: ${{ steps.tf-out.outputs.STORAGE_CONTAINER_NAME }}
+      STORAGE_GROUP_NAME: ${{ steps.tf-out.outputs.storage_group_name }}
+      STORAGE_ACCOUNT_NAME: ${{ steps.tf-out.outputs.storage_account_name }}
+      STORAGE_CONTAINER_NAME: ${{ steps.tf-out.outputs.storage_container_name }}
 
     steps:
       - name: Download Infra Metadata
