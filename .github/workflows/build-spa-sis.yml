@@ -54,7 +54,7 @@ jobs:
 
       - name: Unlock source data container
         shell: bash
-        run:
+        run: |
           chmod +x infrastructure/scripts/manage-storage-access.sh
           ./infrastructure/scripts/manage-storage-access.sh "${{ inputs.STORAGE_ACCOUNT_NAME }}" "${{ inputs.STORAGE_GROUP_NAME }}" "true"
 
@@ -82,7 +82,7 @@ jobs:
       - name: Lock source data container
         if: ${{ always() }}
         shell: bash
-        run:
+        run: |
           chmod +x infrastructure/scripts/manage-storage-access.sh
           ./infrastructure/scripts/manage-storage-access.sh "${{ inputs.STORAGE_ACCOUNT_NAME }}" "${{ inputs.STORAGE_GROUP_NAME }}" "false"
 
