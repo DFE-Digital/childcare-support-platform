@@ -20,6 +20,16 @@ on:
         required: true
       SUPPORT_ALERT_EMAIL:
         required: true
+    outputs:
+      STORAGE_GROUP_NAME: 
+        description: "Name of the created storage resource group"
+        value: ${{ jobs.deploy.outputs.storage_group_name }}
+      STORAGE_ACCOUNT_NAME: 
+        description: "Name of the created storage account"
+        value: ${{ jobs.deploy.outputs.storage_account_name }}
+      STORAGE_CONTAINER_NAME: 
+        description: "Name of the created storage container"
+        value: ${{ jobs.deploy.outputs.storage_container_name }}
 
 jobs:
   deploy:
@@ -150,17 +160,11 @@ jobs:
           STORAGE_ACCOUNT_NAME=$(terraform output -raw storage_account_name)
           STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name)
 
-          echo "storage_group_name = $STORAGE_GROUP_NAME"
-
           echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
           echo "security_rg_name=$SECURITY_RG_NAME" >> $GITHUB_OUTPUT
           echo "storage_group_name=$STORAGE_GROUP_NAME" >> $GITHUB_OUTPUT
           echo "storage_account_name=$STORAGE_ACCOUNT_NAME" >> $GITHUB_OUTPUT
           echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_OUTPUT
-
-      - name: Confirm TF Outputs
-        run: |
-          echo ${{ steps.tf-out.outputs.storage_group_name }}
 
       - name: Lock Terraform State
         if: ${{ always() }}
