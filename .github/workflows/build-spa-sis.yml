@@ -9,6 +9,18 @@ on:
         required: true
         default: "Dev"
         type: string
+      STORAGE_GROUP_NAME:
+        description: "The name of the resource group the storage account is in"
+        required: true
+        type: string
+      STORAGE_ACCOUNT_NAME:
+        description: "The name of the storage account with the source data"
+        required: true
+        type: string
+      STORAGE_CONTAINER_NAME:
+        description: "The name of the storage container the build data is in"
+        required: true
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -40,21 +52,39 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Unlock source data container
+        shell: bash
+        run:
+          chmod +x infrastructure/scripts/manage-storage-access.sh
+          ./infrastructure/scripts/manage-storage-access.sh "${{ inputs.STORAGE_ACCOUNT_NAME }}" "${{ inputs.STORAGE_GROUP_NAME }}" "true"
+
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data
 
+          # az storage copy \
+          #   --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+          #   --source-container "${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}" \
+          #   --source-blob "app/" \
+          #   --destination exported_data/ \
+          #   --recursive
+
           az storage copy \
-            --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-            --source-container "${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}" \
-            --source-blob "app/" \
-            --destination exported_data/ \
+            -s https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/${{ inputs.STORAGE_CONTAINER_NAME }}/app \
+            -d exported_data/ \
             --recursive
 
       - name: Populate .docker-data for Docker build context
         run: |
           mkdir -p .docker-data/app
           cp -r ./exported_data/app ./.docker-data/
+
+      - name: Lock source data container
+        if: ${{ always() }}
+        shell: bash
+        run:
+          chmod +x infrastructure/scripts/manage-storage-access.sh
+          ./infrastructure/scripts/manage-storage-access.sh "${{ inputs.STORAGE_ACCOUNT_NAME }}" "${{ inputs.STORAGE_GROUP_NAME }}" "false"
 
       - name: Setup docker buildx
         uses: docker/setup-buildx-action@v3
