@@ -16,8 +16,6 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
-      REPOSITORY_PAT:
-        required: true
       SUPPORT_ALERT_EMAIL:
         required: true
     outputs:
@@ -108,11 +106,6 @@ jobs:
           echo "Resource Group: ${{ steps.bootstrap-tf.outputs.resourceGroupName }}"
           echo "Storage Account: ${{ steps.bootstrap-tf.outputs.storageAccountName }}"
 
-      - name: Generate SSH Keypair
-        run: |
-          ssh-keygen -t ed25519 -f runner_key -N "" -C "github-runner-vm"
-          echo "SSH_PUBLIC_KEY=$(cat runner_key.pub)" >> "$GITHUB_ENV"
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
@@ -140,12 +133,9 @@ jobs:
 
       - name: Terraform Plan
         id: tf-plan
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PAT }}
         run: |
           terraform plan -no-color -out=main.tfplan \
             -var-file="environments/${{ inputs.environment }}.tfvars" \
-            -var="ssh_public_key=${{ env.SSH_PUBLIC_KEY }}" \
             -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}"
 
       - name: Terraform Apply
@@ -154,14 +144,10 @@ jobs:
       - name: Save Terraform outputs
         id: tf-out
         run: |
-          KEYVAULT_NAME=$(terraform output -raw keyvault_name)
-          SECURITY_RG_NAME=$(terraform output -raw security_rg_name)
           STORAGE_GROUP_NAME=$(terraform output -raw storage_group_name)
           STORAGE_ACCOUNT_NAME=$(terraform output -raw storage_account_name)
           STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name)
 
-          echo "keyvault_name=$KEYVAULT_NAME" >> $GITHUB_OUTPUT
-          echo "security_rg_name=$SECURITY_RG_NAME" >> $GITHUB_OUTPUT
           echo "storage_group_name=$STORAGE_GROUP_NAME" >> $GITHUB_OUTPUT
           echo "storage_account_name=$STORAGE_ACCOUNT_NAME" >> $GITHUB_OUTPUT
           echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_OUTPUT
@@ -176,42 +162,6 @@ jobs:
         run: |
           chmod +x scripts/manage-storage-access.sh
           ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
-
-      - name: Unlock Keyvault
-        working-directory: ./infrastructure
-        env:
-          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
-          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
-        shell: bash
-        run: |
-          chmod +x scripts/manage-keyvault-access.sh
-          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "true" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-
-      - name: Store private key in key vault
-        run: |
-          # Wait for a specific time (e.g., 1 min)
-          sleep 60 
-
-          az keyvault secret set \
-            --vault-name "${{ steps.tf-out.outputs.keyvault_name }}" \
-            --name "github-runner-ssh-private-key" \
-            --file runner_key > /dev/null
-
-      - name: Lock Keyvault
-        if: ${{ always() }}
-        working-directory: ./infrastructure
-        env:
-          KV_NAME: ${{ steps.tf-out.outputs.keyvault_name }}
-          RG_NAME: ${{ steps.tf-out.outputs.security_rg_name }}
-        shell: bash
-        run: |
-          chmod +x scripts/manage-keyvault-access.sh
-          ./scripts/manage-keyvault-access.sh "$KV_NAME" "$RG_NAME" "false" "${{ steps.get-sp-id.outputs.object_id }}" "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-
-      - name: Clean up local key files
-        if: always()
-        run: |
-          rm -f runner_key runner_key.pub
 
     # Web app deploy steps TBC
     # Publish deployment summary

@@ -28,10 +28,6 @@ on:
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
-      AZURE_STORAGE_CONNECTION_STRING:
-        required: true
-      AZURE_SOURCE_DATA_CONTAINER_NAME:
-        required: true
 
 jobs:
   build:
@@ -61,13 +57,6 @@ jobs:
       - name: Fetch exported data from blob storage
         run: |
           mkdir -p exported_data
-
-          # az storage copy \
-          #   --source-connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
-          #   --source-container "${{ secrets.AZURE_SOURCE_DATA_CONTAINER_NAME }}" \
-          #   --source-blob "app/" \
-          #   --destination exported_data/ \
-          #   --recursive
 
           az storage copy \
             -s https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/${{ inputs.STORAGE_CONTAINER_NAME }}/app \
