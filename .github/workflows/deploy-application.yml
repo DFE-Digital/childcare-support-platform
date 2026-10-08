@@ -50,7 +50,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       SUPPORT_ALERT_EMAIL: ${{ secrets.SUPPORT_ALERT_EMAIL }}
 
-  build-SIS-SPA:
+  build-sis-spa:
     name: Build Spacial Index service + SPA
     permissions:
       contents: read

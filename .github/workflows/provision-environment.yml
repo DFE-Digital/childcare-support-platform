@@ -162,6 +162,3 @@ jobs:
         run: |
           chmod +x scripts/manage-storage-access.sh
           ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
-
-    # Web app deploy steps TBC
-    # Publish deployment summary
