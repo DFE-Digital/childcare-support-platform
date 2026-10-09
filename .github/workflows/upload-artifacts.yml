@@ -1,0 +1,29 @@
+name: Upload Artifacts
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "Dev"
+        type: string
+
+jobs:
+  upload:
+    name: "Upload build artifacts to environment"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      actions: read
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend
+          path: .
+
+      - name: Debug artifact
+        run: ls -la
