@@ -8,6 +8,21 @@ on:
         required: true
         default: "Dev"
         type: string
+      STORAGE_GROUP_NAME:
+        description: "The name of the resource group the storage account is in"
+        required: true
+        type: string
+      STORAGE_ACCOUNT_NAME:
+        description: "The name of the storage account with the source data"
+        required: true
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
 
 jobs:
   upload:
@@ -19,11 +34,46 @@ jobs:
       actions: read
 
     steps:
-      - name: Download build artifacts
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Download build artifacts (frontend)
         uses: actions/download-artifact@v8
         with:
           name: frontend
-          path: .
+          path: frontend
 
-      - name: Debug artifact
-        run: ls -la
+      - name: Unlock source data container
+        shell: bash
+        run: |
+          chmod +x infrastructure/scripts/manage-storage-access.sh
+          ./infrastructure/scripts/manage-storage-access.sh \
+            "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
+            "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "true"
+
+      - name: Upload static site
+        run: |
+          az storage blob upload-batch \
+            -d https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/$web \
+            -s ./frontend/
+
+      - name: Lock source data container
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          chmod +x infrastructure/scripts/manage-storage-access.sh
+          ./infrastructure/scripts/manage-storage-access.sh \
+            "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
+            "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "false"
+
+      - name: Download build artifacts (sis)
+        uses: actions/download-artifact@v8
+        with:
+          name: spatial-index-service
+          path: spatial-index-service

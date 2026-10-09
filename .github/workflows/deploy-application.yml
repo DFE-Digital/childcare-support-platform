@@ -73,10 +73,17 @@ jobs:
       id-token: write
       actions: read
     uses: ./.github/workflows/upload-artifacts.yml
-    needs: build-sis-spa
+    needs: 
+      - provision-environment
+      - build-sis-spa
     with:
       environment: ${{ inputs.environment || 'Dev' }}
-
+      STORAGE_GROUP_NAME: ${{ needs.provision-environment.outputs.STORAGE_GROUP_NAME }}
+      STORAGE_ACCOUNT_NAME: ${{ needs.provision-environment.outputs.STORAGE_ACCOUNT_NAME }}
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
   create-release:
     name: Create Release
