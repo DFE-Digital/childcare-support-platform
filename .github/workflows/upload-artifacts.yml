@@ -62,8 +62,8 @@ jobs:
       - name: Upload static site
         run: |
           az storage blob upload-batch \
-            -d https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/$web \
-            -s ./frontend/
+            -d "https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/$web" \
+            -s "./frontend/"
 
       - name: Lock source data container
         if: ${{ always() }}
