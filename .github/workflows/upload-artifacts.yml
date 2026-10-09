@@ -34,6 +34,9 @@ jobs:
       actions: read
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
       - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
