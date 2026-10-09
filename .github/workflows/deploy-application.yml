@@ -72,6 +72,7 @@ jobs:
     permissions:
       id-token: write
       actions: read
+      contents: read
     uses: ./.github/workflows/upload-artifacts.yml
     needs: 
       - provision-environment
