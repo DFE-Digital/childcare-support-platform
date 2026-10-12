@@ -54,10 +54,12 @@ jobs:
       - name: Unlock source data container
         shell: bash
         run: |
-          chmod +x infrastructure/scripts/manage-storage-access.sh
-          ./infrastructure/scripts/manage-storage-access.sh \
+          chmod +x infrastructure/scripts/manage-container-access.sh
+          ./infrastructure/scripts/manage-container-access.sh \
             "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
             "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "$web" \
             "true"
 
       - name: Upload static site
@@ -72,10 +74,12 @@ jobs:
         if: ${{ always() }}
         shell: bash
         run: |
-          chmod +x infrastructure/scripts/manage-storage-access.sh
-          ./infrastructure/scripts/manage-storage-access.sh \
+          chmod +x infrastructure/scripts/manage-container-access.sh
+          ./infrastructure/scripts/manage-container-access.sh \
             "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
             "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "$web" \
             "false"
 
       - name: Download build artifacts (sis)
