@@ -16,6 +16,10 @@ on:
         description: "The name of the storage account with the source data"
         required: true
         type: string
+      RUNTIME_GROUP_NAME:
+        description: "The name of the runtime resource group"
+        required: true
+        type: string
       FUNCTION_APP_NAME:
         description: "The name of the function app"
         required: true
@@ -101,14 +105,31 @@ jobs:
           name: spatial-index-service
           path: spatial-index-service
 
+      - name: Add function app access
+        shell: bash
+        run: |
+          chmod +x ./infrastructure/scripts/manage-function-access.sh
+          ./infrastructure/scripts/manage-function-access.sh \
+            "${{ inputs.FUNCTION_APP_NAME }}" \
+            "${{ inputs.RUNTIME_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
+            "true"
+
       - name: Upload function app
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ inputs.FUNCTION_APP_NAME }}
           package: spatial-index-service
 
-      - name: Download build artifacts (sis)
-        uses: actions/download-artifact@v8
-        with:
-          name: spatial-index-service
-          path: spatial-index-service
+      - name: Remove function app access
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          chmod +x ./infrastructure/scripts/manage-function-access.sh
+          ./infrastructure/scripts/manage-function-access.sh \
+            "${{ inputs.FUNCTION_APP_NAME }}" \
+            "${{ inputs.RUNTIME_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
+            "false"

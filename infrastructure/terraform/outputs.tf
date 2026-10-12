@@ -13,6 +13,11 @@ output "storage_container_name" {
   value       = azurerm_storage_container.source-data-container.name
 }
 
+output "runtime_group_name" {
+  description = "The name of the runtime resource group"
+  value       = azurerm_resource_group.runtime.name
+}
+
 output "function_app_name" {
   description = "The name of the azure function app"
   value       = azurerm_function_app_flex_consumption.consumption-plan.name
