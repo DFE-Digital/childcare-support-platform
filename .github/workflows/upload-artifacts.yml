@@ -121,14 +121,13 @@ jobs:
           app-name: ${{ inputs.FUNCTION_APP_NAME }}
           package: spatial-index-service
 
-      - name: Remove function app access
+      - name: Remove runner access from function app
         if: ${{ always() }}
         shell: bash
         run: |
-          chmod +x ./infrastructure/scripts/manage-function-access.sh
-          ./infrastructure/scripts/manage-function-access.sh \
+          chmod +x ./infrastructure/scripts/manage-function-network-access.sh
+          ./infrastructure/scripts/manage-function-network-access.sh \
             "${{ inputs.FUNCTION_APP_NAME }}" \
             "${{ inputs.RUNTIME_GROUP_NAME }}" \
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            "${{ steps.get-sp-id.outputs.object_id }}" \
             "false"
