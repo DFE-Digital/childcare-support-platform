@@ -29,8 +29,6 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
     --resource-group "$RESOURCE_GROUP_NAME" \
     --ip-address "$WORKER_IP" > /dev/null
 
-  echo "Scope: /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME/blobServices/default/containers/$CONTAINER_NAME"
-
   az role assignment create \
     --role "Storage Blob Data Contributor" \
     --assignee-object-id $WORKER_ID \
