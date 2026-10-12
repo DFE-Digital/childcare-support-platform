@@ -45,6 +45,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Get Workflow Service Principal Object ID
+        id: get-sp-id
+        run: |
+          SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
+          echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
+
       - name: Download build artifacts (frontend)
         uses: actions/download-artifact@v8
         with:
@@ -60,6 +66,7 @@ jobs:
             "${{ inputs.STORAGE_GROUP_NAME }}" \
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             "$web" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
             "true"
 
       - name: Upload static site
@@ -80,6 +87,7 @@ jobs:
             "${{ inputs.STORAGE_GROUP_NAME }}" \
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             "$web" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
             "false"
 
       - name: Download build artifacts (sis)

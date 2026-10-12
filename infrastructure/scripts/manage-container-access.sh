@@ -5,7 +5,8 @@ STORAGE_ACCOUNT_NAME="$1"
 RESOURCE_GROUP_NAME="$2"
 SUBSCRIPTION_ID="$3"
 CONTAINER_NAME="$4"
-ENABLE_ACCESS="$5"
+WORKER_ID="$5"
+ENABLE_ACCESS="$6"
 
 WORKER_IP=$(curl -s https://api.ipify.org || curl -s https://ifconfig.me/ip || true)
 if [ -z "$WORKER_IP" ]; then
