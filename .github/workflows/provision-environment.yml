@@ -28,6 +28,9 @@ on:
       STORAGE_CONTAINER_NAME: 
         description: "Name of the created storage container"
         value: ${{ jobs.deploy.outputs.storage_container_name }}
+      FUNCTION_APP_NAME:
+        description: "Name of the created function app"
+        value: ${{ jobs.deploy.outputs.function_app_name }}
 
 jobs:
   deploy:
@@ -53,6 +56,7 @@ jobs:
       STORAGE_GROUP_NAME: ${{ steps.tf-out.outputs.storage_group_name }}
       STORAGE_ACCOUNT_NAME: ${{ steps.tf-out.outputs.storage_account_name }}
       STORAGE_CONTAINER_NAME: ${{ steps.tf-out.outputs.storage_container_name }}
+      FUNCTION_APP_NAME: ${{ steps.tf-out.outputs.function_app_name }}
 
     steps:
       - name: Download Infra Metadata
@@ -147,10 +151,12 @@ jobs:
           STORAGE_GROUP_NAME=$(terraform output -raw storage_group_name)
           STORAGE_ACCOUNT_NAME=$(terraform output -raw storage_account_name)
           STORAGE_CONTAINER_NAME=$(terraform output -raw storage_container_name)
+          FUNCTION_APP_NAME=$(terraform output -raw function_app_name)
 
           echo "storage_group_name=$STORAGE_GROUP_NAME" >> $GITHUB_OUTPUT
           echo "storage_account_name=$STORAGE_ACCOUNT_NAME" >> $GITHUB_OUTPUT
           echo "storage_container_name=$STORAGE_CONTAINER_NAME" >> $GITHUB_OUTPUT
+          echo "function_app_name=$FUNCTION_APP_NAME" >> $GITHUB_OUTPUT
 
       - name: Lock Terraform State
         if: ${{ always() }}

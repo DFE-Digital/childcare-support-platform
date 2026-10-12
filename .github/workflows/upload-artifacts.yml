@@ -16,6 +16,10 @@ on:
         description: "The name of the storage account with the source data"
         required: true
         type: string
+      FUNCTION_APP_NAME:
+        description: "The name of the function app"
+        required: true
+        type: string
     secrets:
       AZURE_CLIENT_ID:
         required: true
@@ -90,6 +94,18 @@ jobs:
             "\$web" \
             "${{ steps.get-sp-id.outputs.object_id }}" \
             "false"
+
+      - name: Download build artifacts (sis)
+        uses: actions/download-artifact@v8
+        with:
+          name: spatial-index-service
+          path: spatial-index-service
+
+      - name: Upload function app
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ inputs.FUNCTION_APP_NAME }}
+          package: spatial-index-service
 
       - name: Download build artifacts (sis)
         uses: actions/download-artifact@v8

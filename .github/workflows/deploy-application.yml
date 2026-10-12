@@ -81,6 +81,7 @@ jobs:
       environment: ${{ inputs.environment || 'Dev' }}
       STORAGE_GROUP_NAME: ${{ needs.provision-environment.outputs.STORAGE_GROUP_NAME }}
       STORAGE_ACCOUNT_NAME: ${{ needs.provision-environment.outputs.STORAGE_ACCOUNT_NAME }}
+      FUNCTION_APP_NAME: ${{ needs.provision-environment.outputs.FUNCTION_APP_NAME }}
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
