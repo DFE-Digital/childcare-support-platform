@@ -32,7 +32,7 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
   az role assignment create \
     --role "Storage Blob Data Contributor" \
     --assignee-object-id $WORKER_ID \
-    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME/blobServices/default/containers/$CONTAINER_NAME
+    --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME/blobServices/default/containers/$CONTAINER_NAME"
 elif [ "$ENABLE_ACCESS" = "false" ]; then
   echo "Disabling access for $STORAGE_ACCOUNT_NAME..."
 
@@ -49,7 +49,7 @@ elif [ "$ENABLE_ACCESS" = "false" ]; then
   az role assignment delete \
     --role "Storage Blob Data Contributor" \
     --assignee-object-id $WORKER_ID \
-    --scope /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME/blobServices/default/containers/$CONTAINER_NAME
+    --scope "/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME/providers/Microsoft.Storage/storageAccounts/$STORAGE_ACCOUNT_NAME/blobServices/default/containers/$CONTAINER_NAME"
 else
   echo "Invalid value for enable_access: $ENABLE_ACCESS"
   exit 1
