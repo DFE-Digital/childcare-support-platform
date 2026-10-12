@@ -63,9 +63,9 @@ jobs:
       - name: Upload static site
         run: |
           az storage blob upload-batch \
-            --destination "$web" \
-            --source "./frontend/" \
-            --account-name "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
+            --destination $web \
+            --source ./frontend/ \
+            --account-name ${{ inputs.STORAGE_ACCOUNT_NAME }} \
             --auth-mode login
 
       - name: Lock source data container
