@@ -65,7 +65,7 @@ jobs:
             "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
             "${{ inputs.STORAGE_GROUP_NAME }}" \
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            "$web" \
+            "\$web" \
             "${{ steps.get-sp-id.outputs.object_id }}" \
             "true"
 
