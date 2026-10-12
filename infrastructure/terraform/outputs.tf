@@ -15,5 +15,5 @@ output "storage_container_name" {
 
 output "function_app_name" {
   description = "The name of the azure function app"
-  value       = azurerm_function_app_flex_consumption.consumption-plan
+  value       = azurerm_function_app_flex_consumption.consumption-plan.name
 }
