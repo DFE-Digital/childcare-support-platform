@@ -75,6 +75,7 @@ jobs:
             --destination '$web' \
             --source './frontend/' \
             --account-name '${{ inputs.STORAGE_ACCOUNT_NAME }}' \
+            --overwrite \
             --auth-mode login
 
       - name: Lock source data container
@@ -86,7 +87,7 @@ jobs:
             "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
             "${{ inputs.STORAGE_GROUP_NAME }}" \
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            "$web" \
+            "\$web" \
             "${{ steps.get-sp-id.outputs.object_id }}" \
             "false"
 
