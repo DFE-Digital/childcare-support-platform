@@ -105,6 +105,11 @@ jobs:
           name: spatial-index-service
           path: spatial-index-service
 
+      - name: Debug
+        run: |
+          ls -la .
+          ls -la ./spatial-index-service
+
       - name: Allow runner access to function app
         shell: bash
         run: |
