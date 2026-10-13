@@ -347,7 +347,7 @@ resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite" {
   behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id
   name                      = "RedirectIngestToPosthog"
-  order                     = 4
+  order                     = 1
 
   actions {
     route_configuration_override {
@@ -394,7 +394,7 @@ resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite-assets" {
   behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.posthog-rewrite-assets[0].id
   name                      = "RedirectIngestAssetsToPosthog"
-  order                     = 3
+  order                     = 1
 
   actions {
     route_configuration_override {
@@ -425,6 +425,31 @@ resource "azurerm_cdn_frontdoor_rule" "posthog-rewrite-assets" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.posthog-assets[0],
     azurerm_cdn_frontdoor_origin.posthog-assets[0]
+  ]
+}
+
+resource "azurerm_cdn_frontdoor_rule_set" "security-rules" {
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor.id
+  name                     = "ApplySecurityHeaders"
+}
+
+resource "azurerm_cdn_frontdoor_rule" "content-security-policy" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security-rules.id
+  name                      = "ApplyContentSecurityPolicyHeader"
+  order                     = 1
+
+  actions {
+    modify_response_header {
+      header_name  = "Content-Security-Policy"
+      operator     = "Append"
+      header_value = "default-src 'self'; font-src 'self' fonts.googleapis.com fonts.gstatic.com"
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.static-site,
+    azurerm_cdn_frontdoor_origin.static-site,
   ]
 }
 
