@@ -99,43 +99,38 @@ jobs:
             "${{ steps.get-sp-id.outputs.object_id }}" \
             "false"
 
-      - name: Download build artifacts (sis)
-        uses: actions/download-artifact@v8
-        with:
-          name: spatial-index-service
-          path: spatial-index-service
+      # - name: Download build artifacts (sis)
+      #   uses: actions/download-artifact@v8
+      #   with:
+      #     name: spatial-index-service
+      #     path: spatial-index-service
 
-      - name: Debug
-        run: |
-          ls -la .
-          ls -la ./spatial-index-service
+      # - name: Allow runner access to function app
+      #   shell: bash
+      #   run: |
+      #     chmod +x ./infrastructure/scripts/manage-function-network-access.sh
+      #     ./infrastructure/scripts/manage-function-network-access.sh \
+      #       "${{ inputs.FUNCTION_APP_NAME }}" \
+      #       "${{ inputs.RUNTIME_GROUP_NAME }}" \
+      #       "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+      #       "true"
 
-      - name: Allow runner access to function app
-        shell: bash
-        run: |
-          chmod +x ./infrastructure/scripts/manage-function-network-access.sh
-          ./infrastructure/scripts/manage-function-network-access.sh \
-            "${{ inputs.FUNCTION_APP_NAME }}" \
-            "${{ inputs.RUNTIME_GROUP_NAME }}" \
-            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            "true"
+      # - name: Upload function app
+      #   run: |
+      #     az functionapp deploy \
+      #       --clean true \
+      #       --name "${{ inputs.FUNCTION_APP_NAME }}" \
+      #       --resource-group "${{ inputs.RUNTIME_GROUP_NAME }}" \
+      #       --src-path "./spatial-index-service/sis-bundle.zip" \
+      #       --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 
-      - name: Upload function app
-        run: |
-          az functionapp deploy \
-            --clean true \
-            --name "${{ inputs.FUNCTION_APP_NAME }}" \
-            --resource-group "${{ inputs.RUNTIME_GROUP_NAME }}" \
-            --src-path "./spatial-index-service/sis-bundle.zip" \
-            --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-
-      - name: Remove runner access from function app
-        if: ${{ always() }}
-        shell: bash
-        run: |
-          chmod +x ./infrastructure/scripts/manage-function-network-access.sh
-          ./infrastructure/scripts/manage-function-network-access.sh \
-            "${{ inputs.FUNCTION_APP_NAME }}" \
-            "${{ inputs.RUNTIME_GROUP_NAME }}" \
-            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            "false"
+      # - name: Remove runner access from function app
+      #   if: ${{ always() }}
+      #   shell: bash
+      #   run: |
+      #     chmod +x ./infrastructure/scripts/manage-function-network-access.sh
+      #     ./infrastructure/scripts/manage-function-network-access.sh \
+      #       "${{ inputs.FUNCTION_APP_NAME }}" \
+      #       "${{ inputs.RUNTIME_GROUP_NAME }}" \
+      #       "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+      #       "false"
