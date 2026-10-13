@@ -124,7 +124,7 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ inputs.FUNCTION_APP_NAME }}
-          package: spatial-index-service
+          package: spatial-index-service/sis-bundle.zip
 
       - name: Remove runner access from function app
         if: ${{ always() }}
