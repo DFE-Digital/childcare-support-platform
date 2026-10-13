@@ -443,7 +443,7 @@ resource "azurerm_cdn_frontdoor_rule" "content-security-policy" {
     modify_response_header {
       header_name  = "Content-Security-Policy"
       operator     = "Append"
-      header_value = "default-src 'self'; font-src 'self'; fonts.gstatic.com; style-src 'self' fonts.googleapis.com; img-src 'self' data:"
+      header_value = "default-src 'self'; font-src 'self' fonts.gstatic.com; style-src 'self' fonts.googleapis.com; img-src 'self' data:"
     }
   }
 
