@@ -77,9 +77,9 @@ resource "azurerm_cdn_frontdoor_route" "handler" {
   cdn_frontdoor_origin_path       = ""
   cdn_frontdoor_rule_set_ids = concat(
     [
-
       azurerm_cdn_frontdoor_rule_set.api-to-function-app-set.id,
-      azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id
+      azurerm_cdn_frontdoor_rule_set.data-to-runtime-set.id,
+      azurerm_cdn_frontdoor_rule_set.security-rules.id
     ],
     local.posthog_proxy_enabled ? [
       azurerm_cdn_frontdoor_rule_set.posthog-rewrite[0].id,
