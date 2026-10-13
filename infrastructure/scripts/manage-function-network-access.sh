@@ -33,7 +33,7 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
     --subscription "$SUBSCRIPTION_ID" \
     --rule-name "$RULE_NAME" \
     --action Allow \
-    --ip-address "$WORKER_IP" \
+    --ip-address "$WORKER_IP/32" \
     --priority 100 \
     --scm-site true
 
@@ -52,4 +52,4 @@ else
   exit 1
 fi
 
-sleep 30
+sleep 120
