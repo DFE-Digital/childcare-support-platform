@@ -473,6 +473,26 @@ resource "azurerm_cdn_frontdoor_rule" "strict-transport-security" {
   ]
 }
 
+resource "azurerm_cdn_frontdoor_rule" "x-frame-options" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security-rules.id
+  name                      = "ApplyXFrameOptionsHeader"
+  order                     = 3
+
+  actions {
+    modify_response_header {
+      header_name  = "X-Frame-Options"
+      operator     = "Append"
+      header_value = "DENY"
+    }
+  }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.static-site,
+    azurerm_cdn_frontdoor_origin.static-site,
+  ]
+}
+
 resource "azurerm_private_endpoint" "storage" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
   location                      = var.region
