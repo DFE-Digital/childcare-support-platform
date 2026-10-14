@@ -466,6 +466,11 @@ resource "azurerm_cdn_frontdoor_rule" "strict-transport-security" {
       header_value = "max-age=31536000"
     }
   }
+
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.static-site,
+    azurerm_cdn_frontdoor_origin.static-site,
+  ]
 }
 
 resource "azurerm_private_endpoint" "storage" {
