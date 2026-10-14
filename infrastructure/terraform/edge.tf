@@ -453,6 +453,21 @@ resource "azurerm_cdn_frontdoor_rule" "content-security-policy" {
   ]
 }
 
+resource "azurerm_cdn_frontdoor_rule" "strict-transport-security" {
+  behaviour_on_match        = "Continue"
+  cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security-rules.id
+  name                      = "ApplyStrictTransportSecurityHeader"
+  order                     = 2
+
+  actions {
+    modify_response_header {
+      header_name  = "Strict-Transport-Security"
+      operator     = "Append"
+      header_value = "max-age=31536000"
+    }
+  }
+}
+
 resource "azurerm_private_endpoint" "storage" {
   custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
   location                      = var.region
