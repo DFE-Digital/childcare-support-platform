@@ -517,7 +517,7 @@ resource "azurerm_cdn_frontdoor_rule" "referrer-policy" {
   behaviour_on_match        = "Continue"
   cdn_frontdoor_rule_set_id = azurerm_cdn_frontdoor_rule_set.security-rules.id
   name                      = "ApplyReferrerPolicyHeader"
-  order                     = 4
+  order                     = 5
 
   actions {
     modify_response_header {
