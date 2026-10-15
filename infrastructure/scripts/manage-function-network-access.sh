@@ -52,4 +52,4 @@ else
   exit 1
 fi
 
-sleep 120
+sleep 300
