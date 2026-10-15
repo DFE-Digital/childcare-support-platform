@@ -19,6 +19,11 @@ echo "Worker IP: $WORKER_IP"
 if [ "$ENABLE_ACCESS" = "true" ]; then
   echo "Allowing $WORKER_IP to reach the SCM site of $FUNCTION_APP_NAME..."
 
+  az functionapp update \
+    --name "$FUNCTION_APP_NAME" \
+    --resource-group "$RESOURCE_GROUP_NAME" \
+    --set publicNetworkAccess="Enabled"
+
   # Clear any rule left behind by a previous failed run
   az functionapp config access-restriction remove \
     --name "$FUNCTION_APP_NAME" \
@@ -40,6 +45,11 @@ if [ "$ENABLE_ACCESS" = "true" ]; then
   # Access restriction changes take a little while to apply
 elif [ "$ENABLE_ACCESS" = "false" ]; then
   echo "Removing runner access rule from $FUNCTION_APP_NAME..."
+
+  az functionapp update \
+    --name "$FUNCTION_APP_NAME" \
+    --resource-group "$RESOURCE_GROUP_NAME" \
+    --set publicNetworkAccess="Disabled"
 
   az functionapp config access-restriction remove \
     --name "$FUNCTION_APP_NAME" \
