@@ -115,14 +115,20 @@ jobs:
             "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
             "true"
 
-      - name: Upload function app
-        run: |
-          az functionapp deploy \
-            --clean true \
-            --name "${{ inputs.FUNCTION_APP_NAME }}" \
-            --resource-group "${{ inputs.RUNTIME_GROUP_NAME }}" \
-            --src-path "./spatial-index-service/sis-bundle.zip" \
-            --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      # - name: Upload function app
+      #   run: |
+      #     az functionapp deploy \
+      #       --clean true \
+      #       --name "${{ inputs.FUNCTION_APP_NAME }}" \
+      #       --resource-group "${{ inputs.RUNTIME_GROUP_NAME }}" \
+      #       --src-path "./spatial-index-service/sis-bundle.zip" \
+      #       --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: 'Deploy to Azure Functions'
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ inputs.FUNCTION_APP_NAME}}
+          package: "./spatial-index-service/sis-bundle.zip"
 
       - name: Remove runner access from function app
         if: ${{ always() }}
