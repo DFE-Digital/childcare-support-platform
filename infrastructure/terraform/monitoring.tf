@@ -58,7 +58,7 @@ resource "azurerm_application_insights" "application-insights" {
   resource_group_name = azurerm_resource_group.monitoring.name
   workspace_id        = azurerm_log_analytics_workspace.application-logs.id
   application_type    = "other"
-  
+
   tags = {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
@@ -165,47 +165,47 @@ resource "azurerm_monitor_metric_alert" "function-cpu-usage-alert" {
 
 
 resource "azurerm_monitor_metric_alert" "server-exceptions-alert" {
-name                = "server-exceptions-alert"
-resource_group_name = azurerm_resource_group.monitoring.name
-scopes              = [azurerm_application_insights.application-insights.id]
+  name                = "server-exceptions-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
 
-description = "Alert when server exceptions exceed threshold"
-severity    = 2
-frequency   = "PT5M"
-window_size = "PT5M"
-enabled     = true
+  description = "Alert when server exceptions exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
 
-criteria {
-metric_namespace = "microsoft.insights/components"
-metric_name      = "exceptions/server"
-aggregation      = "Total"
-operator         = "GreaterThan"
-threshold        = 5
-}
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "exceptions/server"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 5
+  }
 
-action {
-action_group_id = azurerm_monitor_action_group.service-support-action.id
-}
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
 }
 
 resource "azurerm_monitor_metric_alert" "failed-requests-alert" {
-name                = "failed-requests-alert"
-resource_group_name = azurerm_resource_group.monitoring.name
-scopes              = [azurerm_application_insights.application-insights.id]
+  name                = "failed-requests-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
 
-description = "Alert when failed requests exceed threshold"
-severity    = 2
-frequency   = "PT5M"
-window_size = "PT5M"
-enabled     = true
+  description = "Alert when failed requests exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
 
-criteria {
-metric_namespace = "microsoft.insights/components"
-metric_name      = "requests/failed"
-aggregation      = "Total"
-operator         = "GreaterThan"
-threshold        = 10
-}
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "requests/failed"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 10
+  }
 
   action {
     action_group_id = azurerm_monitor_action_group.service-support-action.id
