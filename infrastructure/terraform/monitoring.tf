@@ -58,10 +58,7 @@ resource "azurerm_application_insights" "application-insights" {
   resource_group_name = azurerm_resource_group.monitoring.name
   workspace_id        = azurerm_log_analytics_workspace.application-logs.id
   application_type    = "other"
-
-  internet_ingestion_enabled = false
-  internet_query_enabled     = false
-
+  
   tags = {
     Environment = var.environment_tag
     Product     = "Childcare Platform"
