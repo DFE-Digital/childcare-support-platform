@@ -1,0 +1,142 @@
+name: Upload Artifacts
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "Dev"
+        type: string
+      STORAGE_GROUP_NAME:
+        description: "The name of the resource group the storage account is in"
+        required: true
+        type: string
+      STORAGE_ACCOUNT_NAME:
+        description: "The name of the storage account with the source data"
+        required: true
+        type: string
+      RUNTIME_GROUP_NAME:
+        description: "The name of the runtime resource group"
+        required: true
+        type: string
+      FUNCTION_APP_NAME:
+        description: "The name of the function app"
+        required: true
+        type: string
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+      AZURE_TENANT_ID:
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        required: true
+
+jobs:
+  upload:
+    name: "Upload build artifacts to environment"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get Workflow Service Principal Object ID
+        id: get-sp-id
+        run: |
+          SP_OBJECT_ID=$(az ad sp show --id ${{ secrets.AZURE_CLIENT_ID }} --query id -o tsv)
+          echo "object_id=$SP_OBJECT_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Download build artifacts (frontend)
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend
+          path: frontend
+
+      - name: Unlock source data container
+        shell: bash
+        run: |
+          chmod +x infrastructure/scripts/manage-container-access.sh
+          ./infrastructure/scripts/manage-container-access.sh \
+            "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
+            "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "\$web" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
+            "true"
+
+      - name: Upload static site
+        run: |
+          az storage blob upload-batch \
+            --destination '$web' \
+            --source './frontend/' \
+            --account-name '${{ inputs.STORAGE_ACCOUNT_NAME }}' \
+            --overwrite \
+            --auth-mode login
+
+      - name: Lock source data container
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          chmod +x infrastructure/scripts/manage-container-access.sh
+          ./infrastructure/scripts/manage-container-access.sh \
+            "${{ inputs.STORAGE_ACCOUNT_NAME }}" \
+            "${{ inputs.STORAGE_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "\$web" \
+            "${{ steps.get-sp-id.outputs.object_id }}" \
+            "false"
+
+      - name: Download build artifacts (sis)
+        uses: actions/download-artifact@v8
+        with:
+          name: spatial-index-service
+          path: spatial-index-service
+
+      - name: Allow runner access to function app
+        shell: bash
+        run: |
+          chmod +x ./infrastructure/scripts/manage-function-network-access.sh
+          ./infrastructure/scripts/manage-function-network-access.sh \
+            "${{ inputs.FUNCTION_APP_NAME }}" \
+            "${{ inputs.RUNTIME_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "true"
+
+      # - name: Upload function app
+      #   run: |
+      #     az functionapp deploy \
+      #       --clean true \
+      #       --name "${{ inputs.FUNCTION_APP_NAME }}" \
+      #       --resource-group "${{ inputs.RUNTIME_GROUP_NAME }}" \
+      #       --src-path "./spatial-index-service/sis-bundle.zip" \
+      #       --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+
+      - name: 'Deploy to Azure Functions'
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ inputs.FUNCTION_APP_NAME}}
+          package: "./spatial-index-service/sis-bundle.zip"
+
+      - name: Remove runner access from function app
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          chmod +x ./infrastructure/scripts/manage-function-network-access.sh
+          ./infrastructure/scripts/manage-function-network-access.sh \
+            "${{ inputs.FUNCTION_APP_NAME }}" \
+            "${{ inputs.RUNTIME_GROUP_NAME }}" \
+            "${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            "false"

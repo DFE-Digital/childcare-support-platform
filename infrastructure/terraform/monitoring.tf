@@ -163,6 +163,55 @@ resource "azurerm_monitor_metric_alert" "function-cpu-usage-alert" {
   }
 }
 
+
+resource "azurerm_monitor_metric_alert" "server-exceptions-alert" {
+  name                = "server-exceptions-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
+
+  description = "Alert when server exceptions exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "exceptions/server"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 5
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "failed-requests-alert" {
+  name                = "failed-requests-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
+
+  description = "Alert when failed requests exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "requests/failed"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 10
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
 // Copied over from the DfE Care Leavers project
 // Source: https://github.com/DFE-Digital/care-leavers/blob/main/src/infrastructure/terraform/budget-alerts.tf
 // These values below need to be updated to be inline with our projects desired budget :)
