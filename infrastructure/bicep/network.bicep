@@ -90,28 +90,5 @@ resource monitorPrivateDnsZoneLinks 'Microsoft.Network/privateDnsZones/virtualNe
         }
     ]
 
-
 output subnetId string = '${vnet.id}/subnets/${subnetName}'
 output privateDnsZoneId string = privateDnsZone.id
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
