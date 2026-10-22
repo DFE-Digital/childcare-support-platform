@@ -58,6 +58,60 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
     }
   }
 }
+//Azure Private Dns zones for monitoring
+var monitorDnsZones = [
+      'privatelink.monitor.azure.com'
+      'privatelink.oms.opinsights.azure.com'
+      'privatelink.ods.opinsights.azure.com'
+      'privatelink.agentsvc.azure-automation.net'
+    ]
+
+// Create the 4 dns zone needed for the monitoring data link
+resource monitorPrivateDnsZones 'Microsoft.Network/privateDnsZones@2020-06-01' = [
+    for zoneName in monitorDnsZones :{
+        name: zoneName
+        location: 'global'
+        tags: tags
+        }
+    ]
+
+// Link each DNS zones to the existing VNet
+resource monitorPrivateDnsZoneLinks 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = [
+    for (zoneName, i) in monitorDnsZones: {
+        parent: monitorPrivateDnsZones[i]
+        name: '${vnetName}-link'
+        location: 'global'
+        properties: {
+            registrationEnabled: false
+            virtualNetwork: {
+                id: vnet.id
+                }
+            }
+        }
+    ]
+
 
 output subnetId string = '${vnet.id}/subnets/${subnetName}'
 output privateDnsZoneId string = privateDnsZone.id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
