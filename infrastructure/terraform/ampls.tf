@@ -41,13 +41,25 @@ resource "azurerm_private_endpoint" "childcare_ampls_pe" {
     name = "monitor-dns-group"
 
     private_dns_zone_ids = [
-      for zone in data.azurerm_private_dns_zone.monitor : zone.id
+      for zone in azurerm_private_dns_zone.monitor : zone.id
     ]
   }
 }
 
-data "azurerm_private_dns_zone" "monitor" {
+resource "azurerm_private_dns_zone" "monitor" {
   for_each            = local.monitor_dns_zone_names
   name                = each.value
   resource_group_name = data.azurerm_resource_group.core.name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "monitor" {
+  for_each = local.monitor_dns_zone_names
+
+  name                  = "childcare-monitor-vnet-link"
+  resource_group_name   = data.azurerm_resource_group.core.name
+  private_dns_zone_name = azurerm_private_dns_zone.monitor[each.key].name
+
+  virtual_network_id   = data.azurerm_virtual_network.core-vnet.id
+  registration_enabled = false
+
 }
