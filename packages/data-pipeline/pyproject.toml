@@ -10,6 +10,7 @@ dependencies = [
     "dagster>=1.13.1,<2",
     "dagster-postgres>=0.25,<1",
     "dagster-webserver>=1.9,<2",
+    "sqlalchemy>=2.0,<2.1",
     "psycopg[binary]>=3.1,<4",
     "requests>=2.31,<3",
     "beautifulsoup4>=4.12,<5",
