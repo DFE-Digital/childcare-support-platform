@@ -29,13 +29,14 @@ resource "azurerm_storage_account" "site-data" {
   queue_encryption_key_type         = "Service"
   resource_group_name               = azurerm_resource_group.storage.name
   sftp_enabled                      = false
-  shared_access_key_enabled         = true
+  shared_access_key_enabled         = false
   table_encryption_key_type         = "Service"
   tags = {
     Environment        = var.environment_tag
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
+
   blob_properties {
     last_access_time_enabled = false
     versioning_enabled       = true
@@ -56,7 +57,6 @@ resource "azurerm_storage_account" "site-data" {
     }
   }
 }
-
 
 resource "azurerm_storage_container" "provider-container" {
   container_access_type = "private"
