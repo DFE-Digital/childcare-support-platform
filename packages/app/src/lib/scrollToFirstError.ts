@@ -1,15 +1,28 @@
 export function scrollToFirstError() {
   setTimeout(() => {
-    const first = document.querySelector<HTMLElement>("[data-error-field]");
-    if (!first) return;
+    const error = document.querySelector<HTMLElement>("[data-error-field]");
+    if (!error) return;
+
+    const field = error.previousElementSibling as HTMLElement | null;
+
     const stickyHeader = document.getElementById("sticky-header");
     const offset = (stickyHeader?.offsetHeight ?? 0) + 16;
-    const top = first.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: "smooth" });
 
-    const focusable = first.querySelector<HTMLElement>(
-      "input, select, textarea, [tabindex]",
-    );
-    if (focusable) focusable.focus({ preventScroll: true });
+    // Keep the input AND its error message in view
+    const errorRect = error.getBoundingClientRect();
+    const fieldRect = (field ?? error).getBoundingClientRect();
+    const regionTop = Math.min(fieldRect.top, errorRect.top);
+    const regionBottom = Math.max(fieldRect.bottom, errorRect.bottom);
+
+    const fullyVisible = regionTop >= offset && regionBottom <= window.innerHeight;
+
+    if (!fullyVisible) {
+      window.scrollTo({
+        top: regionTop + window.scrollY - offset,
+        behavior: "smooth",
+      });
+    }
+
+    field?.focus({ preventScroll: true });
   }, 0);
 }
