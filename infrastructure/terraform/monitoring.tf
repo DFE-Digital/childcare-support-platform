@@ -112,7 +112,7 @@ resource "azurerm_monitor_diagnostic_setting" "storage-account-log-settings" {
   target_resource_id         = azurerm_storage_account.site-data.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
 
-  enabled_log = {
+  enabled_log {
     category_group = "allLogs"
   }
 
