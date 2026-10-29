@@ -182,8 +182,8 @@ resource "azurerm_storage_management_policy" "site-data-lifecycle-enc" {
     filters {
       blob_types = ["blockBlob"]
       prefix_match = [
-        azurerm_storage_container.provider-container.name,
-        azurerm_storage_container.source-data-container.name,
+        azurerm_storage_container.provider-container-enc.name,
+        azurerm_storage_container.source-data-container-enc.name,
       ]
     }
 
