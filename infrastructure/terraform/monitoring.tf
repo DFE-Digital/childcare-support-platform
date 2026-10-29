@@ -107,6 +107,20 @@ resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings
   }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "storage-account-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-storage-account-log-settings-01"
+  target_resource_id         = azurerm_storage_account.site-data.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_log = {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "Transaction"
+  }
+}
+
 resource "azurerm_monitor_metric_alert" "availability-alert" {
   name                = "availability-alert"
   resource_group_name = azurerm_resource_group.monitoring.name
