@@ -111,17 +111,17 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = azurerm_storage_account.site-data.primary_web_host
+  host_name                      = azurerm_storage_account.site-data-enc.primary_web_host
   http_port                      = 80
   https_port                     = 443
   name                           = "staticweb"
-  origin_host_header             = azurerm_storage_account.site-data.primary_web_host
+  origin_host_header             = azurerm_storage_account.site-data-enc.primary_web_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = azurerm_storage_account.site-data.id
-    request_message        = "The request is from storage account ${azurerm_storage_account.site-data.name}"
+    private_link_target_id = azurerm_storage_account.site-data-enc.id
+    request_message        = "The request is from storage account ${azurerm_storage_account.site-data-enc.name}"
     target_type            = "web"
   }
 }
@@ -176,16 +176,16 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
   certificate_name_check_enabled = true
   enabled                        = true
-  host_name                      = azurerm_storage_account.site-data.primary_blob_host
+  host_name                      = azurerm_storage_account.site-data-enc.primary_blob_host
   http_port                      = 80
   https_port                     = 443
   name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
-  origin_host_header             = azurerm_storage_account.site-data.primary_blob_host
+  origin_host_header             = azurerm_storage_account.site-data-enc.primary_blob_host
   priority                       = 1
   weight                         = 1000
   private_link {
     location               = var.region
-    private_link_target_id = azurerm_storage_account.site-data.id
+    private_link_target_id = azurerm_storage_account.site-data-enc.id
     request_message        = "The request is from Front Door to the storage account for runtime data"
     target_type            = "blob"
   }
@@ -547,7 +547,7 @@ resource "azurerm_private_endpoint" "storage" {
   private_service_connection {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
-    private_connection_resource_id = azurerm_storage_account.site-data.id
+    private_connection_resource_id = azurerm_storage_account.site-data-enc.id
     subresource_names              = ["blob"]
   }
 }

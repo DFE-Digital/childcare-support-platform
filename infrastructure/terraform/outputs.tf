@@ -5,7 +5,7 @@ output "storage_group_name" {
 
 output "storage_account_name" {
   description = "The name of the storage account"
-  value       = azurerm_storage_account.site-data.name
+  value       = azurerm_storage_account.site-data-enc.name
 }
 
 output "storage_container_name" {

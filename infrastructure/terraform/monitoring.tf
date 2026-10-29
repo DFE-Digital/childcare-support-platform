@@ -109,7 +109,7 @@ resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings
 
 resource "azurerm_monitor_diagnostic_setting" "storage-account-log-settings" {
   name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-storage-account-log-settings-01"
-  target_resource_id         = azurerm_storage_account.site-data.id
+  target_resource_id         = azurerm_storage_account.site-data-enc.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
 
   enabled_log {
