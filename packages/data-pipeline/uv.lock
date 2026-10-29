@@ -91,6 +91,7 @@ dependencies = [
     { name = "pyshp" },
     { name = "requests" },
     { name = "shapely" },
+    { name = "sqlalchemy" },
 ]
 
 [package.optional-dependencies]
@@ -113,6 +114,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'test'", specifier = ">=9.0.3,<10" },
     { name = "requests", specifier = ">=2.31,<3" },
     { name = "shapely", specifier = ">=2.0,<3" },
+    { name = "sqlalchemy", specifier = ">=2.0,<2.1" },
 ]
 provides-extras = ["test"]
 
