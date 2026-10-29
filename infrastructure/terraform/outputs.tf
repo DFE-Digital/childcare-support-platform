@@ -10,7 +10,7 @@ output "storage_account_name" {
 
 output "storage_container_name" {
   description = "The name of the storage container with source data in"
-  value       = azurerm_storage_container.source-data-container.name
+  value       = azurerm_storage_container.source-data-container-enc.name
 }
 
 output "runtime_group_name" {
