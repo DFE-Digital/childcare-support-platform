@@ -29,7 +29,7 @@ resource "azurerm_storage_account" "site-data" {
   queue_encryption_key_type         = "Service"
   resource_group_name               = azurerm_resource_group.storage.name
   sftp_enabled                      = false
-  shared_access_key_enabled         = false
+  shared_access_key_enabled         = true
   table_encryption_key_type         = "Service"
   tags = {
     Environment        = var.environment_tag
