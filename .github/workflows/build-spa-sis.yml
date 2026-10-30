@@ -61,7 +61,6 @@ jobs:
           az storage copy \
             -s https://${{ inputs.STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/${{ inputs.STORAGE_CONTAINER_NAME }}/app \
             -d exported_data/ \
-            --auth-mode login \
             --recursive
 
       - name: Populate .docker-data for Docker build context
