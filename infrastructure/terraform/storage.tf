@@ -74,7 +74,7 @@ resource "azurerm_storage_account" "site-data-enc" {
   local_user_enabled                = true
   location                          = var.region
   min_tls_version                   = "TLS1_2"
-  name                              = "cccepfdatastore${var.environment_prefix}${random_id.unique_suffix.hex}enc"
+  name                              = "cccepfdatastore${var.environment_prefix}${random_id.unique_suffix.hex}en"
   nfsv3_enabled                     = false
   public_network_access_enabled     = false
   queue_encryption_key_type         = "Service"
