@@ -133,7 +133,7 @@ resource "azurerm_cdn_frontdoor_origin" "static-site-enc" {
   host_name                      = azurerm_storage_account.site-data.primary_web_host
   http_port                      = 80
   https_port                     = 443
-  name                           = "staticweb"
+  name                           = "staticweb-enc"
   origin_host_header             = azurerm_storage_account.site-data.primary_web_host
   priority                       = 1
   weight                         = 1000
@@ -220,7 +220,7 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data-enc" {
   host_name                      = azurerm_storage_account.site-data-enc.primary_blob_host
   http_port                      = 80
   https_port                     = 443
-  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-enc-01"
   origin_host_header             = azurerm_storage_account.site-data-enc.primary_blob_host
   priority                       = 1
   weight                         = 1000
@@ -599,7 +599,7 @@ resource "azurerm_private_endpoint" "storage" {
 }
 
 resource "azurerm_private_endpoint" "storage-enc" {
-  custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
+  custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-enc-01"
   location                      = var.region
   name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-enc-01"
   resource_group_name           = azurerm_resource_group.edge.name
