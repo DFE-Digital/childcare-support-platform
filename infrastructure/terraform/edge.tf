@@ -126,6 +126,25 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
   }
 }
 
+resource "azurerm_cdn_frontdoor_origin" "static-site-enc" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.static-site.id
+  certificate_name_check_enabled = true
+  enabled                        = false
+  host_name                      = azurerm_storage_account.site-data.primary_web_host
+  http_port                      = 80
+  https_port                     = 443
+  name                           = "staticweb"
+  origin_host_header             = azurerm_storage_account.site-data.primary_web_host
+  priority                       = 1
+  weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = azurerm_storage_account.site-data-enc.id
+    request_message        = "The request is from storage account ${azurerm_storage_account.site-data-enc.name}"
+    target_type            = "web"
+  }
+}
+
 resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
   cdn_frontdoor_profile_id                                  = azurerm_cdn_frontdoor_profile.frontdoor.id
   name                                                      = "${var.subscription_prefix}${var.environment_prefix}og-${local.location_prefix}-azf-sis-01"
@@ -186,6 +205,28 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   private_link {
     location               = var.region
     private_link_target_id = azurerm_storage_account.site-data.id
+    request_message        = "The request is from Front Door to the storage account for runtime data"
+    target_type            = "blob"
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "azurerm_cdn_frontdoor_origin" "runtime-data-enc" {
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.runtime-data.id
+  certificate_name_check_enabled = true
+  enabled                        = false
+  host_name                      = azurerm_storage_account.site-data-enc.primary_blob_host
+  http_port                      = 80
+  https_port                     = 443
+  name                           = "${var.subscription_prefix}${var.environment_prefix}origin-${local.location_prefix}-runtime-data-01"
+  origin_host_header             = azurerm_storage_account.site-data-enc.primary_blob_host
+  priority                       = 1
+  weight                         = 1000
+  private_link {
+    location               = var.region
+    private_link_target_id = azurerm_storage_account.site-data-enc.id
     request_message        = "The request is from Front Door to the storage account for runtime data"
     target_type            = "blob"
   }
@@ -450,6 +491,7 @@ resource "azurerm_cdn_frontdoor_rule" "content-security-policy" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.static-site,
     azurerm_cdn_frontdoor_origin.static-site,
+    azurerm_cdn_frontdoor_origin.static-site-enc,
   ]
 }
 
@@ -470,6 +512,7 @@ resource "azurerm_cdn_frontdoor_rule" "strict-transport-security" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.static-site,
     azurerm_cdn_frontdoor_origin.static-site,
+    azurerm_cdn_frontdoor_origin.static-site-enc,
   ]
 }
 
@@ -490,6 +533,7 @@ resource "azurerm_cdn_frontdoor_rule" "x-frame-options" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.static-site,
     azurerm_cdn_frontdoor_origin.static-site,
+    azurerm_cdn_frontdoor_origin.static-site-enc,
   ]
 }
 
@@ -510,6 +554,7 @@ resource "azurerm_cdn_frontdoor_rule" "x-content-type-options" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.static-site,
     azurerm_cdn_frontdoor_origin.static-site,
+    azurerm_cdn_frontdoor_origin.static-site-enc,
   ]
 }
 
@@ -530,6 +575,7 @@ resource "azurerm_cdn_frontdoor_rule" "referrer-policy" {
   depends_on = [
     azurerm_cdn_frontdoor_origin_group.static-site,
     azurerm_cdn_frontdoor_origin.static-site,
+    azurerm_cdn_frontdoor_origin.static-site-enc,
   ]
 }
 
@@ -548,6 +594,25 @@ resource "azurerm_private_endpoint" "storage" {
     is_manual_connection           = false
     name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-01"
     private_connection_resource_id = azurerm_storage_account.site-data.id
+    subresource_names              = ["blob"]
+  }
+}
+
+resource "azurerm_private_endpoint" "storage-enc" {
+  custom_network_interface_name = "${var.subscription_prefix}${var.environment_prefix}nic-${local.location_prefix}-storage-endpoint-01"
+  location                      = var.region
+  name                          = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-enc-01"
+  resource_group_name           = azurerm_resource_group.edge.name
+  subnet_id                     = azurerm_subnet.frontend.id
+  tags = {
+    Environment        = var.environment_tag
+    Product            = "Childcare Platform"
+    "Service Offering" = ""
+  }
+  private_service_connection {
+    is_manual_connection           = false
+    name                           = "${var.subscription_prefix}${var.environment_prefix}pe-${local.location_prefix}-storage-endpoint-enc-01"
+    private_connection_resource_id = azurerm_storage_account.site-data-enc.id
     subresource_names              = ["blob"]
   }
 }
