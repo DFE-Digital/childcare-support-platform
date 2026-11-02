@@ -17,7 +17,7 @@ resource "azurerm_storage_account" "site-data" {
   default_to_oauth_authentication   = false
   dns_endpoint_type                 = "Standard"
   https_traffic_only_enabled        = true
-  infrastructure_encryption_enabled = false
+  infrastructure_encryption_enabled = true
   is_hns_enabled                    = false
   large_file_share_enabled          = false
   local_user_enabled                = true
