@@ -112,6 +112,16 @@ resource "azurerm_monitor_diagnostic_setting" "storage-account-log-settings" {
   target_resource_id         = azurerm_storage_account.site-data.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
 
+  enabled_metric {
+    category = "Transaction"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "storage-container-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-storage-container-log-settings-01"
+  target_resource_id         = "${azurerm_storage_account.site-data.id}/blobServices/default"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
   enabled_log {
     category_group = "allLogs"
   }
