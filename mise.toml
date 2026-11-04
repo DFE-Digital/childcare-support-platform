@@ -2,4 +2,5 @@
 node = "24"
 python = "3.11"
 rust = "1.96"
+terraform = "latest"
 uv = "latest"

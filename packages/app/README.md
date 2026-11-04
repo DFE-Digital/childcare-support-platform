@@ -1,6 +1,6 @@
 # @bsil/app
 
-Public-facing React SPA for beststartinlife.gov.uk. Provides a childcare provider search (map + list), eligibility checker, and cost calculator.
+Public-facing React SPA for childcare.beststartinlife.gov.uk. Provides a childcare provider search (map + list), eligibility checker, and cost calculator.
 
 ## Stack
 
