@@ -111,6 +111,11 @@ These targets build a self-contained Docker image that bundles the Vite SPA, Das
 | `make data/export-parquet`               | Export all tables to parquet for backup                                         |
 | `make data/restore-parquet`              | Restore tables from parquet backups                                             |
 | `make data/asset name=<asset>`           | Materialize a single Dagster asset by name                                      |
+
+These targets still exist in the Makefile but are not currently functional. See [Legacy Make Targets](#legacy-make-targets) for more detail.
+
+| Target                                   | Description                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------- |
 | `make data/push-exported env=<env>`      | Upload exported data to BSIL source-data bucket (deploy action syncs to live)   |
 | `make data/push-source`                  | Upload `source_data/` to the raw S3 bucket                                      |
 | `make data/fetch-source`                 | Download `source_data/` from the raw S3 bucket                                  |
