@@ -53,17 +53,10 @@ This will enable a pre-commit hook which runs a terraform fmt and terraform vali
 
 ```bash
 cp .env.example .env       # fill in POSTGRES_PASSWORD, etc.
-make node-setup            # installs nvm, Node, npm dependencies
+npm install                # install npm dependencies
 ```
 
 ## Make targets
-
-### Setup
-
-| Target                  | Description                                                  |
-| ----------------------- | ------------------------------------------------------------ |
-| `make node-setup`       | Install Node (via nvm) + npm dependencies + pre-commit hooks |
-| `make pre-commit-setup` | Install pre-commit hooks + linter tools                      |
 
 ### App (dev compose: frontend :5173 + SIS :3001)
 
@@ -146,6 +139,7 @@ These are make targets which are specific to the old AWS implementation of this 
 | Target                                      | Description                                                                                              | Value in transferring                                                                                                  |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `make pre-commit-setup`                     | Installs packages to users system & install pre-commit hooks                                             | No. Documentation has been updated around what packages are required, it's not necessary to have a make command for it |
+| `make node-setup`                           | Runs nvm commands to install a version of node and run npm install                                       | No. Documentation has been updated around what packages are required, it's not necessary to have a make command for it |
 | `make fetch-data`                           | Fetches the pipeline source data from the AWS S3 bucket                                                  | Yes <sub>*1</sub>                                                                                                      |
 | `make bsil/check-account`                   | Checks the current AWS account & compares to the configured allowed accounts                             | Maybe, but would need a full re-write to be azure subscription focused                                                 |
 | `make fetch-data-bsil`                      | Runs the `bsil/check-account` & then similar to `fetch-data` queries from the AWS S3 Bucket              | Maybe, would depend if `make bsil/check-account` was re-written or deleted                                             |
