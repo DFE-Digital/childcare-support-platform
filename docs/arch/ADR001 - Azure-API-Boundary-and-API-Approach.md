@@ -13,9 +13,8 @@
 - **Author**:<!-- Your full name as the owner of the decision, for example 'Joe Bloggs'. --> Robin Appleton-Power
 
 ## Decision
-Decision Pending. 
-This ADR records the investigation and options for determining the appropriate Azure API boundary and API-management approach. It does not assume a) that APIM is required simply because the existing solution uses AWS API Gateway b) that APIM is simply not needed without addressing the capability provided by the existing API boundary.
-The decision will follow a review with senior DfE architects. The selected option must preserve required behaviour and security characteristics while remaining appropriate for the like-for-like migration, latency-sensitive request path, cost constraints and end-of-September deadline.
+Option 2 
+To do without a dedicated API management layer. It was recognised that APIM would act as an additional application-level access control, but given the Function is private and only reachable through the AFD/private connectivity path, then the network boundary is providing the primary restriction on who can reach it. It was therefore agreed that removing APIM is viable and indeed simplifies the architecture and that Front Door provides sufficient rate limiting controls.
 <!-- 
     In a few sentences, describe the decision taken. 
 -->

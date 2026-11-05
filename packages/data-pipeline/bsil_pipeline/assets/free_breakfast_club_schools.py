@@ -1,7 +1,7 @@
 """Load DfE free breakfast club schools data into dfe.free_breakfast_club_schools.
 
 Source: https://www.gov.uk/government/publications/free-breakfast-in-schools
-Expected file: source_data/Free_breakfast_clubs_-_schools_on_the_scheme_020226.xlsx
+Expected file: source_data/Free_breakfast_clubs_-_schools_on_the_programme_September_2026.xlsx
 
 Parses the XLSX using stdlib zipfile + defusedxml.
 Idempotent: DROP + recreate on each run.
@@ -17,8 +17,8 @@ from bsil_pipeline.resources.postgres import BsilPostgresResource
 from bsil_pipeline.assets.schema_tables import DFE_FREE_BREAKFAST_CLUB_SCHOOLS_DDL
 
 XLSX_PATH = Path(
-    "/opt/dagster/app/source_data"
-    "/Free_breakfast_clubs_-_schools_on_the_scheme_020226.xlsx"
+    "/opt/dagster/app/source_data/"
+    "Free_breakfast_clubs_-_schools_on_the_programme_September_2026.xlsx"
 )
 
 _NS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
@@ -95,7 +95,7 @@ def free_breakfast_club_schools(
     """Load DfE free breakfast club schools into dfe.free_breakfast_club_schools.
 
     Idempotent: DROP + recreate on each run.
-    Source file updated 02/02/2026 — 1,354 schools on the scheme.
+    Source file updated 03/11/2026 — 1,354 schools on the scheme.
     """
     if not XLSX_PATH.exists():
         context.log.error(f"XLSX not found: {XLSX_PATH}")

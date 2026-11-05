@@ -90,15 +90,16 @@ packages/data-quality/data-quality-audit/*.csv
 packages/schemas/src/generated/
 
 # Exported data pipeline output
-/exported_data/
+/exported_data*/
 
 # Docker build staging (S3 data for prod image)
-/.docker-data/
+/.docker-data*/
 
 # Generated Dagster asset output
 packages/data-pipeline/data/
 
-/source_data/
+/source_data/*
+!/source_data/README.md
 
 # Rust
 **/target/

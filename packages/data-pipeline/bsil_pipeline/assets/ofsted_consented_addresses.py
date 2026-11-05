@@ -1,6 +1,6 @@
 """Load Ofsted consented addresses for childminders into ofsted.consented_addresses.
 
-Source: Consented_addresses_for_childminders_and_domestic_childcare_as_at_31_March_2026.csv
+Source: Consented_addresses_for_childminders_and_domestic_childcare_as_at_30_September_2026.csv
 The first 3 rows are metadata; column headers are on row 4.
 
 Provides ~7,500 consented home addresses for childminder URNs whose address
@@ -18,7 +18,7 @@ from bsil_pipeline.assets.schema_tables import OFSTED_CONSENTED_ADDRESSES_DDL
 
 CSV_PATH = Path(
     "/opt/dagster/app/source_data/"
-    "Consented_addresses_for_childminders_and_domestic_childcare_as_at_31_March_2026.csv"
+    "Consented_addresses_for_childminders_and_domestic_childcare_as_at_30_September_2026.csv"
 )
 
 BATCH_SIZE = 1000

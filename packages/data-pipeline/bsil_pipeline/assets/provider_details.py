@@ -159,11 +159,12 @@ WHERE geocode_status IN ('success', 'success_postcode_fallback')
 
 LOAD_OFSTED_META_SQL = """
 SELECT provider_urn,
-       most_recent_full_overall_effectiveness,
-       most_recent_full_inspection_date
+       eyr_oeif_cif_most_recent_overall_effectiveness,
+       eyr_oeif_most_recent_full_inspection_date
+
 FROM ofsted.inspections
-WHERE most_recent_full_overall_effectiveness IS NOT NULL
-  AND most_recent_full_overall_effectiveness != ''
+WHERE eyr_oeif_cif_most_recent_overall_effectiveness IS NOT NULL
+  AND eyr_oeif_cif_most_recent_overall_effectiveness != ''
 """
 
 LOAD_OFSTED_COMPLIANCE_SQL = """
@@ -179,14 +180,14 @@ SELECT provider_urn,
            ELSE NULL
        END AS vcr_met,
        CASE
-           WHEN oosc_overall_effectiveness = 'Met' THEN true
-           WHEN oosc_overall_effectiveness LIKE 'Not Met%%' THEN false
+           WHEN eyr_oeif_oosc_most_recent_overall_effectiveness = 'Met' THEN true
+           WHEN eyr_oeif_oosc_most_recent_overall_effectiveness LIKE 'Not Met%%' THEN false
            ELSE NULL
        END AS oosc_met
 FROM ofsted.inspections
 WHERE ccr_requirements_suitability IS NOT NULL
    OR vcr_requirements_suitability IS NOT NULL
-   OR oosc_overall_effectiveness IS NOT NULL
+   OR eyr_oeif_oosc_most_recent_overall_effectiveness IS NOT NULL
 """
 
 LOAD_SCHOOL_INSPECTIONS_SQL = """
