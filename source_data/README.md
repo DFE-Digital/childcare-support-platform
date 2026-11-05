@@ -1,12 +1,10 @@
-# Source Data Files
+# Best Start in Life - Data Pipeline Source Files
 
 This folder contains the most recent source files used to run the data refresh pipeline for the 'Best Start in Life' (BSIL) provider map.
 
 Information on how to download this data from its source can be found in the [DFE Digital Confluence - BSIL Data Refresh Pipeline](https://dfedigital.atlassian.net.mcas.ms/wiki/spaces/BSILCT/pages/6668943363/Source+Data+Information).
 
 Where a new version of the data has become available, the previous version has been moved into the `archive/` directory. This is for reference in the case that data columns have changed or it becomes useful to have the old versions for comparison.
-
----
 
 # Legacy Docs
 
@@ -256,4 +254,4 @@ sources, the old codes will return and must be converted again.
 | E08000019 | E08000039 | Sheffield | `family_information_services.csv`, `estimates_by_la_age_by_provtype.csv` |
 
 **Reason**: The 2023→2025 ONS LAD reorganisation renumbered these two authorities.
-The pipeline uses LAD25 codes throughout; ONSPD (Feb 2026) already uses `lad25cd`.## Best Start in Life - Data Pipeline Source Files
+The pipeline uses LAD25 codes throughout; ONSPD (Feb 2026) already uses `lad25cd`.
