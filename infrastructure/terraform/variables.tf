@@ -24,11 +24,6 @@ variable "remote_virtual_network_id" {
   default     = null
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key to associate with the admin account for the actions runner VM"
-  type        = string
-}
-
 variable "support_alert_email" {
   description = "The email account used by the monitoring config for alerting"
   type        = string

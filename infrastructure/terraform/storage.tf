@@ -36,6 +36,7 @@ resource "azurerm_storage_account" "site-data" {
     Product            = "Childcare Platform"
     "Service Offering" = ""
   }
+
   blob_properties {
     last_access_time_enabled = false
     versioning_enabled       = true
@@ -57,7 +58,6 @@ resource "azurerm_storage_account" "site-data" {
   }
 }
 
-
 resource "azurerm_storage_container" "provider-container" {
   container_access_type = "private"
   metadata              = {}
@@ -69,6 +69,13 @@ resource "azurerm_storage_container" "source-data-container" {
   container_access_type = "blob"
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01"
+  storage_account_id    = azurerm_storage_account.site-data.id
+}
+
+resource "azurerm_storage_container" "clean-data-container" {
+  container_access_type = "private"
+  metadata              = {}
+  name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-clean-data-01"
   storage_account_id    = azurerm_storage_account.site-data.id
 }
 

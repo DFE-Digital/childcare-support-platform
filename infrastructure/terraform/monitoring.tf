@@ -107,6 +107,30 @@ resource "azurerm_monitor_diagnostic_setting" "application-insights-log-settings
   }
 }
 
+resource "azurerm_monitor_diagnostic_setting" "storage-account-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-storage-account-log-settings-01"
+  target_resource_id         = azurerm_storage_account.site-data.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_metric {
+    category = "Transaction"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "storage-container-log-settings" {
+  name                       = "${var.subscription_prefix}${var.environment_prefix}ds-${local.location_prefix}-storage-container-log-settings-01"
+  target_resource_id         = "${azurerm_storage_account.site-data.id}/blobServices/default"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.application-logs.id
+
+  enabled_log {
+    category_group = "allLogs"
+  }
+
+  enabled_metric {
+    category = "Transaction"
+  }
+}
+
 resource "azurerm_monitor_metric_alert" "availability-alert" {
   name                = "availability-alert"
   resource_group_name = azurerm_resource_group.monitoring.name
@@ -156,6 +180,55 @@ resource "azurerm_monitor_metric_alert" "function-cpu-usage-alert" {
     operator         = "GreaterThan"
     // TODO: Figure this out
     threshold = 90
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
+
+resource "azurerm_monitor_metric_alert" "server-exceptions-alert" {
+  name                = "server-exceptions-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
+
+  description = "Alert when server exceptions exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "exceptions/server"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 5
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service-support-action.id
+  }
+}
+
+resource "azurerm_monitor_metric_alert" "failed-requests-alert" {
+  name                = "failed-requests-alert"
+  resource_group_name = azurerm_resource_group.monitoring.name
+  scopes              = [azurerm_application_insights.application-insights.id]
+
+  description = "Alert when failed requests exceed threshold"
+  severity    = 2
+  frequency   = "PT5M"
+  window_size = "PT5M"
+  enabled     = true
+
+  criteria {
+    metric_namespace = "microsoft.insights/components"
+    metric_name      = "requests/failed"
+    aggregation      = "Count"
+    operator         = "GreaterThan"
+    threshold        = 10
   }
 
   action {
