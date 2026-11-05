@@ -4,6 +4,8 @@ Childcare cost checker and provider directory for [beststartinlife.gov.uk](https
 
 This repository contains the code for the Childcare Support Platform SPA, Spatial Index Service and components for the provider data-pipline
 
+Internal documentation for Department for Education developers can be found [here](https://dfedigital.atlassian.net.mcas.ms/wiki/spaces/BSILCT/overview)
+
 ## Monorepo structure
 
 | Package                                                                      | Language           | Description                                                            |

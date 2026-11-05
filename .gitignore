@@ -98,7 +98,8 @@ packages/schemas/src/generated/
 # Generated Dagster asset output
 packages/data-pipeline/data/
 
-/source_data*/
+/source_data/*
+!/source_data/README.md
 
 # Rust
 **/target/
