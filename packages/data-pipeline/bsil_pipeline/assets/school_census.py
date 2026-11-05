@@ -1,6 +1,6 @@
 """Load DfE school census data into dfe.school_census.
 
-Reads spc_school_level_underlying_data_2025.csv (School Pupils and their
+Reads spc_school_level_underlying_data_2026.csv (School Pupils and their
 Characteristics) and loads all columns as TEXT into Postgres.
 
 Source: https://explore-education-statistics.service.gov.uk/find-statistics/school-pupils-and-their-characteristics
@@ -15,7 +15,8 @@ from dagster import asset, AssetExecutionContext, MetadataValue
 from bsil_pipeline.resources.postgres import BsilPostgresResource
 
 CSV_PATH = Path(
-    "/opt/dagster/app/source_data/spc_school_level_underlying_data_2025.csv"
+    "/opt/dagster/app/source_data/"
+    "spc_school_level_underlying_data_2026.csv"
 )
 
 BATCH_SIZE = 1000

@@ -10,10 +10,10 @@ from bsil_pipeline.resources.postgres import BsilPostgresResource
 ODS_PATH = Path(
     "/opt/dagster/app/source_data/"
     "Management_information_-_childcare_providers_and_inspections_"
-    "as_at_31_December_2025.ods"
+    "as_at_30_June_2026.ods"
 )
 
-SHEET_NAME = "D1_Most_recent_inspections"
+SHEET_NAME = "D1_Childcare_providers"
 
 # Row indices in the ODS sheet
 HEADER_ROW_INDEX = 2
