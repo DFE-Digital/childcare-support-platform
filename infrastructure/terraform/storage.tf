@@ -72,6 +72,13 @@ resource "azurerm_storage_container" "source-data-container" {
   storage_account_id    = azurerm_storage_account.site-data.id
 }
 
+resource "azurerm_storage_container" "clean-data-container" {
+  container_access_type = "private"
+  metadata              = {}
+  name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-clean-data-01"
+  storage_account_id    = azurerm_storage_account.site-data.id
+}
+
 resource "azurerm_storage_account_static_website" "staticsite" {
   storage_account_id = azurerm_storage_account.site-data.id
   index_document     = "index.html"
