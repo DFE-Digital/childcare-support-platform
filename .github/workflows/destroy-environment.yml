@@ -1,0 +1,79 @@
+name: Destroy Application Infrastructure Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Destroy Application Infrastructure Pipeline:"
+        required: true
+        default: Dev
+        type: choice
+        options:
+          - Dev
+          - Test
+          - Prod
+      terraform-version:
+        required: false
+        type: string
+        default: "1.15.8"
+      infra-directory:
+        required: true
+        type: string
+        default: "infrastructure"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+run-name: "Destroy core infra: ${{ inputs.environment }}"
+
+jobs:
+  destroy-core-infrastructure: 
+    name: "Destroy core infra: ${{ inputs.environment }}"
+
+    defaults:
+      run:
+        working-directory: infrastructure
+
+    environment: ${{ inputs.environment }}
+
+    runs-on: ubuntu-latest
+    
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      
+      - name: Azure CLI Login
+        uses: azure/login@v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_version: ${{ inputs.terraform-version }}
+      
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
+
+      - name: Terraform plan (destroy)
+        run: |
+          terraform plan -destroy -input=false \
+            -var-file="environments/${{ inputs.environment }}.tfvars" \
+            -out=destroy.tfplan
+
+      - name: Terraform destroy
+        run: terraform apply -input=false -auto-approve destroy.tfplan
