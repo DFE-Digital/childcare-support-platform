@@ -15,10 +15,7 @@ on:
         required: false
         type: string
         default: "1.15.8"
-      infra-directory:
-        required: true
-        type: string
-        default: "infrastructure"
+      
 
 permissions:
   id-token: write
@@ -32,7 +29,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{ inputs.infra-directory }}
+        working-directory: ./infrastructure/terraform
 
     environment: ${{ inputs.environment }}
 
