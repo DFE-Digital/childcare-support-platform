@@ -61,6 +61,15 @@ jobs:
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
           terraform_version: ${{ inputs.terraform-version }}
+
+      - name: Unlock Terraform State
+        env:
+          ACC_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          RG_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
       
       - name: Terraform Init
         run: |
@@ -78,3 +87,14 @@ jobs:
 
       - name: Terraform destroy
         run: terraform apply -input=false -auto-approve destroy.tfplan
+
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        working-directory: ./infrastructure
+        env:
+          ACC_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+          RG_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"
