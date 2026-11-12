@@ -84,6 +84,7 @@ jobs:
         run: |
           terraform plan -destroy -input=false \
             -var-file="environments/${{ inputs.environment }}.tfvars" \
+            -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}"
             -out=destroy.tfplan
 
       - name: Terraform destroy
