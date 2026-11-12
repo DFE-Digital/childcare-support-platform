@@ -11,7 +11,6 @@ on:
         options:
           - Dev
           - Test
-          - Prod
       terraform-version:
         required: false
         type: string
@@ -24,7 +23,6 @@ on:
 permissions:
   id-token: write
   contents: read
-  pull-requests: write
 
 run-name: "Destroy core infra: ${{ inputs.environment }}"
 
@@ -34,13 +32,19 @@ jobs:
 
     defaults:
       run:
-        working-directory: infrastructure
+        working-directory: ${{ inputs.infra-directory }}
 
     environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: terraform-destroy-${{ inputs.environment }}
+      cancel-in-progress: false
 
     runs-on: ubuntu-latest
     
     env:
+      ARM_USE_OIDC: true
+      ARM_USE_AZUREAD: true
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
