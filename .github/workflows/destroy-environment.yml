@@ -63,6 +63,7 @@ jobs:
           terraform_version: ${{ inputs.terraform-version }}
 
       - name: Unlock Terraform State
+        working-directory: ./infrastructure
         env:
           ACC_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
           RG_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
