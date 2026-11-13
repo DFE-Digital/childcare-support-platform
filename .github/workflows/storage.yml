@@ -2,10 +2,101 @@ name: Storage account Pipeline
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Storage Infrastructure Pipeline:"
+        required: true
+        default: Dev
+        type: choice
+        options:
+          - Dev
+          - Test
+      terraform-version:
+        required: false
+        type: string
+        default: "1.15.8"
+
+
+permissions:
+  id-token: write
+  contents: read
+
+run-name: "Storage account infra: ${{ inputs.environment }}"
+
 jobs:
-  placeholder:
+  storage-account-infrastructure:
+    name: "Storage account infra: ${{ inputs.environment }}"
+
+    defaults:
+      run:
+        working-directory: ./infrastructure/terraform-shutter
+
+    environment: ${{ inputs.environment }}
+
+    concurrency:
+      group: terraform-storage-account-${{ inputs.environment }}
+      cancel-in-progress: false
+
     runs-on: ubuntu-latest
+
+    env:
+      ARM_USE_OIDC: true
+      ARM_USE_AZUREAD: true
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
     steps:
-      - run: echo "placeholder"
+      - name: Checkout code
+        uses: actions/checkout@v6
 
+      - name: Azure CLI Login
+        uses: azure/login@v2.3.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
+        with:
+          terraform_version: ${{ inputs.terraform-version }}
+
+      - name: Unlock Terraform State
+        working-directory: ./infrastructure
+        env:
+          ACC_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          RG_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "true"
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=tfstate" \
+            -backend-config="key=terraform.tfstate"
+
+      - name: Terraform plan (storage account)
+        run: |
+          terraform plan -input=false \
+            -var-file="environments/${{ inputs.environment }}.tfvars" \
+            -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}" \
+            -out=storage.tfplan
+
+#      - name: Terraform Apply
+#        run: terraform apply -input=false -auto-approve storage.tfplan
+
+      - name: Lock Terraform State
+        if: ${{ always() }}
+        working-directory: ./infrastructure
+        env:
+          ACC_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          RG_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
+        shell: bash
+        run: |
+          chmod +x scripts/manage-storage-access.sh
+          ./scripts/manage-storage-access.sh "$ACC_NAME" "$RG_NAME" "false"

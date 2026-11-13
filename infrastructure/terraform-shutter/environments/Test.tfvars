@@ -1,0 +1,6 @@
+subscription_prefix = "s288"
+environment_prefix  = "t01"
+environment_tag     = "Test"
+region              = "uksouth"
+storage_account_name       = "cccepfdatastoretest87654321"
+storage_resource_group_name = "your-test-storage-rg"

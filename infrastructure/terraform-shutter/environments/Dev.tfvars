@@ -1,0 +1,6 @@
+subscription_prefix = "s288"
+environment_prefix  = "d01"
+environment_tag     = "Dev"
+region              = "uksouth"
+storage_account_name       = "cccepfdatastoredev12345678"
+storage_resource_group_name = "your-dev-storage-rg"
