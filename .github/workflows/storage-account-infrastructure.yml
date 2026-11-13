@@ -6,7 +6,7 @@ on:
       environment:
         description: "Storage Infrastructure Pipeline:"
         required: true
-        default: Dev
+        default: Test
         type: choice
         options:
           - Dev
