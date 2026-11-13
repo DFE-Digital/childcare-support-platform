@@ -48,10 +48,15 @@ resource "azurerm_resource_provider_registration" "compute-reg" {
   name = "Microsoft.Compute"
 }
 
-resource "azurerm_resource_provider_registration" "web-reg" {
-  name = "Microsoft.Web"
-}
-
 resource "azurerm_resource_provider_registration" "kv-reg" {
   name = "Microsoft.KeyVault"
+}
+
+# Microsoft.Web registration: stop managing it without unregistering it in Azure
+removed {
+  from = azurerm_resource_provider_registration.web-reg
+
+  lifecycle {
+    destroy = false
+  }
 }
