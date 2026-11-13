@@ -1,10 +1,10 @@
-name: Manage Persistent Storage Infrastructure
+name: Retired production environment pipeline
 
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Storage Infrastructure Pipeline:"
+        description: "Storage account infra for prod env"
         required: true
         default: Test
         type: choice
