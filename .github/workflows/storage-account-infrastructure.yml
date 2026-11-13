@@ -86,6 +86,8 @@ jobs:
             -var-file="environments/${{ inputs.environment }}.tfvars" \
             -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}" \
             -out=storage.tfplan
+      - name: Show Terraform Plan
+        run: terraform show -no-color storage.tfplan
 
 #      - name: Terraform Apply
 #        run: terraform apply -input=false -auto-approve storage.tfplan
