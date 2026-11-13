@@ -25,3 +25,9 @@ variable "storage_account_name" {
 variable "storage_resource_group_name" {
   type = string
 }
+
+variable "support_alert_email" {
+  description = "The email account used by the monitoring config for alerting"
+  type        = string
+  sensitive   = true
+}
