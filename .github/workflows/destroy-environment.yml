@@ -94,8 +94,8 @@ jobs:
         if: ${{ always() }}
         working-directory: ./infrastructure
         env:
-          ACC_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
-          RG_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          ACC_NAME: ${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}
+          RG_NAME: ${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}
         shell: bash
         run: |
           chmod +x scripts/manage-storage-access.sh
