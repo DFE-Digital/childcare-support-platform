@@ -33,41 +33,21 @@ provider "github" {
 }
 
 provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
+  features {}
 }
 
-removed {
-  from = azurerm_resource_provider_registration.cdn-reg
-
-  lifecycle {
-    destroy = false
-  }
+resource "azurerm_resource_provider_registration" "cdn-reg" {
+  name = "Microsoft.Cdn"
 }
 
-removed {
-  from = azurerm_resource_provider_registration.compute-reg
-
-  lifecycle {
-    destroy = false
-  }
+resource "azurerm_resource_provider_registration" "compute-reg" {
+  name = "Microsoft.Compute"
 }
 
-removed {
-  from = azurerm_resource_provider_registration.kv-reg
-
-  lifecycle {
-    destroy = false
-  }
+resource "azurerm_resource_provider_registration" "web-reg" {
+  name = "Microsoft.Web"
 }
 
-removed {
-  from = azurerm_resource_provider_registration.web-reg
-
-  lifecycle {
-    destroy = false
-  }
+resource "azurerm_resource_provider_registration" "kv-reg" {
+  name = "Microsoft.KeyVault"
 }
