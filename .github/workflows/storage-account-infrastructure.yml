@@ -1,10 +1,10 @@
-name: Retired production environment pipeline
+name: Retire production environment pipeline
 
 on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Storage account infra for prod env"
+        description: "Switch production environment to shuttered state"
         required: true
         default: Test
         type: choice
