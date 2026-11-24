@@ -82,7 +82,7 @@ jobs:
       - name: Retire edge routing (phase 1)
         working-directory: ./infrastructure
         run: |
-          bash .scripts/retire-edge-routing.sh \
+          bash scripts/retire-edge-routing.sh \
             -input=false \
             -var-file="environments/${{ inputs.environment }}.tfvars" \
             -var="support_alert_email=${{ secrets.SUPPORT_ALERT_EMAIL }}"
