@@ -56,6 +56,10 @@ resource "azurerm_storage_account" "site-data" {
       days = 7
     }
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_storage_container" "provider-container" {
@@ -63,6 +67,10 @@ resource "azurerm_storage_container" "provider-container" {
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-provider-data-01"
   storage_account_id    = azurerm_storage_account.site-data.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_storage_container" "source-data-container" {
@@ -70,6 +78,10 @@ resource "azurerm_storage_container" "source-data-container" {
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-source-data-01"
   storage_account_id    = azurerm_storage_account.site-data.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_storage_container" "clean-data-container" {
@@ -77,6 +89,10 @@ resource "azurerm_storage_container" "clean-data-container" {
   metadata              = {}
   name                  = "${var.subscription_prefix}${var.environment_prefix}bc-${local.location_prefix}-clean-data-01"
   storage_account_id    = azurerm_storage_account.site-data.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "azurerm_storage_account_static_website" "staticsite" {
