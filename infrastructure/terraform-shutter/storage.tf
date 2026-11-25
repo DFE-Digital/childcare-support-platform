@@ -123,11 +123,3 @@ resource "azurerm_storage_management_policy" "site-data-lifecycle" {
     }
   }
 }
-
-provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
-}
