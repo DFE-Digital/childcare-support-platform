@@ -35,19 +35,3 @@ provider "github" {
 provider "azurerm" {
   features {}
 }
-
-resource "azurerm_resource_provider_registration" "cdn-reg" {
-  name = "Microsoft.Cdn"
-}
-
-resource "azurerm_resource_provider_registration" "compute-reg" {
-  name = "Microsoft.Compute"
-}
-
-resource "azurerm_resource_provider_registration" "web-reg" {
-  name = "Microsoft.Web"
-}
-
-resource "azurerm_resource_provider_registration" "kv-reg" {
-  name = "Microsoft.KeyVault"
-}
