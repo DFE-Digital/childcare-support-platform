@@ -66,22 +66,6 @@ resource "azurerm_subnet" "frontend" {
   ]
 }
 
-resource "azurerm_subnet" "actions-runner" {
-  address_prefixes                              = [local.subnet_ranges[3]]
-  default_outbound_access_enabled               = false
-  name                                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-snet-githubActionsRunner"
-  network_security_group_id_wo                  = data.azurerm_network_security_group.core-nsg.id
-  network_security_group_id_wo_version          = 1
-  private_endpoint_network_policies             = "Disabled"
-  private_link_service_network_policies_enabled = true
-  resource_group_name                           = data.azurerm_resource_group.core.name
-  service_endpoint_policy_ids                   = []
-  virtual_network_name                          = "${var.subscription_prefix}${var.environment_prefix}-${local.location_prefix}-core-vn-01"
-  depends_on = [
-    data.azurerm_virtual_network.core-vnet,
-  ]
-}
-
 resource "azurerm_virtual_network_peering" "hub-peering" {
   count                                  = var.remote_virtual_network_id != null ? 1 : 0
   allow_forwarded_traffic                = false
