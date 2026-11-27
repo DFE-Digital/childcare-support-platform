@@ -124,6 +124,7 @@ resource "azurerm_cdn_frontdoor_origin" "static-site" {
     request_message        = "The request is from storage account ${azurerm_storage_account.site-data.name}"
     target_type            = "web"
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.static-site]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "azf-sis" {
@@ -158,6 +159,7 @@ resource "azurerm_cdn_frontdoor_origin" "azf-sis" {
   lifecycle {
     create_before_destroy = true
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "runtime-data" {
@@ -192,6 +194,7 @@ resource "azurerm_cdn_frontdoor_origin" "runtime-data" {
   lifecycle {
     create_before_destroy = true
   }
+  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "posthog-ingest" {
@@ -225,6 +228,8 @@ resource "azurerm_cdn_frontdoor_origin" "posthog-ingest" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [azurerm_cdn_frontdoor_origin_group.posthog-ingest]
 }
 
 resource "azurerm_cdn_frontdoor_origin_group" "posthog-assets" {
@@ -258,6 +263,8 @@ resource "azurerm_cdn_frontdoor_origin" "posthog-assets" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [azurerm_cdn_frontdoor_origin_group.posthog-assets]
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "api-to-function-app-set" {
@@ -294,7 +301,10 @@ resource "azurerm_cdn_frontdoor_rule" "api-to-function-app" {
       transforms = []
     }
   }
-  depends_on = [azurerm_cdn_frontdoor_origin_group.azf-sis]
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.azf-sis,
+    azurerm_cdn_frontdoor_origin.azf-sis
+  ]
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "data-to-runtime-set" {
@@ -331,7 +341,10 @@ resource "azurerm_cdn_frontdoor_rule" "data-to-runtime-set" {
       transforms = []
     }
   }
-  depends_on = [azurerm_cdn_frontdoor_origin_group.runtime-data]
+  depends_on = [
+    azurerm_cdn_frontdoor_origin_group.runtime-data,
+    azurerm_cdn_frontdoor_origin.runtime-data
+  ]
 }
 
 resource "azurerm_cdn_frontdoor_rule_set" "posthog-rewrite" {
